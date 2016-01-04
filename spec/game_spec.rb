@@ -32,21 +32,21 @@ module DiceOfDebt
     class Dice
       attr_accessor :dice
 
-      def initialize(count, options={})
+      def initialize(count, options = {})
         self.dice = count.times.map { Die.new(options) }
       end
 
       def roll
-        dice.reduce(0) { |sum, die| sum += die.roll }
+        dice.reduce(0) { |sum, die| sum + die.roll }
       end
     end
 
     class Die
       attr_accessor :prng, :sides
 
-      def initialize(options={})
+      def initialize(options = {})
         self.sides = options[:sides] || 6
-        self.prng  = options[:prng]  || Random.new
+        self.prng  = options[:prng] || Random.new
       end
 
       def roll
@@ -59,7 +59,6 @@ module DiceOfDebt
     end
 
     class Iteration
-
     end
   end
 end
@@ -69,10 +68,9 @@ module DiceOfDebt
     before { subject.config.prng = double('rand', rand: 0) } # Always returns 0 => roll of 1
 
     describe 'initially' do
-      its(:score)              { should be 0  }
-      its(:"iterations.count") { should be 10  }
+      its(:score)              { should be 0 }
+      its(:"iterations.count") { should be 10 }
     end
-
 
     it 'each roll of a value die should increase the score' do
       subject.config do |config|
@@ -89,7 +87,7 @@ module DiceOfDebt
         config.technical_debt_dice_count = 1
       end
       subject.roll
-      expect(subject.score).to eq -1
+      expect(subject.score).to eq (-1)
     end
   end
 

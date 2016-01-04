@@ -3,7 +3,9 @@ source 'https://rubygems.org'
 gem 'sinatra', '~> 1.4'
 
 group 'development' do
-  gem 'pry-byebug',    '~>  3.3'
+  gem 'pry-byebug', '~>  3.3'
+  gem 'rake',       '~> 10.0'
+  gem 'rubocop',    '~>  0.30'
 end
 
 group 'test' do
@@ -13,4 +15,3 @@ group 'test' do
   gem 'rspec',       '~> 3.4'
   gem 'rspec-its',   '~> 1.1'
 end
-
