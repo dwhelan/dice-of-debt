@@ -18,11 +18,11 @@ module DiceOfDebt
     end
 
     def value_dice
-      @value_dice ||= Dice.new(configuration.value_dice_count, configuration)
+      @value_dice ||= Dice.new(configuration.value_dice)
     end
 
     def technical_debt_dice
-      @technical_debt_dice ||= Dice.new(configuration.technical_debt_dice_count, configuration)
+      @technical_debt_dice ||= Dice.new(configuration.technical_debt_dice)
     end
 
     def iterations
@@ -32,8 +32,8 @@ module DiceOfDebt
     class Dice
       attr_accessor :dice
 
-      def initialize(count, options = {})
-        self.dice = count.times.map { Die.new(options) }
+      def initialize(options)
+        self.dice = options.count.times.map { Die.new(options) }
       end
 
       def roll
@@ -42,11 +42,10 @@ module DiceOfDebt
     end
 
     class Die
-      attr_accessor :prng, :sides, :roller
+      attr_accessor :roller
 
-      def initialize(options = {})
-        self.sides = options[:sides] || 6
-        self.roller  = options[:roller] || RandomRoller.new(sides)
+      def initialize(options)
+        self.roller = options.roller
       end
 
       def roll
@@ -55,28 +54,36 @@ module DiceOfDebt
     end
 
     def configuration
-      @configuration ||= OpenStruct.new(value_dice_count: 8, technical_debt_dice_count: 4)
-    end
-
-    class RandomRoller
-
-      def initialize(sides)
-        @sides = sides
-      end
-
-      def roll
-        Random.rand(@sides) + 1
+      @configuration ||= begin
+        value_dice          = OpenStruct.new(count: 8, sides: 6, roller: RandomRoller.new(6))
+        technical_debt_dice = OpenStruct.new(count: 4, sides: 6, roller: RandomRoller.new(6))
+        OpenStruct.new(value_dice: value_dice, technical_debt_dice: technical_debt_dice)
       end
     end
+  end
 
-    class Iteration
+  class RandomRoller
+    attr_accessor :sides
+
+    def initialize(sides)
+      self.sides = sides
     end
+
+    def roll
+      Random.rand(sides) + 1
+    end
+  end
+
+  class Iteration
   end
 end
 
 module DiceOfDebt
   describe Game do
-    before { subject.config.roller = double('rand', roll: 1) }
+    let(:config) { subject.config }
+    let(:roller) { double('roller', roll: 1) }
+
+    before { config.value_dice.roller = config.technical_debt_dice.roller = roller }
 
     describe 'initially' do
       its(:score)              { should be 0 }
@@ -84,28 +91,37 @@ module DiceOfDebt
     end
 
     it 'each roll of a value die should increase the score' do
-      subject.config do |config|
-        config.value_dice_count = 1
-        config.technical_debt_dice_count = 0
-      end
+      config.value_dice.count = 1
+      config.technical_debt_dice.count = 0
       subject.roll
       expect(subject.score).to eq 1
     end
 
     it 'each roll of a technical debt die should decrease the score' do
-      subject.config do |config|
-        config.value_dice_count = 0
-        config.technical_debt_dice_count = 1
-      end
+      config.value_dice.count = 0
+      config.technical_debt_dice.count = 1
       subject.roll
       expect(subject.score).to eq (-1)
     end
   end
 
   describe 'Configuration' do
-    subject { Game.new.config }
+    describe 'value_dice' do
+      subject { Game.new.config.value_dice }
 
-    its(:value_dice_count)          { should be 8 }
-    its(:technical_debt_dice_count) { should be 4 }
+      its(:count) { should be 8 }
+      its(:sides) { should be 6 }
+      its(:roller) { should be_a RandomRoller }
+      its(:"roller.sides") { should be 6 }
+    end
+
+    describe 'technical_debt_dice' do
+      subject { Game.new.config.technical_debt_dice }
+
+      its(:count) { should be 4 }
+      its(:sides) { should be 6 }
+      its(:roller) { should be_a RandomRoller }
+      its(:"roller.sides") { should be 6 }
+    end
   end
 end
