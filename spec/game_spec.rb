@@ -42,20 +42,31 @@ module DiceOfDebt
     end
 
     class Die
-      attr_accessor :prng, :sides
+      attr_accessor :prng, :sides, :roller
 
       def initialize(options = {})
         self.sides = options[:sides] || 6
-        self.prng  = options[:prng] || Random.new
+        self.roller  = options[:roller] || RandomRoller.new(sides)
       end
 
       def roll
-        prng.rand(sides) + 1
+        roller.roll
       end
     end
 
     def configuration
       @configuration ||= OpenStruct.new(value_dice_count: 8, technical_debt_dice_count: 4)
+    end
+
+    class RandomRoller
+
+      def initialize(sides)
+        @sides = sides
+      end
+
+      def roll
+        Random.rand(@sides) + 1
+      end
     end
 
     class Iteration
@@ -65,7 +76,7 @@ end
 
 module DiceOfDebt
   describe Game do
-    before { subject.config.prng = double('rand', rand: 0) } # Always returns 0 => roll of 1
+    before { subject.config.roller = double('rand', roll: 1) }
 
     describe 'initially' do
       its(:score)              { should be 0 }
