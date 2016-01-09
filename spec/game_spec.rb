@@ -26,14 +26,14 @@ module DiceOfDebt
     end
 
     def iterations
-      @iterations || 10.times.map { Iteration.new }
+      @iterations || Array.new(config.iterations) { Iteration.new }
     end
 
     class Dice
       attr_accessor :dice
 
       def initialize(options)
-        self.dice = options.count.times.map { Die.new(options) }
+        self.dice = Array.new(options.count) { Die.new(options) }
       end
 
       def roll
@@ -55,9 +55,11 @@ module DiceOfDebt
 
     def configuration
       @configuration ||= begin
-        value_dice          = OpenStruct.new(count: 8, sides: 6, roller: RandomRoller.new(6))
-        technical_debt_dice = OpenStruct.new(count: 4, sides: 6, roller: RandomRoller.new(6))
-        OpenStruct.new(value_dice: value_dice, technical_debt_dice: technical_debt_dice)
+        sides               = 6
+        value_dice          = OpenStruct.new(count: 8, sides: sides, roller: RandomRoller.new(sides))
+        technical_debt_dice = OpenStruct.new(count: 4, sides: sides, roller: RandomRoller.new(sides))
+
+        OpenStruct.new(value_dice: value_dice, technical_debt_dice: technical_debt_dice, iterations: 10)
       end
     end
   end
@@ -87,17 +89,17 @@ module DiceOfDebt
 
     describe 'initially' do
       its(:score)              { should be 0 }
-      its(:"iterations.count") { should be 10 }
+      its(:"iterations.count") { should be config.iterations }
     end
 
-    it 'each roll of a value die should increase the score' do
+    specify 'each roll of a value die should increase the score' do
       config.value_dice.count = 1
       config.technical_debt_dice.count = 0
       subject.roll
       expect(subject.score).to eq 1
     end
 
-    it 'each roll of a technical debt die should decrease the score' do
+    specify 'each roll of a technical debt die should decrease the score' do
       config.value_dice.count = 0
       config.technical_debt_dice.count = 1
       subject.roll
@@ -105,7 +107,11 @@ module DiceOfDebt
     end
   end
 
-  describe 'Configuration' do
+  describe 'configuration' do
+    subject { Game.new.config }
+
+    its(:iterations) { should be 10 }
+
     describe 'value_dice' do
       subject { Game.new.config.value_dice }
 
@@ -123,5 +129,9 @@ module DiceOfDebt
       its(:roller) { should be_a RandomRoller }
       its(:"roller.sides") { should be 6 }
     end
+  end
+
+  describe 'iterations' do
+
   end
 end
