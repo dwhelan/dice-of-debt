@@ -14,7 +14,9 @@ module DiceOfDebt
       self.iterations = [self.iteration = Iteration.new]
 
       (config.iterations - 1).times do
-        iterations << Iteration.new(iterations.last)
+        previous = iterations.last
+        iterations << Iteration.new(previous)
+        previous.next = iterations.last
       end
     end
 
@@ -27,7 +29,7 @@ module DiceOfDebt
     end
 
     def end_iteration
-      self.iteration = iterations[1]
+      self.iteration = iteration.next
     end
 
     def value_dice
