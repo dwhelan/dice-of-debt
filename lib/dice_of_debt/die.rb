@@ -1,4 +1,5 @@
 module DiceOfDebt
+  # The Die class encapsulates a die for game play.
   class Die
     attr_accessor :roller
 

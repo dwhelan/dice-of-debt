@@ -29,9 +29,9 @@ module DiceOfDebt
     describe 'rolling debt dice' do
       before { game.roll_debt_dice }
 
-      its(:value)             { should be -4 }
-      its(:"iteration.value") { should be -4 }
-      its(:"iteration.debt")  { should be  4 }
+      its(:value)             { should be(-4) }
+      its(:"iteration.value") { should be(-4) }
+      its(:"iteration.debt")  { should be 4 }
     end
   end
 

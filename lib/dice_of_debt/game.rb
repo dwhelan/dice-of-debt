@@ -1,6 +1,8 @@
 require 'forwardable'
 
 module DiceOfDebt
+  # The Game class is responsible for coordinating the rolling of value dice, debt dice and aligning the rolls
+  # with each iteration.
   class Game
     extend Forwardable
 

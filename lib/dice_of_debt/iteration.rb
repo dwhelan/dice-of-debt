@@ -1,4 +1,5 @@
 module DiceOfDebt
+  # The Iteration class is responsible for keeping track of the value and rolls for each iteration.
   class Iteration
     attr_accessor :initial_value, :new_value, :debt
 

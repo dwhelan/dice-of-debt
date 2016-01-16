@@ -1,4 +1,5 @@
 module DiceOfDebt
+  # The Dice class create a set of dice and allows them to be rolled together in game play.
   class Dice
     attr_accessor :dice
 
