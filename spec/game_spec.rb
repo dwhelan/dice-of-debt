@@ -33,6 +33,16 @@ module DiceOfDebt
       its(:"iteration.value") { should be(-4) }
       its(:"iteration.debt")  { should be 4 }
     end
+
+    describe 'end iteration' do
+      before do
+        game.roll_value_dice
+        game.roll_debt_dice
+        game.end_iteration
+      end
+
+      its(:iteration) { should be game.iterations[1] }
+    end
   end
 
   describe 'configuration' do
