@@ -1,25 +1,7 @@
-require 'forwardable'
-
 module DiceOfDebt
   # The Game class is responsible for coordinating the rolling of value dice, debt dice and aligning the rolls
   # with each iteration.
   class Game
-    attr_accessor :iteration, :iterations
-
-    extend Forwardable
-
-    def_delegator :iteration, :value
-
-    def initialize
-      self.iterations = [self.iteration = Iteration.new]
-
-      (config.iterations - 1).times do
-        previous = iterations.last
-        iterations << Iteration.new(previous)
-        previous.next = iterations.last
-      end
-    end
-
     def roll_value_dice
       iteration.new_value = value_dice.roll
     end
@@ -29,7 +11,19 @@ module DiceOfDebt
     end
 
     def end_iteration
-      self.iteration = iteration.next
+      iterations.next
+    end
+
+    def value
+      iteration.value
+    end
+
+    def iteration
+      iterations.current
+    end
+
+    def iterations
+      @iterations ||= Iterations.new(configuration.iterations)
     end
 
     def value_dice
