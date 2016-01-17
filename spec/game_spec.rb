@@ -34,14 +34,24 @@ module DiceOfDebt
       its(:"iteration.debt")  { should be 4 }
     end
 
-    describe 'end iteration' do
-      before do
-        game.roll_value_dice
-        game.roll_debt_dice
-        game.end_iteration
-      end
+    describe 'after one iteration' do
+      before { play_one_iteration }
 
       its(:iteration) { should be game.iterations[1] }
+      its(:value)     { should be 4 }
+    end
+
+    describe 'after 10 iterations' do
+      before { 10.times { play_one_iteration } }
+
+      its(:iteration) { should be game.iterations[9] }
+      its(:value)     { should be 40 }
+    end
+
+    def play_one_iteration
+      game.roll_value_dice
+      game.roll_debt_dice
+      game.end_iteration
     end
   end
 

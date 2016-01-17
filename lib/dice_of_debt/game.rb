@@ -13,7 +13,7 @@ module DiceOfDebt
     end
 
     def end_iteration
-      iterations.next
+      iterations.next if iteration.next
     end
 
     def value
