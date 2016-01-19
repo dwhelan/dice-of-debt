@@ -9,11 +9,25 @@ module DiceOfDebt
       App
     end
 
-    specify 'GET' do
-      get '/'
+    subject { last_response }
 
-      expect(last_response.body).to eq('')
-      expect(last_response.status).to eq 200
+    describe 'GET' do
+      before { get '/' }
+
+      its(:body) { should eq '' }
+      its(:status) { should eq 200 }
+    end
+
+    describe 'POST /games' do
+      let!(:game) { Game.new }
+      before do
+        allow(Game).to receive(:new) { game }
+        post '/games'
+      end
+
+      it { expect(Game).to have_received(:new) }
+      its(:status) { should eq 201 }
+      its(:body) { should eq game.to_json }
     end
   end
 end
