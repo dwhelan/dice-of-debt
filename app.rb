@@ -7,10 +7,10 @@ module DiceOfDebt
       ''
     end
 
-    post '/games' do
-      game = Game.new
+    post '/game' do
+      response['Location'] = '/game/1'
       status 201
-      game.to_json
+      '/game/1'
     end
   end
 end

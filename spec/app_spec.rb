@@ -10,6 +10,7 @@ module DiceOfDebt
     end
 
     subject { last_response }
+    let(:headers) { last_response.headers }
 
     describe 'GET' do
       before { get '/' }
@@ -18,16 +19,13 @@ module DiceOfDebt
       its(:status) { should eq 200 }
     end
 
-    describe 'POST /games' do
-      let!(:game) { Game.new }
+    describe 'POST /game' do
       before do
-        allow(Game).to receive(:new) { game }
-        post '/games'
+        post '/game'
       end
 
-      it { expect(Game).to have_received(:new) }
       its(:status) { should eq 201 }
-      its(:body) { should eq game.to_json }
+      it { expect(headers['Location']).to eq '/game/1' }
     end
   end
 end
