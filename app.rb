@@ -1,5 +1,10 @@
 require 'sinatra'
 
-get '/' do
-  'Hello World!'
+module DiceOfDebt
+  # The main web application class
+  class App < Sinatra::Base
+    get '/' do
+      ''
+    end
+  end
 end
