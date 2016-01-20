@@ -7,6 +7,8 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
+    attribute :iterations, String, default: lambda { |page, attribute| Iterations.new(page.configuration.iterations) }
+
     def roll_value_dice
       iteration.new_value = value_dice.roll
     end
@@ -27,9 +29,9 @@ module DiceOfDebt
       iterations.current
     end
 
-    def iterations
-      @iterations ||= Iterations.new(configuration.iterations)
-    end
+    # def iterations
+    #   @iterations ||= Iterations.new(configuration.iterations)
+    # end
 
     def value_dice
       @value_dice ||= Dice.new(configuration.value_dice)
