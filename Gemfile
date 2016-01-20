@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'pad',     '~> 0.1'
 gem 'sinatra', '~> 1.4'
 
 group 'development' do

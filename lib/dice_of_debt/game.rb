@@ -1,9 +1,12 @@
 require 'ostruct'
+require 'pad'
 
 module DiceOfDebt
   # The Game class is responsible for coordinating the rolling of value dice, debt dice and aligning the rolls
   # with each iteration.
   class Game
+    include Pad.entity
+
     def roll_value_dice
       iteration.new_value = value_dice.roll
     end

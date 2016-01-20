@@ -10,7 +10,8 @@ module DiceOfDebt
     post '/game' do
       response['Location'] = '/game/1'
       status 201
-      '/game/1'
+      game = Game.new(id: 1)
+      game.attributes.to_json
     end
   end
 end

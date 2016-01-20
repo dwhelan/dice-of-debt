@@ -4,3 +4,5 @@ require 'dice_of_debt/game'
 require 'dice_of_debt/random_roller.rb'
 require 'dice_of_debt/iteration'
 require 'dice_of_debt/iterations'
+
+# TODO: Assign ids via persister
