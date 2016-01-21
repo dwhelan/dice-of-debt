@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'rack/test'
+require_relative '../app'
 
 module DiceOfDebt
   describe App do
