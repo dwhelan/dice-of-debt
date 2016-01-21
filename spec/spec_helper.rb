@@ -24,5 +24,6 @@ RSpec.configure do |config|
   end
 end
 
-require_relative '../app'
 require 'dice_of_debt'
+require_relative '../app'
+require_relative '../api'

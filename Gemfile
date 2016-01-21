@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'grape',   '~> 0.14'
 gem 'pad',     '~> 0.1'
 gem 'sinatra', '~> 1.4'
 

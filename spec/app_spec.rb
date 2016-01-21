@@ -18,15 +18,5 @@ module DiceOfDebt
       its(:body) { should eq '' }
       its(:status) { should eq 200 }
     end
-
-    describe 'POST /game' do
-      before do
-        post '/game'
-      end
-
-      its(:status) { should eq 201 }
-      it { expect(headers['Location']).to eq '/game/1' }
-      its(:body) { should eq({ id: 1 }.to_json) }
-    end
   end
 end
