@@ -6,3 +6,4 @@ require 'dice_of_debt/random_roller.rb'
 require 'dice_of_debt/game'
 
 # TODO: Assign ids via persister
+# TODO: Render via rabl

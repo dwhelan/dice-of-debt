@@ -1,7 +1,7 @@
 require 'sinatra'
 
 module DiceOfDebt
-  # The main web application class
+  # The web application class
   class App < Sinatra::Base
     get '/' do
       ''

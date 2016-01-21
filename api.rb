@@ -1,6 +1,7 @@
 require 'grape'
 
 module DiceOfDebt
+  # The API application class
   class API < Grape::API
     resource :game do
       get do
