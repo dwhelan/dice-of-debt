@@ -2,8 +2,7 @@ require 'rspec'
 require 'coveralls'
 require 'simplecov'
 require 'rspec/its'
-
-require RUBY_VERSION =~ /2/ ? 'pry-byebug' : 'pry-debugger'
+require 'pry-byebug'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,

@@ -1,8 +1,15 @@
 source 'https://rubygems.org'
 
+gem 'dry-data'
 gem 'grape',   '~> 0.14'
 gem 'pad',     '~> 0.1'
 gem 'sinatra', '~> 1.4'
+gem 'sqlite3'
+gem 'rom',     '~> 1.0'
+
+gem 'rom-sql'
+gem 'rom-repository' #,     '~> 1.0'
+gem 'axiom-memory-adapter'
 
 group 'development' do
   gem 'pry-byebug', '~>  3.3'

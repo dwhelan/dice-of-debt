@@ -3,6 +3,18 @@ require 'rack/test'
 require_relative '../api'
 
 module DiceOfDebt
+  shared_context 'populate database' do
+    before :all do
+      connection = Persistence.connection
+
+      connection.create_table :games do
+        primary_key :id
+      end
+
+      connection[:games].insert id: 1
+    end
+  end
+
   describe API do
     include Rack::Test::Methods
 
@@ -12,6 +24,17 @@ module DiceOfDebt
 
     subject { last_response }
     let(:headers) { last_response.headers }
+
+    describe 'GET /game' do
+      include_context 'populate database'
+
+      before do
+        get '/game'
+      end
+
+      its(:status) { should eq 200 }
+      its(:body) { should include '"id":1' }
+    end
 
     describe 'POST /game' do
       before do
