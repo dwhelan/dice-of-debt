@@ -44,11 +44,11 @@ module DiceOfDebt
         expect(body).to include '"id":1'
       end
 
-      xcontext 'when game is not found' do
+      context 'when game is not found' do
         before { get '/game/9999' }
 
         it { expect(status).to eq 404 }
-        xit { expect(body).to include '"id":1' }
+        it { expect(body).to include '"message":"Not Found"' }
       end
     end
 

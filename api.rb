@@ -1,8 +1,13 @@
 require 'grape'
+require 'grape-entity'
 
 module DiceOfDebt
   # The API application class
   class API < Grape::API
+    class Error < Grape::Entity
+      expose :message
+    end
+
     resource :game do
       helpers do
         def repository
@@ -22,7 +27,7 @@ module DiceOfDebt
       route_param :id do
         get do
           game = repository.with_id(params[:id])
-          game.attributes.to_json
+          game ? game.attributes.to_json : error!({ message: 'Not Found', with: API::Error }, 404)
         end
       end
 

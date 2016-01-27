@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'dry-data',       '~> 0.5'
 gem 'grape',          '~> 0.14'
+gem 'grape-entity',   '~> 0.5'
 gem 'pad',            '~> 0.1'
 gem 'rom',            '~> 1.0'
 gem 'rom-repository', '~> 0.2'

@@ -7,4 +7,5 @@ require 'dice_of_debt/persistence'
 require 'dice_of_debt/game'
 
 # TODO: Assign ids via persister
-# TODO: Render via rabl
+# TODO: Render via Grape:ROAR
+# TODO: Validate JSON
