@@ -15,7 +15,7 @@ module DiceOfDebt
     end
   end
 
-  describe API do
+  describe API, :aggregate_failures do
     include Rack::Test::Methods
     include_context 'populate database'
 
@@ -24,36 +24,42 @@ module DiceOfDebt
     end
 
     subject { last_response }
+
     let(:headers) { last_response.headers }
+    let(:status)  { last_response.status  }
+    let(:body)    { last_response.body    }
 
-    describe 'GET /game' do
+    specify 'GET /game' do
+      get '/game'
 
-      before do
-        get '/game'
-      end
-
-      its(:status) { should eq 200 }
-      its(:body) { should include '"id":1' }
+      expect(status).to eq 200
+      expect(body).to include '"id":1'
     end
 
-    describe 'GET /game/1' do
-
-      before do
+    describe 'GET /game/{id}' do
+      specify 'when game is found' do
         get '/game/1'
+
+        expect(status).to eq 200
+        expect(body).to include '"id":1'
       end
 
-      its(:status) { should eq 200 }
-      its(:body) { should include '"id":1' }
+      xcontext 'when game is not found' do
+        before { get '/game/9999' }
+
+        it { expect(status).to eq 404 }
+        xit { expect(body).to include '"id":1' }
+      end
     end
 
     describe 'POST /game' do
-      before do
+      specify 'with a valid game' do
         post '/game'
-      end
 
-      its(:status) { should eq 201 }
-      it { expect(headers['Location']).to eq '/game/1' }
-      its(:body) { should include '"id":1' }
+        expect(status).to eq 201
+        expect(body).to include '"id":1'
+        expect(headers['Location']).to eq '/game/1'
+      end
     end
   end
 end
