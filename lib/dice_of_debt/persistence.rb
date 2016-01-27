@@ -29,5 +29,9 @@ module DiceOfDebt
     def all
       games.as(Game).to_a
     end
+
+    def with_id(id)
+      games.where(id: id).as(Game).one
+    end
   end
 end

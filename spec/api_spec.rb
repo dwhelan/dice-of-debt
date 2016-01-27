@@ -17,6 +17,7 @@ module DiceOfDebt
 
   describe API do
     include Rack::Test::Methods
+    include_context 'populate database'
 
     def app
       API
@@ -26,10 +27,19 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
 
     describe 'GET /game' do
-      include_context 'populate database'
 
       before do
         get '/game'
+      end
+
+      its(:status) { should eq 200 }
+      its(:body) { should include '"id":1' }
+    end
+
+    describe 'GET /game/1' do
+
+      before do
+        get '/game/1'
       end
 
       its(:status) { should eq 200 }
