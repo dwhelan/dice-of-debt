@@ -44,21 +44,20 @@ module DiceOfDebt
         expect(body).to include '"id":1'
       end
 
-      context 'when game is not found' do
-        before { get '/game/9999' }
+      specify 'when game is not found' do
+        get '/game/9999'
 
-        it { expect(status).to eq 404 }
-        it { expect(body).to include '"message":"Not Found"' }
+        expect(status).to eq 404
+        expect(body).to include '"message":"Not Found"'
       end
     end
 
-    describe 'POST /game' do
-      specify 'with a valid game' do
-        post '/game'
+    describe 'GET /foo' do
+      specify 'with an invalid URI' do
+        get '/foo'
 
-        expect(status).to eq 201
-        expect(body).to include '"id":1'
-        expect(headers['Location']).to eq '/game/1'
+        expect(status).to eq 404
+        expect(body).to include '"message":"Invalid URI"'
       end
     end
   end

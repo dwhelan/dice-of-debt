@@ -8,4 +8,5 @@ require 'dice_of_debt/game'
 
 # TODO: Assign ids via persister
 # TODO: Render via Grape:ROAR
-# TODO: Validate JSON
+# TODO: Validate JSON - consider use of JSON:schema
+# TODO: return HAL results

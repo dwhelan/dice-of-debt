@@ -36,5 +36,8 @@ module DiceOfDebt
         Game.new(id: 1).attributes.to_json
       end
     end
+
+    route :any, '*path' do
+      error!({ message: 'Invalid URI', with: API::Error }, 404)    end
   end
 end
