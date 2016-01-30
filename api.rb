@@ -4,6 +4,7 @@ require 'grape-entity'
 module DiceOfDebt
   # The API application class
   class API < Grape::API
+    # The API entity for rendering errors
     class Error < Grape::Entity
       expose :message
     end
@@ -46,7 +47,7 @@ module DiceOfDebt
     end
 
     route :any, '*path' do
-      error!({ message: 'Invalid URI', with: API::Error }, 404)    end
+      error!({ message: 'Invalid URI', with: API::Error }, 404)
+    end
   end
 end
-
