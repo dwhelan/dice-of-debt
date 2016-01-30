@@ -50,6 +50,13 @@ module DiceOfDebt
         expect(status).to eq 404
         expect(body).to include '"message":"Not Found"'
       end
+
+      specify 'when game id is invalid' do
+        get '/game/foo'
+
+        expect(status).to eq 400
+        expect(body).to include '"message":"id is invalid"'
+      end
     end
 
     describe 'GET /foo' do

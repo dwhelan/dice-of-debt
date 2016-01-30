@@ -8,6 +8,10 @@ module DiceOfDebt
       expose :message
     end
 
+    rescue_from Grape::Exceptions::ValidationErrors do |e|
+      error!({ message: e.full_messages.join(', '), with: API::Error }, 400)
+    end
+
     resource :game do
       helpers do
         def repository
@@ -15,11 +19,14 @@ module DiceOfDebt
         end
       end
 
+      desc 'Get all games.'
       get do
         repository.all.map(&:attributes).to_json
       end
 
-      desc 'Return a game.'
+      desc 'Get a game.' do
+        failure [[400, 'id is invalid', API::Error]]
+      end
       params do
         requires :id, type: Integer, desc: 'Game id.'
       end
@@ -31,6 +38,7 @@ module DiceOfDebt
         end
       end
 
+      desc 'Create a game.'
       post do
         header 'Location', '/game/1'
         Game.new(id: 1).attributes.to_json
@@ -41,3 +49,4 @@ module DiceOfDebt
       error!({ message: 'Invalid URI', with: API::Error }, 404)    end
   end
 end
+
