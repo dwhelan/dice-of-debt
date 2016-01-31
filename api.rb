@@ -9,8 +9,13 @@ module DiceOfDebt
       expose :message
     end
 
+    # Return validation errors
+    class ValidationError < Grape::Entity
+      expose :errors
+    end
+
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      error!({ message: e.full_messages.join(', '), with: API::Error }, 400)
+      error!({ errors: e.full_messages, with: API::ValidationError }, 400)
     end
 
     resource :game do

@@ -55,7 +55,9 @@ module DiceOfDebt
         get '/game/foo'
 
         expect(status).to eq 400
-        expect(body).to include '"message":"id is invalid"'
+        expect(body).to eq({
+          errors: ['id is invalid']
+        }.to_json)
       end
     end
 
