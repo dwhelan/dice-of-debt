@@ -2,8 +2,10 @@ source 'https://rubygems.org'
 
 gem 'dry-data',       '~> 0.5'
 gem 'grape',          '~> 0.14'
-gem 'grape-entity',   '~> 0.5'
+gem 'grape-entity',   '~> 0.5' # TODO: delete?
+gem 'grape-roar',     '~> 0.3'
 gem 'pad',            '~> 0.1'
+gem 'roar',           '~> 1.0'
 gem 'rom',            '~> 1.0'
 gem 'rom-repository', '~> 0.2'
 gem 'rom-sql',        '~> 0.7'

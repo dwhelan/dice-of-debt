@@ -1,9 +1,36 @@
 require 'grape'
 require 'grape-entity'
+require 'grape-roar'
+require 'roar/json'
 
 module DiceOfDebt
+  module Presenter
+    def self.included(base)
+      base.instance_eval do
+        include Roar::JSON
+        include Roar::Hypermedia
+        include Grape::Roar::Representer
+      end
+    end
+  end
+
+  module GamePresenter
+    include Presenter
+
+    property :id
+  end
+
+  module GamesPresenter
+    include Presenter
+
+    collection :to_a, extend: GamePresenter, as: :games, embedded: true
+  end
+
   # The API application class
   class API < Grape::API
+    format :json
+    formatter :json, Grape::Formatter::Roar
+
     # The API entity for rendering errors
     class Error < Grape::Entity
       expose :message
@@ -27,7 +54,7 @@ module DiceOfDebt
 
       desc 'Get all games.'
       get do
-        repository.all.map(&:attributes).to_json
+        present repository.all, with: GamesPresenter
       end
 
       desc 'Get a game.' do
@@ -40,7 +67,7 @@ module DiceOfDebt
       route_param :id do
         get do
           game = repository.with_id(params[:id])
-          game ? game.attributes.to_json : error!({ message: 'Not Found', with: API::Error }, 404)
+          game ? present(game, with: GamePresenter) : error!({message: 'Not Found', with: API::Error }, 404)
         end
       end
 
