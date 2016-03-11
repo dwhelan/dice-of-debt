@@ -28,12 +28,14 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
+    let(:game1)   { { data: { id: '1' } }    }
+    let(:games)   { [game1]    }
 
-    specify 'GET /game' do
+    xspecify 'GET /game' do
       get '/game'
 
       expect(status).to eq 200
-      expect(body).to include '"id":1'
+      expect(body).to eq games.to_json
     end
 
     describe 'GET /game/{id}' do
@@ -41,7 +43,7 @@ module DiceOfDebt
         get '/game/1'
 
         expect(status).to eq 200
-        expect(body).to include '"id":1'
+        expect(body).to eq game1.to_json
       end
 
       specify 'when game is not found' do
