@@ -47,7 +47,7 @@ module DiceOfDebt
       error!({ errors: e.full_messages, with: API::ValidationError }, 400)
     end
 
-    resource :game do
+    resource :games do
       helpers do
         def repository
           Persistence.game_repository

@@ -40,21 +40,22 @@ module DiceOfDebt
 
     describe 'GET /game/{id}' do
       specify 'when game is found' do
-        get '/game/1'
+        get '/games/1'
+
 
         expect(status).to eq 200
         expect(body).to eq game1.to_json
       end
 
       specify 'when game is not found' do
-        get '/game/9999'
+        get '/games/9999'
 
         expect(status).to eq 404
         expect(body).to include '"message":"Not Found"'
       end
 
       specify 'when game id is invalid' do
-        get '/game/foo'
+        get '/games/foo'
 
         expect(status).to eq 400
         expect(body).to eq({
