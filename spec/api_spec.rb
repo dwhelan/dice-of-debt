@@ -28,7 +28,7 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:game1)   { { data: { id: '1' } }    }
+    let(:game1)   { { games: { id: 1 } }    }
     let(:games)   { [game1]    }
 
     xspecify 'GET /game' do

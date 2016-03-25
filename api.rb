@@ -23,7 +23,7 @@ module DiceOfDebt
 
   module GamesPresenter
     include Presenter
-    type :data
+    type :games
 
     collection :to_a, extend: GamePresenter, embedded: true
   end
