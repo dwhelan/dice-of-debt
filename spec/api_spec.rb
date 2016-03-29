@@ -11,7 +11,7 @@ module DiceOfDebt
         primary_key :id
       end
 
-      connection[:games].insert id: 1
+      connection[:games].insert id: '1'
     end
   end
 
@@ -28,23 +28,25 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:game1)   { { games: { id: 1 } }    }
+    let(:game1)   { { games: { id: '1' } }    }
     let(:games)   { [game1]    }
 
-    xspecify 'GET /game' do
-      get '/game'
+    specify 'GET /games' do
+      get '/games'
 
       expect(status).to eq 200
-      expect(body).to eq games.to_json
+      puts body
+      data = JSON.parse(body)['data']
     end
 
     describe 'GET /game/{id}' do
       specify 'when game is found' do
         get '/games/1'
 
-
         expect(status).to eq 200
-        expect(body).to eq game1.to_json
+        data = JSON.parse(body)['data']
+        expect(data['type']).to eq 'game'
+        expect(data['id']).to eq '1'
       end
 
       specify 'when game is not found' do

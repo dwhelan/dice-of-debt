@@ -5,27 +5,32 @@ require 'roar/coercion'
 require 'roar/json/json_api'
 
 module DiceOfDebt
-  module Presenter
-    def self.included(base)
-      base.instance_eval do
-        include Roar::JSON::JSONAPI
-        # include Grape::Roar::Representer
-      end
-    end
-  end
+  # module Presenter
+  #   def self.included(base)
+  #     base.instance_eval do
+  #       include Roar::JSON::JSONAPI
+  #       include Grape::Roar::Representer
+  #     end
+  #   end
+  # end
 
   class GamePresenter < Roar::Decorator
-    include Presenter
-    type :games
+    include Roar::JSON
 
-    property :id, type: String
+    property :type, getter: ->(represented) { 'game' }
+    property :id
   end
 
-  module GamesPresenter
-    include Presenter
-    type :games
+  class GameDocumentPresenter < GamePresenter
+    include Roar::JSON::JSONAPI
 
-    collection :to_a, extend: GamePresenter, embedded: true
+    type :data
+  end
+
+  class GamesPresenter < Grape::Roar::Decorator
+    include Roar::JSON
+
+    collection :entries, as: 'data', extend: GamePresenter, embedded: true
   end
 
   # The API application class
@@ -56,8 +61,7 @@ module DiceOfDebt
 
       desc 'Get all games.'
       get do
-        foo = GamePresenter.for_collection.new(repository.all)
-        present repository.all, with: foo
+        present repository.all, with: GamesPresenter
       end
 
       desc 'Get a game.' do
@@ -70,16 +74,14 @@ module DiceOfDebt
       route_param :id do
         get do
           game = repository.with_id(params[:id])
-          # game ? present(game, with: GamePresenter) : error!({message: 'Not Found', with: API::Error }, 404)
-          GamePresenter.new(game)
-          game ? GamePresenter.new(game) : error!({message: 'Not Found', with: API::Error }, 404)
+          game ? GameDocumentPresenter.new(game) : error!({message: 'Not Found', with: API::Error }, 404)
         end
       end
 
       desc 'Create a game.'
       post do
         header 'Location', '/game/1'
-        Game.new(id: 1).attributes.to_json
+        Game.new(id: '1').attributes.to_json
       end
     end
 
