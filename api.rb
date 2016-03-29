@@ -2,7 +2,7 @@ require 'grape'
 require 'grape-entity'
 require 'grape-roar'
 require 'roar/coercion'
-require 'roar/json/json_api'
+require 'roar/json'
 
 module DiceOfDebt
   # module Presenter
@@ -14,7 +14,7 @@ module DiceOfDebt
   #   end
   # end
 
-  class GamePresenter < Roar::Decorator
+  class GamePresenter < Grape::Roar::Decorator
     include Roar::JSON
 
     property :type, getter: ->(represented) { 'game' }
@@ -22,9 +22,9 @@ module DiceOfDebt
   end
 
   class GameDocumentPresenter < GamePresenter
-    include Roar::JSON::JSONAPI
+    include Roar::JSON
 
-    type :data
+    self.representation_wrap = :data
   end
 
   class GamesPresenter < Grape::Roar::Decorator

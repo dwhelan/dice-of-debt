@@ -35,8 +35,10 @@ module DiceOfDebt
       get '/games'
 
       expect(status).to eq 200
-      puts body
       data = JSON.parse(body)['data']
+      expect(data.length).to eq 1
+      expect(data[0]['type']).to eq 'game'
+      expect(data[0]['id']).to eq '1'
     end
 
     describe 'GET /game/{id}' do
