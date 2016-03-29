@@ -5,32 +5,34 @@ require 'roar/coercion'
 require 'roar/json'
 
 module DiceOfDebt
-  # module Presenter
-  #   def self.included(base)
-  #     base.instance_eval do
-  #       include Roar::JSON::JSONAPI
-  #       include Grape::Roar::Representer
-  #     end
-  #   end
-  # end
-
-  class GamePresenter < Grape::Roar::Decorator
+  class Presenter < Grape::Roar::Decorator
     include Roar::JSON
+  end
 
-    property :type, getter: ->(represented) { 'game' }
+  class ResourcePresenter < Presenter
     property :id
+
+    def self.type type
+      property :type, getter: ->(_) { type }
+    end
+  end
+
+  class ResourceArrayPresenter < Presenter
+    def self.resource_presenter klass
+      collection :entries, as: 'data', extend: klass, embedded: true
+    end
+  end
+
+  class GamePresenter < ResourcePresenter
+    type 'game'
   end
 
   class GameDocumentPresenter < GamePresenter
-    include Roar::JSON
-
     self.representation_wrap = :data
   end
 
-  class GamesPresenter < Grape::Roar::Decorator
-    include Roar::JSON
-
-    collection :entries, as: 'data', extend: GamePresenter, embedded: true
+  class GamesDocumentPresenter < ResourceArrayPresenter
+    resource_presenter GamePresenter
   end
 
   # The API application class
@@ -61,7 +63,7 @@ module DiceOfDebt
 
       desc 'Get all games.'
       get do
-        present repository.all, with: GamesPresenter
+        present repository.all, with: GamesDocumentPresenter
       end
 
       desc 'Get a game.' do
