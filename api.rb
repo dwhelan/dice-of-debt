@@ -15,6 +15,10 @@ module DiceOfDebt
     def self.type type
       property :type, getter: ->(_) { type }
     end
+
+    def self.as_resource
+      self.representation_wrap = :data
+    end
   end
 
   class ResourceArrayPresenter < Presenter
@@ -28,7 +32,7 @@ module DiceOfDebt
   end
 
   class GameDocumentPresenter < GamePresenter
-    self.representation_wrap = :data
+    as_resource
   end
 
   class GamesDocumentPresenter < ResourceArrayPresenter
