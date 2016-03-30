@@ -35,6 +35,7 @@ module DiceOfDebt
       get '/games'
 
       expect(status).to eq 200
+      puts body
       data = JSON.parse(body)['data']
       expect(data.length).to eq 1
       expect(data[0]['type']).to eq 'game'
@@ -46,6 +47,7 @@ module DiceOfDebt
         get '/games/1'
 
         expect(status).to eq 200
+        # puts body
         data = JSON.parse(body)['data']
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '1'

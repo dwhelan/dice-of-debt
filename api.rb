@@ -5,37 +5,51 @@ require 'roar/coercion'
 require 'roar/json'
 
 module DiceOfDebt
-  class Presenter < Grape::Roar::Decorator
-    include Roar::JSON
-  end
 
-  class ResourcePresenter < Presenter
-    property :id
+  module ResourcePresenter
+    def self.included(base)
+      base.include Roar::JSON
+      base.include Grape::Roar::Representer
 
-    def self.type type
-      property :type, getter: ->(_) { type }
-    end
+      base.property :id
 
-    def self.as_resource
-      self.representation_wrap = :data
-    end
-  end
+      def base.type type
+        property :type, getter: ->(_) { type }
+      end
 
-  class ResourceArrayPresenter < Presenter
-    def self.resource_presenter klass
-      collection :entries, as: 'data', extend: klass, embedded: true
+      def base.resource_presenter presenter
+        self.representation_wrap = :data
+        include presenter
+      end
     end
   end
 
-  class GamePresenter < ResourcePresenter
+  module ResourceArrayPresenter
+    def self.included(base)
+      base.include Roar::JSON
+      base.include Grape::Roar::Representer
+
+      def base.resource_presenter presenter
+        collection :entries, as: 'data', extend: presenter, embedded: true
+      end
+    end
+  end
+
+  module GamePresenter
+    include ResourcePresenter
+
     type 'game'
   end
 
-  class GameDocumentPresenter < GamePresenter
-    as_resource
+  module GameDocumentPresenter
+    include ResourcePresenter
+
+    resource_presenter GamePresenter
   end
 
-  class GamesDocumentPresenter < ResourceArrayPresenter
+  module GameArrayDocumentPresenter
+    include ResourceArrayPresenter
+
     resource_presenter GamePresenter
   end
 
@@ -67,7 +81,7 @@ module DiceOfDebt
 
       desc 'Get all games.'
       get do
-        present repository.all, with: GamesDocumentPresenter
+        present repository.all, with: GameArrayDocumentPresenter
       end
 
       desc 'Get a game.' do
@@ -79,8 +93,11 @@ module DiceOfDebt
 
       route_param :id do
         get do
-          game = repository.with_id(params[:id])
-          game ? GameDocumentPresenter.new(game) : error!({message: 'Not Found', with: API::Error }, 404)
+          if game = repository.with_id(params[:id])
+            present game, with: GameDocumentPresenter
+          else
+            error!({message: 'Not Found', with: API::Error }, 404)
+          end
         end
       end
 
