@@ -6,10 +6,16 @@ require 'roar/json'
 
 module DiceOfDebt
 
-  module ResourcePresenter
+  module Presenter
     def self.included(base)
       base.include Roar::JSON
       base.include Grape::Roar::Representer
+    end
+  end
+
+  module ResourcePresenter
+    def self.included(base)
+      base.include Presenter
 
       base.property :id
 
@@ -26,8 +32,7 @@ module DiceOfDebt
 
   module ResourceArrayPresenter
     def self.included(base)
-      base.include Roar::JSON
-      base.include Grape::Roar::Representer
+      base.include Presenter
 
       def base.resource_presenter presenter
         collection :entries, as: 'data', extend: presenter, embedded: true
