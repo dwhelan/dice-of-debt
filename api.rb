@@ -77,7 +77,7 @@ module DiceOfDebt
       error!({ errors: e.full_messages, with: API::ValidationError }, 400)
     end
 
-    resource :games do
+    namespace :games do
       helpers do
         def repository
           Persistence.game_repository
@@ -108,7 +108,10 @@ module DiceOfDebt
 
       desc 'Create a game.'
       post do
+        # binding.pry
+        game = GameDocumentPresenter.represent(Game.new).from_json request.body.string
         header 'Location', '/game/1'
+        repository.create(game)
         Game.new(id: '1').attributes.to_json
       end
     end

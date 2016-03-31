@@ -31,23 +31,21 @@ module DiceOfDebt
     let(:game1)   { { games: { id: '1' } }    }
     let(:games)   { [game1]    }
 
-    specify 'GET /games' do
+    specify 'get all games' do
       get '/games'
 
       expect(status).to eq 200
-      puts body
       data = JSON.parse(body)['data']
       expect(data.length).to eq 1
       expect(data[0]['type']).to eq 'game'
       expect(data[0]['id']).to eq '1'
     end
 
-    describe 'GET /game/{id}' do
+    describe 'get game' do
       specify 'when game is found' do
         get '/games/1'
 
         expect(status).to eq 200
-        # puts body
         data = JSON.parse(body)['data']
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '1'
@@ -67,6 +65,15 @@ module DiceOfDebt
         expect(body).to eq({
           errors: ['id is invalid']
         }.to_json)
+      end
+    end
+
+    describe 'create game' do
+      specify 'with a valid game' do
+        data = { data: { } }
+        post '/games', data.to_json, {'CONTENT_TYPE' => 'application/json'}
+
+        expect(status).to eq 201
       end
     end
 

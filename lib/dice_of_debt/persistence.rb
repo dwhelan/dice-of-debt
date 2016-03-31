@@ -10,6 +10,10 @@ module DiceOfDebt
       @rom_container ||= ROM.container(:sql, 'sqlite::memory') do |rom|
         rom.use :macros
         rom.relation :games
+
+        rom.commands(:games) do
+          define(:create)
+        end
       end
     end
 
@@ -26,12 +30,21 @@ module DiceOfDebt
   class GameRepository < ROM::Repository
     relations :games
 
+    def initialize(rom_container, options = {})
+      super
+      @rom_container = rom_container
+    end
+
     def all
       games.as(Game).to_a
     end
 
     def with_id(id)
       games.where(id: id).as(Game).one
+    end
+
+    def create(game)
+      @rom_container.commands[:games][:create].call(game.attributes)
     end
   end
 end
