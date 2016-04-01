@@ -12,7 +12,9 @@ module DiceOfDebt
         rom.relation :games
 
         rom.commands(:games) do
-          define(:create)
+          define(:create) do
+            result :one
+          end
         end
       end
     end
@@ -44,7 +46,9 @@ module DiceOfDebt
     end
 
     def create(game)
-      @rom_container.commands[:games][:create].call(game.attributes)
+      result = @rom_container.commands[:games][:create].call(game.attributes)
+      game.id = result[:id]
+      game
     end
   end
 end

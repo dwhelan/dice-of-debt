@@ -108,11 +108,9 @@ module DiceOfDebt
 
       desc 'Create a game.'
       post do
-        # binding.pry
-        game = GameDocumentPresenter.represent(Game.new).from_json request.body.string
         header 'Location', '/game/1'
-        repository.create(game)
-        Game.new(id: '1').attributes.to_json
+        game = GameDocumentPresenter.represent(Game.new).from_json request.body.string
+        present repository.create(game), with: GameDocumentPresenter
       end
     end
 

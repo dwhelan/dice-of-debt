@@ -29,7 +29,6 @@ module DiceOfDebt
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
     let(:game1)   { { games: { id: '1' } }    }
-    let(:games)   { [game1]    }
 
     specify 'get all games' do
       get '/games'
@@ -74,6 +73,9 @@ module DiceOfDebt
         post '/games', data.to_json, {'CONTENT_TYPE' => 'application/json'}
 
         expect(status).to eq 201
+        data = JSON.parse(body)['data']
+        expect(data['type']).to eq 'game'
+        expect(data['id']).to eq '2'
       end
     end
 
