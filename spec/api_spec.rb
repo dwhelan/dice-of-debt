@@ -28,13 +28,14 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
+    let(:data)    { JSON.parse(body)['data'] }
     let(:game1)   { { games: { id: '1' } }    }
 
     specify 'get all games' do
       get '/games'
 
       expect(status).to eq 200
-      data = JSON.parse(body)['data']
+
       expect(data.length).to eq 1
       expect(data[0]['type']).to eq 'game'
       expect(data[0]['id']).to eq '1'
@@ -45,7 +46,7 @@ module DiceOfDebt
         get '/games/1'
 
         expect(status).to eq 200
-        data = JSON.parse(body)['data']
+
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '1'
       end
@@ -54,6 +55,7 @@ module DiceOfDebt
         get '/games/9999'
 
         expect(status).to eq 404
+
         expect(body).to include '"message":"Not Found"'
       end
 
@@ -61,6 +63,7 @@ module DiceOfDebt
         get '/games/foo'
 
         expect(status).to eq 400
+
         expect(body).to eq({
           errors: ['id is invalid']
         }.to_json)
@@ -69,11 +72,11 @@ module DiceOfDebt
 
     describe 'create game' do
       specify 'with a valid game' do
-        data = { data: { } }
-        post '/games', data.to_json, {'CONTENT_TYPE' => 'application/json'}
+        request_data = { data: { } }
+        post '/games', request_data.to_json, {'CONTENT_TYPE' => 'application/json'}
 
         expect(status).to eq 201
-        data = JSON.parse(body)['data']
+
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '2'
       end
@@ -84,6 +87,7 @@ module DiceOfDebt
         get '/foo'
 
         expect(status).to eq 404
+
         expect(body).to include '"message":"Invalid URI"'
       end
     end
