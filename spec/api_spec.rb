@@ -23,6 +23,11 @@ module DiceOfDebt
       API
     end
 
+    def expect_json_api_response(status_code)
+      expect(status).to eq status_code
+      expect(headers['Content-Type']).to eq 'application/vnd.api+json'
+    end
+
     subject { last_response }
 
     let(:headers) { last_response.headers }
@@ -34,7 +39,7 @@ module DiceOfDebt
     specify 'get all games' do
       get '/games'
 
-      expect(status).to eq 200
+      expect_json_api_response(200)
 
       expect(data.length).to eq 1
       expect(data[0]['type']).to eq 'game'
@@ -45,7 +50,7 @@ module DiceOfDebt
       specify 'when game is found' do
         get '/games/1'
 
-        expect(status).to eq 200
+        expect_json_api_response(200)
 
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '1'
@@ -54,7 +59,7 @@ module DiceOfDebt
       specify 'when game is not found' do
         get '/games/9999'
 
-        expect(status).to eq 404
+        expect_json_api_response(404)
 
         expect(body).to include '"message":"Not Found"'
       end
@@ -62,7 +67,7 @@ module DiceOfDebt
       specify 'when game id is invalid' do
         get '/games/foo'
 
-        expect(status).to eq 400
+        expect_json_api_response(400)
 
         expect(body).to eq({
           errors: ['id is invalid']
@@ -70,12 +75,12 @@ module DiceOfDebt
       end
     end
 
-    describe 'create game' do
+    describe 'Create game' do
       specify 'with a valid game' do
         request_data = { data: { } }
-        post '/games', request_data.to_json, {'CONTENT_TYPE' => 'application/json'}
+        post '/games', request_data.to_json, {'CONTENT_TYPE' => 'application/vnd.api+json'}
 
-        expect(status).to eq 201
+        expect_json_api_response(201)
         expect(headers['Location']).to eq '/games/2'
 
         expect(data['type']).to eq 'game'
@@ -87,8 +92,7 @@ module DiceOfDebt
       specify 'with an invalid URI' do
         get '/foo'
 
-        expect(status).to eq 404
-
+        expect_json_api_response(404)
         expect(body).to include '"message":"Invalid URI"'
       end
     end

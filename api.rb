@@ -62,6 +62,7 @@ module DiceOfDebt
   class API < Grape::API
     format :json
     formatter :json, Grape::Formatter::Roar
+    content_type :json, 'application/vnd.api+json'
 
     # The API entity for rendering errors
     class Error < Grape::Entity
