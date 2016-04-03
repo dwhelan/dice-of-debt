@@ -76,6 +76,7 @@ module DiceOfDebt
         post '/games', request_data.to_json, {'CONTENT_TYPE' => 'application/json'}
 
         expect(status).to eq 201
+        expect(headers['Location']).to eq '/games/2'
 
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '2'
