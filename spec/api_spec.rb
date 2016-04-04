@@ -34,6 +34,8 @@ module DiceOfDebt
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
     let(:data)    { JSON.parse(body)['data'] }
+    let(:errors)  { JSON.parse(body)['errors'] }
+    let(:error)   { errors.first }
     let(:game1)   { { games: { id: '1' } }    }
 
     specify 'get all games' do
@@ -61,7 +63,7 @@ module DiceOfDebt
 
         expect_json_api_response(404)
 
-        expect(body).to include '"message":"Not Found"'
+        expect(error['title']).to eq 'Not Found'
       end
 
       specify 'when game id is invalid' do
@@ -69,9 +71,7 @@ module DiceOfDebt
 
         expect_json_api_response(400)
 
-        expect(body).to eq({
-          errors: ['id is invalid']
-        }.to_json)
+        expect(errors[0]['title']).to eq 'id is invalid'
       end
     end
 

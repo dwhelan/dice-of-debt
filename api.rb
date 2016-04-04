@@ -58,15 +58,41 @@ module DiceOfDebt
     resource_presenter GamePresenter
   end
 
+  module ErrorPresenter
+    include Presenter
+
+    property :title
+
+    def self.call(message, backtrace, options, env)
+      presenter = new(title: message)
+      presenter.to_json
+    end
+  end
+
+  module ErrorArrayPresenter
+    include Presenter
+
+    collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
+  end
+
   # The API application class
   class API < Grape::API
     format :json
     formatter :json, Grape::Formatter::Roar
+    # error_formatter :json, ErrorPresenter
+
     content_type :json, 'application/vnd.api+json'
 
     # The API entity for rendering errors
     class Error < Grape::Entity
       expose :message
+    end
+
+    class XError
+      include Pad.model
+
+      attribute :status, Integer, default: 500
+      attribute :title,  String,  default: lambda { |error, _| Rack::Utils::HTTP_STATUS_CODES[error.status.to_i] }
     end
 
     # Return validation errors
@@ -75,13 +101,25 @@ module DiceOfDebt
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      error!({ errors: e.full_messages, with: API::ValidationError }, 400)
+      headers = { Grape::Http::Headers::CONTENT_TYPE => 'application/vnd.api+json' }
+      errors = e.full_messages.map do |message|
+        XError.new ({status: e.status, title: message})
+      end
+
+      [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
     end
 
     namespace :games do
       helpers do
         def repository
           Persistence.game_repository
+        end
+
+        def error(options={})
+          error = XError.new (options)
+
+          status error.status
+          present [error], with: ErrorArrayPresenter
         end
       end
 
@@ -102,7 +140,7 @@ module DiceOfDebt
           if game = repository.with_id(params[:id])
             present game, with: GameDocumentPresenter
           else
-            error!({message: 'Not Found', with: API::Error }, 404)
+            error(status: 404)
           end
         end
       end
