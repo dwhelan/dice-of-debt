@@ -64,8 +64,7 @@ module DiceOfDebt
     property :title
 
     def self.call(message, backtrace, options, env)
-      presenter = new(title: message)
-      presenter.to_json
+      API::Error.new ({title: 'ff'}).to_json
     end
   end
 
@@ -83,43 +82,35 @@ module DiceOfDebt
 
     content_type :json, 'application/vnd.api+json'
 
-    # The API entity for rendering errors
-    class Error < Grape::Entity
-      expose :message
-    end
-
-    class XError
+    class Error
       include Pad.model
 
       attribute :status, Integer, default: 500
       attribute :title,  String,  default: lambda { |error, _| Rack::Utils::HTTP_STATUS_CODES[error.status.to_i] }
     end
 
-    # Return validation errors
-    class ValidationError < Grape::Entity
-      expose :errors
-    end
-
     rescue_from Grape::Exceptions::ValidationErrors do |e|
       headers = { Grape::Http::Headers::CONTENT_TYPE => 'application/vnd.api+json' }
       errors = e.full_messages.map do |message|
-        XError.new ({status: e.status, title: message})
+        Error.new ({status: e.status, title: message})
       end
 
       [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
+    end
+
+    helpers do
+      def error(options={})
+        error = Error.new (options)
+
+        status error.status
+        present [error], with: ErrorArrayPresenter
+      end
     end
 
     namespace :games do
       helpers do
         def repository
           Persistence.game_repository
-        end
-
-        def error(options={})
-          error = XError.new (options)
-
-          status error.status
-          present [error], with: ErrorArrayPresenter
         end
       end
 
@@ -129,7 +120,7 @@ module DiceOfDebt
       end
 
       desc 'Get a game.' do
-        failure [[400, 'id is invalid', API::Error]]
+        failure [[400, 'id is invalid', Error]]
       end
       params do
         requires :id, type: Integer, desc: 'Game id.'
@@ -154,7 +145,7 @@ module DiceOfDebt
     end
 
     route :any, '*path' do
-      error!({ message: 'Invalid URI', with: API::Error }, 404)
+      error(status: 404, title: 'Invalid URI')
     end
   end
 end

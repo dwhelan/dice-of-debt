@@ -23,9 +23,18 @@ module DiceOfDebt
       API
     end
 
-    def expect_json_api_response(status_code)
+    def expect_json_api_response(status_code, types)
       expect(status).to eq status_code
       expect(headers['Content-Type']).to eq 'application/vnd.api+json'
+      expect(json.keys).to eq types
+    end
+
+    def expect_data(status_code)
+      expect_json_api_response(status_code, ['data'])
+    end
+
+    def expect_error(status_code)
+      expect_json_api_response(status_code, ['errors'])
     end
 
     subject { last_response }
@@ -33,15 +42,16 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:data)    { JSON.parse(body)['data'] }
-    let(:errors)  { JSON.parse(body)['errors'] }
+    let(:json)    { JSON.parse(body) }
+    let(:data)    { json['data'] }
+    let(:errors)  { json['errors'] }
     let(:error)   { errors.first }
     let(:game1)   { { games: { id: '1' } }    }
 
     specify 'get all games' do
       get '/games'
 
-      expect_json_api_response(200)
+      expect_data(200)
 
       expect(data.length).to eq 1
       expect(data[0]['type']).to eq 'game'
@@ -52,7 +62,7 @@ module DiceOfDebt
       specify 'when game is found' do
         get '/games/1'
 
-        expect_json_api_response(200)
+        expect_data(200)
 
         expect(data['type']).to eq 'game'
         expect(data['id']).to eq '1'
@@ -61,7 +71,7 @@ module DiceOfDebt
       specify 'when game is not found' do
         get '/games/9999'
 
-        expect_json_api_response(404)
+        expect_error(404)
 
         expect(error['title']).to eq 'Not Found'
       end
@@ -69,9 +79,9 @@ module DiceOfDebt
       specify 'when game id is invalid' do
         get '/games/foo'
 
-        expect_json_api_response(400)
+        expect_error(400)
 
-        expect(errors[0]['title']).to eq 'id is invalid'
+        expect(error['title']).to eq 'id is invalid'
       end
     end
 
@@ -80,7 +90,7 @@ module DiceOfDebt
         request_data = { data: { } }
         post '/games', request_data.to_json, {'CONTENT_TYPE' => 'application/vnd.api+json'}
 
-        expect_json_api_response(201)
+        expect_data(201)
         expect(headers['Location']).to eq '/games/2'
 
         expect(data['type']).to eq 'game'
@@ -92,8 +102,8 @@ module DiceOfDebt
       specify 'with an invalid URI' do
         get '/foo'
 
-        expect_json_api_response(404)
-        expect(body).to include '"message":"Invalid URI"'
+        expect_error(404)
+        expect(error['title']).to eq 'Invalid URI'
       end
     end
   end
