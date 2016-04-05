@@ -1,6 +1,8 @@
 module DiceOfDebt
 
   class API
+    # error_formatter :json, ErrorPresenter
+
     class Error
       include Pad.model
 
@@ -34,7 +36,7 @@ module DiceOfDebt
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-      headers = { Grape::Http::Headers::CONTENT_TYPE => 'application/vnd.api+json' }
+      headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
       errors = e.full_messages.map do |message|
         Error.new ({status: e.status, title: message})
       end
