@@ -40,32 +40,14 @@ module DiceOfDebt
     end
   end
 
-  module GamePresenter
-    include ResourcePresenter
-
-    type 'game'
-  end
-
-  module GameDocumentPresenter
-    include ResourcePresenter
-
-    resource_presenter GamePresenter
-  end
-
-  module GameArrayDocumentPresenter
-    include ResourceArrayPresenter
-
-    resource_presenter GamePresenter
-  end
-
   module ErrorPresenter
     include Presenter
 
     property :title
 
-    def self.call(message, backtrace, options, env)
-      API::Error.new ({title: 'ff'}).to_json
-    end
+    # def self.call(message, backtrace, options, env)
+    #   API::Error.new ({title: 'ff'}).to_json
+    # end
   end
 
   module ErrorArrayPresenter
@@ -81,6 +63,15 @@ module DiceOfDebt
     # error_formatter :json, ErrorPresenter
 
     content_type :json, 'application/vnd.api+json'
+
+    helpers do
+      def error(options={})
+        error = Error.new (options)
+
+        status error.status
+        present [error], with: ErrorArrayPresenter
+      end
+    end
 
     class Error
       include Pad.model
@@ -98,51 +89,7 @@ module DiceOfDebt
       [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
     end
 
-    helpers do
-      def error(options={})
-        error = Error.new (options)
-
-        status error.status
-        present [error], with: ErrorArrayPresenter
-      end
-    end
-
-    namespace :games do
-      helpers do
-        def repository
-          Persistence.game_repository
-        end
-      end
-
-      desc 'Get all games.'
-      get do
-        present repository.all, with: GameArrayDocumentPresenter
-      end
-
-      desc 'Get a game.' do
-        failure [[400, 'id is invalid', Error]]
-      end
-      params do
-        requires :id, type: Integer, desc: 'Game id.'
-      end
-
-      route_param :id do
-        get do
-          if game = repository.with_id(params[:id])
-            present game, with: GameDocumentPresenter
-          else
-            error(status: 404)
-          end
-        end
-      end
-
-      desc 'Create a game.'
-      post do
-        game = GameDocumentPresenter.represent(Game.new).from_json request.body.string
-        present repository.create(game), with: GameDocumentPresenter
-        header 'Location', "/games/#{game.id}"
-      end
-    end
+    require_relative 'games'
 
     route :any, '*path' do
       error(status: 404, title: 'Invalid URI')
