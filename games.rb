@@ -1,9 +1,3 @@
-require 'grape'
-require 'grape-entity'
-require 'grape-roar'
-require 'roar/coercion'
-require 'roar/json'
-
 module DiceOfDebt
   class API
 
