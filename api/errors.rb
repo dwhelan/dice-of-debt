@@ -5,13 +5,11 @@ module DiceOfDebt
   class API
 
     class Error
+      # TODO: use vanilla ruby attributes rather than Pad.model?
       include ::Pad.model
 
       attribute :status, Integer, default: 500
       attribute :title,  String,  default: lambda { |error, _| Rack::Utils::HTTP_STATUS_CODES[error.status.to_i] }
-    end
-
-    class ForcedError < StandardError
     end
 
     module ErrorPresenter
@@ -24,11 +22,6 @@ module DiceOfDebt
       include Presenter
 
       collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
-
-      def self.call(message, backtrace, options, env)
-        error = API::Error.new(status: 500, title: message)
-        ErrorArrayPresenter.represent([error]).to_json
-      end
     end
 
     helpers do
@@ -40,22 +33,24 @@ module DiceOfDebt
       end
     end
 
-    error_formatter :json, ErrorArrayPresenter
-
-    rescue_from :all
-    rescue_from Grape::Exceptions::ValidationErrors do |e|
+    rescue_from :all do |e|
+      status, errors = case e
+               when Grape::Exceptions::ValidationErrors
+                 errors = e.full_messages.map do |message|
+                   Error.new(status: e.status, title: message)
+                 end
+                 [e.status, errors]
+               else
+                 [500, [API::Error.new(status: 500, title: e.message)]]
+               end
       headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
-      errors = e.full_messages.map do |message|
-        Error.new(status: e.status, title: message)
-      end
-
-      [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
+      [status, headers, ErrorArrayPresenter.represent(errors).to_json]
     end
 
     resource :errors do
       desc 'Raise an error.'
       post do
-        raise ForcedError, 'Internal Server Error'
+        raise 'Internal Server Error'
       end
     end
   end

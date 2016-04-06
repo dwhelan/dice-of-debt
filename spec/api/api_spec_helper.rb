@@ -28,7 +28,7 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:json)    { puts body;JSON.parse(body) }
+    let(:json)    { JSON.parse(body) }
     let(:data)    { json['data'] }
     let(:errors)  { json['errors'] }
     let(:error)   { errors.first }
@@ -46,21 +46,5 @@ module DiceOfDebt
 
       connection[:games].insert id: '1'
     end
-  end
-
-  describe API, :aggregate_failures do
-    include Rack::Test::Methods
-    include_context 'api test'
-    include_context 'populate database'
-
-    subject { last_response }
-
-    let(:headers) { last_response.headers }
-    let(:status)  { last_response.status  }
-    let(:body)    { last_response.body    }
-    let(:json)    { JSON.parse(body) }
-    let(:data)    { json['data'] }
-    let(:errors)  { json['errors'] }
-    let(:error)   { errors.first }
   end
 end

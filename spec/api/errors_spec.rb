@@ -1,7 +1,7 @@
 require_relative 'api_spec_helper'
 
 module DiceOfDebt
-  describe API, :aggregate_failures do
+  describe API do
     include_context 'api test'
 
     specify 'GET /foo' do
