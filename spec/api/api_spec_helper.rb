@@ -28,7 +28,7 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:json)    { JSON.parse(body) }
+    let(:json)    { puts body;JSON.parse(body) }
     let(:data)    { json['data'] }
     let(:errors)  { json['errors'] }
     let(:error)   { errors.first }

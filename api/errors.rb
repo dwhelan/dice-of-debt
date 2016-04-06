@@ -3,7 +3,6 @@ require 'pad'
 module DiceOfDebt
 
   class API
-    # error_formatter :json, ErrorPresenter
 
     class Error
       include ::Pad.model
@@ -19,16 +18,17 @@ module DiceOfDebt
       include Presenter
 
       property :title
-
-      # def self.call(message, backtrace, options, env)
-      #   API::Error.new ({title: 'ff'}).to_json
-      # end
     end
 
     module ErrorArrayPresenter
       include Presenter
 
       collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
+
+      def self.call(message, backtrace, options, env)
+        error = API::Error.new(status: 500, title: message)
+        ErrorArrayPresenter.represent([error]).to_json
+      end
     end
 
     helpers do
@@ -40,6 +40,9 @@ module DiceOfDebt
       end
     end
 
+    error_formatter :json, ErrorArrayPresenter
+
+    rescue_from :all
     rescue_from Grape::Exceptions::ValidationErrors do |e|
       headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
       errors = e.full_messages.map do |message|
@@ -49,16 +52,10 @@ module DiceOfDebt
       [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
     end
 
-    rescue_from ForcedError do |e|
-      headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
-      errors = [Error.new(status: 500)]
-      [500, headers, ErrorArrayPresenter.represent(errors).to_json]
-    end
-
     resource :errors do
       desc 'Raise an error.'
       post do
-        raise ForcedError
+        raise ForcedError, 'Internal Server Error'
       end
     end
   end
