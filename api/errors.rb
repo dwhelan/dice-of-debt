@@ -12,6 +12,9 @@ module DiceOfDebt
       attribute :title,  String,  default: lambda { |error, _| Rack::Utils::HTTP_STATUS_CODES[error.status.to_i] }
     end
 
+    class ForcedError < StandardError
+    end
+
     module ErrorPresenter
       include Presenter
 
@@ -44,6 +47,19 @@ module DiceOfDebt
       end
 
       [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
+    end
+
+    rescue_from ForcedError do |e|
+      headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
+      errors = [Error.new(status: 500)]
+      [500, headers, ErrorArrayPresenter.represent(errors).to_json]
+    end
+
+    resource :errors do
+      desc 'Raise an error.'
+      post do
+        raise ForcedError
+      end
     end
   end
 end

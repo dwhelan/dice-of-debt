@@ -54,14 +54,5 @@ module DiceOfDebt
         expect(data['id']).to eq '2'
       end
     end
-
-    describe 'GET /foo' do
-      specify 'with an invalid URI' do
-        get '/foo'
-
-        expect_error(404)
-        expect(error['title']).to eq 'Invalid URI'
-      end
-    end
   end
 end

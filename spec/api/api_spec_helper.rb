@@ -32,6 +32,8 @@ module DiceOfDebt
     let(:data)    { json['data'] }
     let(:errors)  { json['errors'] }
     let(:error)   { errors.first }
+
+    subject { last_response }
   end
 
   shared_context 'populate database' do
