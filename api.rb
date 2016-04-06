@@ -9,9 +9,9 @@ module DiceOfDebt
     format :json
     content_type :json, JSON_API_CONTENT_TYPE
 
-    require_relative 'presenters'
-    require_relative 'errors'
-    require_relative 'games'
+    require_relative 'api/presenters'
+    require_relative 'api/errors'
+    require_relative 'api/games'
 
     # This should be the last route
     route :any, '*path' do

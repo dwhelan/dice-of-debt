@@ -23,4 +23,4 @@ RSpec.configure do |config|
   end
 end
 
-require_relative '../domain/domain'
+require_relative '../domain'

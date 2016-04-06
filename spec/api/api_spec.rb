@@ -1,8 +1,7 @@
 require 'spec_helper'
 require 'rack/test'
 
-require_relative '../../domain/persistence'
-require_relative '../../api/api'
+require_relative '../../api'
 
 module DiceOfDebt
   shared_context 'populate database' do
