@@ -19,7 +19,7 @@ module DiceOfDebt
       resource_presenter GamePresenter
     end
 
-    namespace :games do
+    resource :games do
       helpers do
         def repository
           Persistence.game_repository
