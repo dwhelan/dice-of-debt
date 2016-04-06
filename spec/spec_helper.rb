@@ -23,4 +23,4 @@ RSpec.configure do |config|
   end
 end
 
-require 'dice_of_debt'
+require_relative '../domain/domain'

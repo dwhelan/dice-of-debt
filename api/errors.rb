@@ -1,10 +1,12 @@
+require 'pad'
+
 module DiceOfDebt
 
   class API
     # error_formatter :json, ErrorPresenter
 
     class Error
-      include Pad.model
+      include ::Pad.model
 
       attribute :status, Integer, default: 500
       attribute :title,  String,  default: lambda { |error, _| Rack::Utils::HTTP_STATUS_CODES[error.status.to_i] }
@@ -28,7 +30,7 @@ module DiceOfDebt
 
     helpers do
       def error(options={})
-        error = Error.new (options)
+        error = Error.new(options)
 
         status error.status
         present [error], with: ErrorArrayPresenter
@@ -38,7 +40,7 @@ module DiceOfDebt
     rescue_from Grape::Exceptions::ValidationErrors do |e|
       headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
       errors = e.full_messages.map do |message|
-        Error.new ({status: e.status, title: message})
+        Error.new(status: e.status, title: message)
       end
 
       [e.status, headers, ErrorArrayPresenter.represent(errors).to_json]
