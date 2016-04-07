@@ -5,6 +5,8 @@ module DiceOfDebt
       include ResourcePresenter
 
       type 'game'
+
+      property :value_dice, getter: ->(_) { value_dice.count }
     end
 
     module GameDocumentPresenter

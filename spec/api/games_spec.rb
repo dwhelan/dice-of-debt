@@ -16,6 +16,7 @@ module DiceOfDebt
       expect(data.length).to eq 1
       expect(data[0]['type']).to eq 'game'
       expect(data[0]['id']).to eq '1'
+      expect(data[0]['value_dice']).to eq 8
     end
 
     describe 'get game' do

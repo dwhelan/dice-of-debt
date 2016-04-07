@@ -10,5 +10,9 @@ module DiceOfDebt
     def roll
       dice.reduce(0) { |sum, die| sum + die.roll }
     end
+
+    def count
+      dice.count
+    end
   end
 end
