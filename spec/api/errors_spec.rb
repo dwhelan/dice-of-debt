@@ -10,6 +10,7 @@ module DiceOfDebt
       expect_error(404)
       expect(error['status']).to eq '404'
       expect(error['title']).to  eq 'Invalid URI'
+      expect(error['detail']).to eq 'Invalid URI'
     end
 
     specify 'POST /errors' do
