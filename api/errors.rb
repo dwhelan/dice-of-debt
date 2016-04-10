@@ -30,6 +30,13 @@ module DiceOfDebt
       collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
     end
 
+    module ErrorResponse
+      def self.build(status, errors)
+        headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
+        [status, headers, ErrorArrayPresenter.represent(errors).to_json]
+      end
+    end
+
     helpers do
       def error(options={})
         error = Error.new(options)
@@ -40,17 +47,15 @@ module DiceOfDebt
     end
 
     rescue_from :all do |e|
-      status, errors = case e
-               when Grape::Exceptions::ValidationErrors
-                 errors = e.full_messages.map do |message|
-                   Error.new(status: e.status, title: message)
-                 end
-                 [e.status, errors]
-               else
-                 [500, [API::Error.new(status: 500, title: e.message)]]
-               end
-      headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
-      [status, headers, ErrorArrayPresenter.represent(errors).to_json]
+      error = API::Error.new(status: 500, title: e.message)
+      ErrorResponse.build error.status, [error]
+    end
+
+    rescue_from Grape::Exceptions::ValidationErrors do |e|
+     errors = e.full_messages.map do |message|
+       Error.new(status: e.status, title: message)
+     end
+     ErrorResponse.build e.status, errors
     end
 
     resource :errors do
