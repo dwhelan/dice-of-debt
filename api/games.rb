@@ -34,10 +34,10 @@ module DiceOfDebt
       end
 
       desc 'Get a game.' do
-        failure [[400, 'id is invalid', Error]]
+        failure [[400, 'Game ids must be integers', Error]]
       end
       params do
-        requires :id, type: Integer, desc: 'Game id.'
+        requires :id, type: Integer, desc: 'Game ids must be integers.'
       end
 
       route_param :id do
@@ -45,7 +45,7 @@ module DiceOfDebt
           if game = repository.with_id(params[:id])
             present game, with: GameDocumentPresenter
           else
-            error(status: 404, detail: "Could not find a game with id #{params[:id]}.", source: {parameter: :id})
+            error(status: 404, detail: "Could not find a game with id #{params[:id]}", source: {parameter: :id})
           end
         end
       end

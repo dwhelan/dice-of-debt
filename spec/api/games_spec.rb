@@ -33,14 +33,17 @@ module DiceOfDebt
 
         expect_error(404)
         expect(error['title']).to eq 'Not Found'
-        expect(error['detail']).to eq 'Could not find a game with id 9999.'
+        expect(error['detail']).to eq 'Could not find a game with id 9999'
+        expect(error['source']['parameter']).to eq 'id'
       end
 
       specify 'when game id is invalid' do
         get '/games/foo'
 
         expect_error(400)
-        expect(error['title']).to eq 'id is invalid'
+        expect(error['title']).to  eq 'id is invalid'
+        expect(error['detail']).to eq 'id is invalid'
+        expect(error['source']['parameter']).to eq 'id'
       end
     end
 
