@@ -20,6 +20,7 @@ module DiceOfDebt
       expect_error(500)
       expect(error['status']).to eq '500'
       expect(error['title']).to  eq 'Internal Server Error'
+      expect(error['detail']).to eq 'Internal Server Error'
     end
   end
 end

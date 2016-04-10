@@ -5,16 +5,13 @@ module DiceOfDebt
   class API
 
     class Error
-      attr_reader :status, :title
+      attr_reader :status, :title, :detail
 
       def initialize(opts={})
-        self.status = opts[:status] || 500
-        self.title  = opts[:title]  || Rack::Utils::HTTP_STATUS_CODES[status]
+        @status = opts[:status] || 500
+        @title  = opts[:title]  || Rack::Utils::HTTP_STATUS_CODES[status]
+        @detail = opts[:detail] || title
       end
-
-      private
-
-      attr_writer :status, :title
     end
 
     module ErrorPresenter
@@ -22,6 +19,7 @@ module DiceOfDebt
 
       property :status, getter: ->(_) { status.to_s }
       property :title
+      property :detail
     end
 
     module ErrorArrayPresenter
