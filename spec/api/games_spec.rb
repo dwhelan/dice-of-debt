@@ -33,6 +33,7 @@ module DiceOfDebt
 
         expect_error(404)
         expect(error['title']).to eq 'Not Found'
+        expect(error['detail']).to eq 'Could not find a game with id 9999.'
       end
 
       specify 'when game id is invalid' do

@@ -45,7 +45,7 @@ module DiceOfDebt
           if game = repository.with_id(params[:id])
             present game, with: GameDocumentPresenter
           else
-            error(status: 404)
+            error(status: 404, detail: "Could not find a game with id #{params[:id]}.", source: {parameter: :id})
           end
         end
       end
