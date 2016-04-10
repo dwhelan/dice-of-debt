@@ -5,11 +5,16 @@ module DiceOfDebt
   class API
 
     class Error
-      # TODO: use vanilla ruby attributes rather than Pad.model?
-      include ::Pad.model
+      attr_reader :status, :title
 
-      attribute :status, Integer, default: 500
-      attribute :title,  String,  default: lambda { |error, _| Rack::Utils::HTTP_STATUS_CODES[error.status.to_i] }
+      def initialize(opts={})
+        self.status = opts[:status] || 500
+        self.title  = opts[:title]  || Rack::Utils::HTTP_STATUS_CODES[status]
+      end
+
+      private
+
+      attr_writer :status, :title
     end
 
     module ErrorPresenter
