@@ -8,7 +8,8 @@ module DiceOfDebt
       get '/foo'
 
       expect_error(404)
-      expect(error['title']).to eq 'Invalid URI'
+      expect(error['status']).to eq '404'
+      expect(error['title']).to  eq 'Invalid URI'
     end
 
     specify 'POST /errors' do
@@ -17,7 +18,8 @@ module DiceOfDebt
       post '/errors', request_data.to_json, {'CONTENT_TYPE' => 'application/vnd.api+json'}
 
       expect_error(500)
-      expect(error['title']).to eq 'Internal Server Error'
+      expect(error['status']).to eq '500'
+      expect(error['title']).to  eq 'Internal Server Error'
     end
   end
 end

@@ -20,6 +20,7 @@ module DiceOfDebt
     module ErrorPresenter
       include Presenter
 
+      property :status, getter: ->(_) { status.to_s }
       property :title
     end
 
