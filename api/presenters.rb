@@ -13,7 +13,7 @@ module DiceOfDebt
     def self.included(base)
       base.include Presenter
 
-      base.property :id
+      base.property :id, getter: ->(_) { id.to_s }
 
       def base.type type
         property :type, getter: ->(_) { type }
