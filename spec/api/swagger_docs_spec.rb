@@ -1,11 +1,11 @@
 require_relative 'api_spec_helper'
 
 module DiceOfDebt
-  xdescribe 'Swagger docs' do
+  describe 'Swagger docs' do
     include_context 'api test'
 
     specify 'root docs' do
-      get '/swagger_doc'
+      get '/swagger_doc.json'
 
       expect(status).to eq 200
       expect(json['apiVersion']).to eq '0.1'

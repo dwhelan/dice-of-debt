@@ -11,6 +11,8 @@ gem 'rom-repository', '~> 0.2'
 gem 'rom-sql',        '~> 0.7'
 gem 'sinatra',        '~> 1.4'
 gem 'sqlite3',        '~> 1.3'
+gem 'sinatra-swagger-exposer'
+gem 'sinatra-cross_origin', '~> 0.3.1'
 
 group 'development' do
   gem 'pry-byebug', '~>  3.3'
