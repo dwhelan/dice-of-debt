@@ -4,5 +4,8 @@ Metrics/LineLength:
 Style/SingleLineBlockParams:
   Enabled: false
 
+Style/Documentation:
+  Enabled: false
+
 AllCops:
   DisplayCopNames: true
