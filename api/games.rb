@@ -34,7 +34,7 @@ module DiceOfDebt
       end
 
       desc 'Get a game.' do
-        failure [[400, 'Game ids must be integers', Error]]
+        failure [[422, 'Game ids must be integers', Error]]
       end
       params do
         requires :id, type: Integer, desc: 'Game ids must be integers.'

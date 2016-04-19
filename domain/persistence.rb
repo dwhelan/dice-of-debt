@@ -20,7 +20,7 @@ module DiceOfDebt
     end
 
     def self.game_repository
-      GameRepository.new(rom_container)
+      @game_repo ||= GameRepository.new(rom_container)
     end
 
     def self.connection
@@ -35,6 +35,14 @@ module DiceOfDebt
     def initialize(rom_container, options = {})
       super
       @rom_container = rom_container
+      connection = Persistence.connection
+
+      # TODO: move this to a migration
+      connection.create_table :games do
+        primary_key :id
+      end
+
+      connection[:games].insert id: '1'
     end
 
     def all

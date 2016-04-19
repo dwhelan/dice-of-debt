@@ -3,11 +3,11 @@ require_relative 'api_spec_helper'
 module DiceOfDebt
   describe API do
     include_context 'api test'
-    include_context 'populate database'
+    # include_context 'populate database'
 
     subject { last_response }
 
-    let(:game1) { { games: { id: '1' } }    }
+    let(:game1) { { games: { id: '1' } } }
 
     specify 'get all games' do
       get '/games'
@@ -40,8 +40,8 @@ module DiceOfDebt
       specify 'when game id is invalid' do
         get '/games/foo'
 
-        expect_error(400)
-        expect(error['title']).to  eq 'id is invalid'
+        expect_error(422)
+        expect(error['title']).to eq 'id is invalid'
         expect(error['detail']).to eq 'id is invalid'
         expect(error['source']['parameter']).to eq 'id'
       end
@@ -49,8 +49,8 @@ module DiceOfDebt
 
     describe 'Create game' do
       specify 'with a valid game' do
-        request_data = { data: { } }
-        post '/games', request_data.to_json, {'CONTENT_TYPE' => 'application/vnd.api+json'}
+        request_data = { data: {} }
+        post '/games', request_data.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json'
 
         expect_data(201)
         expect(headers['Location']).to eq '/games/2'

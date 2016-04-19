@@ -1,17 +1,21 @@
-require 'pad'
-
 module DiceOfDebt
-
   class API
-
     class Error
       attr_reader :status, :title, :detail, :source
 
-      def initialize(opts={})
+      def initialize(opts = {})
         @status = opts[:status] || 500
-        @title  = opts[:title]  || Rack::Utils::HTTP_STATUS_CODES[status]
+        @title  = opts[:title] || Rack::Utils::HTTP_STATUS_CODES[status]
         @detail = opts[:detail] || title
         @source = opts[:source]
+      end
+
+      def self.exposures
+        []
+      end
+
+      def self.documentation
+        {}
       end
     end
 
@@ -38,7 +42,7 @@ module DiceOfDebt
     end
 
     helpers do
-      def error(options={})
+      def error(options = {})
         error = Error.new(options)
 
         status error.status
@@ -52,18 +56,18 @@ module DiceOfDebt
     end
 
     rescue_from Grape::Exceptions::ValidationErrors do |e|
-     errors = e.map do |attributes, error|
-       message = e.send(:full_message, attributes, error)
-       Error.new(status: e.status, title: message, source: { parameter: attributes.join(',')})
-     end
+      errors = e.map do |attributes, error|
+        message = e.send(:full_message, attributes, error)
+        Error.new(status: e.status, title: message, source: { parameter: attributes.join(',') })
+      end
 
-     ErrorResponse.build e.status, errors
+      ErrorResponse.build 422, errors
     end
 
     resource :errors do
-      desc 'Raise an error.'
+      desc 'Raise an error.', hidden: true
       post do
-        raise 'Internal Server Error'
+        fail 'Internal Server Error'
       end
     end
   end
