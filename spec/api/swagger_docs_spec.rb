@@ -1,7 +1,7 @@
 require_relative 'api_spec_helper'
 
 module DiceOfDebt
-  describe 'Swagger docs' do
+  xdescribe 'Swagger docs' do
     include_context 'api test'
 
     specify 'root docs' do
