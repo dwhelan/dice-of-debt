@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'dry-data',       '~> 0.5'
 gem 'grape',          '~> 0.14'
+gem 'grape-cors',     '~> 0.9'
 gem 'grape-entity',   '~> 0.5' # TODO: delete?
 gem 'grape-roar',     '~> 0.3'
 gem 'pad',            '~> 0.1'
@@ -12,7 +13,6 @@ gem 'rom-sql',        '~> 0.7'
 gem 'sinatra',        '~> 1.4'
 gem 'sqlite3',        '~> 1.3'
 gem 'sinatra-swagger-exposer'
-gem 'sinatra-cross_origin', '~> 0.3.1'
 
 group 'development' do
   gem 'pry-byebug', '~>  3.3'

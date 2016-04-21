@@ -1,12 +1,10 @@
 require 'sinatra'
 require 'sinatra/swagger-exposer/swagger-exposer'
-require 'sinatra/cross_origin'
 
 module DiceOfDebt
   # The web application class
   class App < Sinatra::Base
 
-    register Sinatra::CrossOrigin
     set :allow_origin, :any
     enable :cross_origin
 
@@ -41,12 +39,6 @@ module DiceOfDebt
 
     get '/' do
       ''
-    end
-
-    options '*' do
-      response.headers['Allow'] = 'HEAD,GET,PUT,POST,DELETE,OPTIONS'
-      response.headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept'
-      200
     end
   end
 end
