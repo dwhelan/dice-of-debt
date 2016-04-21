@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 gem 'dry-data',       '~> 0.5'
 gem 'grape',          '~> 0.14'
 gem 'grape-cors',     '~> 0.9'
-gem 'grape-entity',   '~> 0.5' # TODO: delete?
 gem 'grape-roar',     '~> 0.3'
 gem 'pad',            '~> 0.1'
 gem 'roar',           '~> 1.0'
