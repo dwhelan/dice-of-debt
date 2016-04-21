@@ -11,27 +11,17 @@ module DiceOfDebt
     content_type :json, JSON_API_CONTENT_TYPE
 
     require_relative 'api/presenters'
+
+    require_relative 'api/root'
     require_relative 'api/errors'
     require_relative 'api/games'
 
-    resource '/' do
-      get do
-        { foo: :bar }
-      end
-    end
+    # This should follow all resource routes to enable CORS
+    require_relative 'api/cors'
 
-    require 'grape-cors'
-
-    Grape::CORS::Config.methods.clear
-    Grape::CORS::Config.methods.push 'HEAD', 'OPTIONS', 'GET', 'POST', 'PATCH', 'DELETE'
-
-    Grape::CORS.apply!
-
-    # This should be the last route
+    # This should be the last route as it will match any path
     route :any, '*path' do
       error(status: 404, title: 'Invalid URI')
     end
-
   end
-
 end

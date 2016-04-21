@@ -4,8 +4,6 @@ module DiceOfDebt
   describe API do
     include_context 'api test'
 
-    let(:header) { last_response.headers }
-
     specify 'Returns the response CORS headers' do
       get '/', nil, 'HTTP_ORIGIN' => '*'
 
