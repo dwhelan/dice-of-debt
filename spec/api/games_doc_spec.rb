@@ -16,7 +16,8 @@ module DiceOfDebt
       describe 'id property' do
         subject { definition[:properties][:id] }
 
-        its([:type]) { should eq 'string' }
+        its([:type])    { should eq 'string' }
+        its([:example]) { should eq '1' }
       end
     end
 
@@ -40,8 +41,8 @@ module DiceOfDebt
 
             describe 'schema' do
               subject { responses[:'200'][:schema] }
-              its([:type])  { should eq 'array' }
-              its([:items]) { should eq :$ref => '#/definitions/Game' }
+              its([:type])       { should eq 'object' }
+              its([:properties]) { should eq data: { type: 'array', items: { :$ref => '#/definitions/Game' } } }
             end
           end
         end

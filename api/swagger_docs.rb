@@ -35,6 +35,7 @@ definitions:
     properties:
       id:
         type: string
+        example: '1'
 paths:
   /games:
     get:
@@ -46,9 +47,12 @@ paths:
           summary: A list of games.
           description: A list of games.
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Game"
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Game'
         eos
       end
     end
