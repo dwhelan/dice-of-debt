@@ -29,9 +29,6 @@ module DiceOfDebt
         describe 'contact' do
           subject { info[:contact] }
 
-          it do
-            puts body
-          end
           its([:name])  { should eq 'Declan Whelan' }
           its([:email]) { should eq 'declan@leanintuit.com' }
           its([:url])   { should eq 'http://leanintuit.com' }

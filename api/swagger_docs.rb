@@ -25,14 +25,30 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
+tags:
+  -
+    name: Games
+    description: Everything about games.
+definitions:
+  Game:
+    type: object
+    properties:
+      id:
+        type: string
 paths:
   /games:
     get:
+      tags:
+        - Games
       description: Get all games.
       responses:
         '200':
           summary: A list of games.
           description: A list of games.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Game"
         eos
       end
     end
