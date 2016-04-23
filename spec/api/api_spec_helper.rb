@@ -7,16 +7,32 @@ module DiceOfDebt
   shared_context 'api test' do
     include Rack::Test::Methods
 
+    def symbolize_keys(object)
+      case object
+      when Hash
+        object.each_with_object({}) do |(key, value), memo|
+          new_key       = key.is_a?(String) ? key.to_sym : key
+          memo[new_key] = symbolize_keys(value)
+         end
+      when Array
+        object.each_with_object([]) do |object, memo|
+          memo << symbolize_keys(object)
+        end
+      else
+        object
+      end
+    end
+
     def app
       API
     end
 
     def expect_data(status_code)
-      expect_response(status_code, ['data'])
+      expect_response(status_code, [:data])
     end
 
     def expect_error(status_code)
-      expect_response(status_code, ['errors'])
+      expect_response(status_code, [:errors])
     end
 
     def expect_response(status_code, types)
@@ -28,9 +44,9 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:json)    { JSON.parse(body) }
-    let(:data)    { json['data'] }
-    let(:errors)  { json['errors'] }
+    let(:json)    { symbolize_keys(JSON.parse(body)) }
+    let(:data)    { json[:data] }
+    let(:errors)  { json[:errors] }
     let(:error)   { errors.first }
 
     subject { last_response }

@@ -2,7 +2,6 @@ require 'grape'
 require 'grape-roar'
 
 module DiceOfDebt
-
   class API
     require 'grape-cors'
 
