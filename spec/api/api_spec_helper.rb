@@ -10,14 +10,9 @@ module DiceOfDebt
     def symbolize_keys(object)
       case object
       when Hash
-        object.each_with_object({}) do |(key, value), memo|
-          new_key       = key.is_a?(String) ? key.to_sym : key
-          memo[new_key] = symbolize_keys(value)
-         end
+        object.each_with_object({}) { |(key, value), memo| memo[key.to_sym] = symbolize_keys(value) }
       when Array
-        object.each_with_object([]) do |object, memo|
-          memo << symbolize_keys(object)
-        end
+        object.each_with_object([]) { |value, memo| memo << symbolize_keys(value) }
       else
         object
       end
