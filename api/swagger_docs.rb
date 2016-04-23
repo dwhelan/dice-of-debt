@@ -36,6 +36,9 @@ definitions:
       id:
         type: string
         example: '1'
+      type:
+        type: string
+        example: 'game'
 paths:
   /games:
     get:

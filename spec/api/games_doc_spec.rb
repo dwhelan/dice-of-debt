@@ -13,11 +13,22 @@ module DiceOfDebt
 
       its([:type]) { should eq 'object' }
 
-      describe 'id property' do
-        subject { definition[:properties][:id] }
+      describe 'properties' do
+        let(:properties) { definition[:properties] }
 
-        its([:type])    { should eq 'string' }
-        its([:example]) { should eq '1' }
+        describe 'id' do
+          subject { properties[:id] }
+
+          its([:type])    { should eq 'string' }
+          its([:example]) { should eq '1' }
+        end
+
+        describe 'type' do
+          subject { properties[:type] }
+
+          its([:type])    { should eq 'string' }
+          its([:example]) { should eq 'game' }
+        end
       end
     end
 
