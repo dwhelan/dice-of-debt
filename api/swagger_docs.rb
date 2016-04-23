@@ -7,7 +7,7 @@ module DiceOfDebt
       get do
         YAML.load <<-eos
 ---
-swagger: "2.0"
+swagger: '2.0'
 schemes:
   - http
 consumes:
@@ -44,6 +44,7 @@ paths:
     get:
       tags:
         - Games
+      summary: Get all games.
       description: Get all games.
       responses:
         '200':
@@ -56,6 +57,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Game'
+    post:
+      tags:
+        - Games
+      summary: Create a game.
+      description: Create a game.
+      responses:
+        '201':
+          summary: The game just created.
+          description: The created game including any automatically created properties.
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/Game'
         eos
       end
     end

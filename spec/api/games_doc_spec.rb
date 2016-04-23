@@ -34,17 +34,17 @@ module DiceOfDebt
 
     describe '/games' do
       let(:games) { json[:paths][:'/games'] }
+      let(:responses) { operation[:responses] }
+      subject { operation }
 
       describe 'get' do
-        let(:get_games) { games[:get] }
-        subject { games[:get] }
+        let(:operation) { games[:get] }
 
         its([:tags])        { should eq ['Games'] }
+        its([:summary])     { should eq 'Get all games.' }
         its([:description]) { should eq 'Get all games.' }
 
         describe 'responses' do
-          let(:responses) { get_games[:responses] }
-
           describe '200' do
             subject { responses[:'200'] }
             its([:summary])     { should eq 'A list of games.' }
@@ -54,6 +54,28 @@ module DiceOfDebt
               subject { responses[:'200'][:schema] }
               its([:type])       { should eq 'object' }
               its([:properties]) { should eq data: { type: 'array', items: { :$ref => '#/definitions/Game' } } }
+            end
+          end
+        end
+      end
+
+      describe 'post' do
+        let(:operation) { games[:post] }
+
+        its([:tags])        { should eq ['Games'] }
+        its([:summary])     { should eq 'Create a game.' }
+        its([:description]) { should eq 'Create a game.' }
+
+        describe 'responses' do
+          describe '201' do
+            subject { responses[:'201'] }
+            its([:summary])     { should eq 'The game just created.' }
+            its([:description]) { should eq 'The created game including any automatically created properties.' }
+
+            describe 'schema' do
+              subject { responses[:'201'][:schema] }
+              its([:type])       { should eq 'object' }
+              its([:properties]) { should eq data: { type: 'object', :$ref => '#/definitions/Game' } }
             end
           end
         end
