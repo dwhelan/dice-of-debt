@@ -2,6 +2,7 @@ require_relative 'api_spec_helper'
 require 'rspec/matchers'
 
 # rubocop:disable Metrics/ModuleLength
+# rubocop:disable Metrics/LineLength
 module DiceOfDebt
   describe 'Swagger docs' do
     include_context 'api test'
@@ -142,7 +143,7 @@ module DiceOfDebt
           describe 'schema' do
             subject { responses[:'404'][:schema] }
             its([:type])       { should eq 'object' }
-            its([:properties]) { should eq errors: { type: 'array', items: { :$ref => '#/definitions/error' } } }
+            its([:properties]) { should eq errors: { type: 'array', items: { :$ref => '#/definitions/not_found_error' } } }
           end
         end
       end

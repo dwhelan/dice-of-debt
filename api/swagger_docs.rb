@@ -46,7 +46,13 @@ definitions:
       foo:
         type: string
         example: '1'
-  error:
+  error_source:
+    type: object
+    properties:
+      parameter:
+        type: string
+        example: 'id'
+  not_found_error:
     type: object
     properties:
       status:
@@ -54,13 +60,28 @@ definitions:
         example: '404'
       title:
         type: string
-        example: 'Could not find the requested game.'
+        example: 'Not Found'
       detail:
         type: string
-        example: 'Could not find game with id 456.'
+        example: 'Could not find a game with id 123.'
       source:
-        type: string
-        example: 'TBD.'
+        type: object
+        $ref: '#/definitions/error_source'
+  error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: '404'
+        title:
+          type: string
+          example: 'Could not find the requested game.'
+        detail:
+          type: string
+          example: 'Could not find game with id 456.'
+        source:
+          type: string
+          example: 'TBD.'
 paths:
   /games:
     get:
@@ -138,7 +159,7 @@ paths:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/error'
+                  $ref: '#/definitions/not_found_error'
         '422':
           description: There was invalid data in the request.
           schema:
