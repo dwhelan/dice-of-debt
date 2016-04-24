@@ -31,7 +31,7 @@ module DiceOfDebt
         get '/games/9999'
 
         expect_error(404)
-        expect(error[:title]).to eq 'Not Found'
+        expect(error[:title]).to eq 'Could not find game'
         expect(error[:detail]).to eq 'Could not find a game with id 9999'
         expect(error[:source][:parameter]).to eq 'id'
       end
@@ -41,8 +41,8 @@ module DiceOfDebt
 
         expect_error(422)
         expect(error[:status]).to eq '422'
-        expect(error[:title]).to eq 'id is invalid'
-        expect(error[:detail]).to eq 'id is invalid'
+        expect(error[:title]).to eq 'Invalid game id'
+        expect(error[:detail]).to eq "The provided game id 'foo' should be numeric"
         expect(error[:source][:parameter]).to eq 'id'
       end
     end

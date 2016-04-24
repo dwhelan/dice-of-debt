@@ -80,8 +80,8 @@ definitions:
     - $ref: '#/definitions/error'
     example:
       status: '422'
-      title: id is invalid
-      detail: id is invalid
+      title: Invalid game id
+      detail: The provided game id 'foo' should be numeric
       source:
         parameter: id
 paths:
