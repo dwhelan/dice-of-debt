@@ -40,6 +40,7 @@ module DiceOfDebt
         get '/games/foo'
 
         expect_error(422)
+        expect(error[:status]).to eq '422'
         expect(error[:title]).to eq 'id is invalid'
         expect(error[:detail]).to eq 'id is invalid'
         expect(error[:source][:parameter]).to eq 'id'

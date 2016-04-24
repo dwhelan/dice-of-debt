@@ -58,7 +58,7 @@ module DiceOfDebt
     rescue_from Grape::Exceptions::ValidationErrors do |e|
       errors = e.map do |attributes, error|
         message = e.send(:full_message, attributes, error)
-        Error.new(status: e.status, title: message, source: { parameter: attributes.join(',') })
+        Error.new(status: 422, title: message, source: { parameter: attributes.join(',') })
       end
 
       ErrorResponse.build 422, errors

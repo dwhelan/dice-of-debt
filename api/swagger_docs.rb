@@ -52,57 +52,38 @@ definitions:
       parameter:
         type: string
         example: 'id'
+  error:
+    type: object
+    properties:
+      status:
+        type: string
+      title:
+        type: string
+      detail:
+        type: string
+      source:
+        type: object
+        $ref: '#/definitions/error_source'
   not_found_error:
-    type: object
-    properties:
-      status:
-        type: string
-        example: '404'
-      title:
-        type: string
-        example: 'Not Found'
-      detail:
-        type: string
-        example: Could not find a game with id 123.
-      source:
-        type: object
-        $ref: '#/definitions/error_source'
-  validation_error:
-    type: object
-    properties:
-      status:
-        type: string
-        example: '422'
-      title:
-        type: string
-        example: 'Not Found'
-      detail:
-        type: string
-        example: Could not find a game with id 123.
-      source:
-        type: object
-        $ref: '#/definitions/error_source'
+    allOf:
+    - type: object
+    - $ref: '#/definitions/error'
     example:
-      status: '422'
-      title: Validation error
-      detail: A game id must be numeric
+      status: '404'
+      title: Not Found
+      detail: Could not find a game with id 123.
       source:
         parameter: id
-  error:
-      type: object
-      properties:
-        status:
-          type: string
-          example: '404'
-        title:
-          type: string
-          example: 'Could not find the requested game.'
-        detail:
-          type: string
-          example: 'Could not find game with id 456.'
-        source:
-          type: string
-          example: 'TBD.'
+  validation_error:
+    allOf:
+    - type: object
+    - $ref: '#/definitions/error'
+    example:
+      status: '422'
+      title: id is invalid
+      detail: id is invalid
+      source:
+        parameter: id
 paths:
   /games:
     get:
