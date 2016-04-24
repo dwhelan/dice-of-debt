@@ -8,56 +8,67 @@ module DiceOfDebt
 
     let(:game1) { { games: { id: '1' } } }
 
-    specify 'get all games' do
-      get '/games'
+    describe 'GET /games' do
+      before { get '/games' }
 
-      expect_data(200)
-      expect(data.length).to eq 1
-      expect(data[0][:type]).to eq 'game'
-      expect(data[0][:id]).to eq '1'
-      expect(data[0][:value_dice]).to eq 8
+      it { expect_data(200) }
+
+      subject { data[0] }
+
+      its([:id])         { should eq '1' }
+      its([:type])       { should eq 'game' }
+      its([:value_dice]) { should eq 8 }
     end
 
-    describe 'get game' do
-      specify 'when game is found' do
-        get '/games/1'
+    describe 'GET /games/1' do
+      before { get '/games/1' }
 
-        expect_data(200)
-        expect(data[:type]).to eq 'game'
-        expect(data[:id]).to eq '1'
-      end
+      it { expect_data(200) }
 
-      specify 'when game is not found' do
-        get '/games/9999'
+      subject { data }
 
-        expect_error(404)
-        expect(error[:title]).to eq 'Could not find game'
-        expect(error[:detail]).to eq 'Could not find a game with id 9999'
-        expect(error[:source][:parameter]).to eq 'id'
-      end
-
-      specify 'when game id is invalid' do
-        get '/games/foo'
-
-        expect_error(422)
-        expect(error[:status]).to eq '422'
-        expect(error[:title]).to eq 'Invalid game id'
-        expect(error[:detail]).to eq "The provided game id 'foo' should be numeric"
-        expect(error[:source][:parameter]).to eq 'id'
-      end
+      its([:id])         { should eq '1' }
+      its([:type])       { should eq 'game' }
+      its([:value_dice]) { should eq 8 }
     end
 
-    describe 'Create game' do
-      specify 'with a valid game' do
-        request_data = { data: {} }
-        post '/games', request_data.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json'
+    describe 'GET /games/9999' do
+      before { get '/games/9999' }
 
-        expect_data(201)
-        expect(headers['Location']).to eq '/games/2'
+      it { expect_error(404) }
 
-        expect(data[:type]).to eq 'game'
-        expect(data[:id]).to eq '2'
-      end
+      subject { error }
+
+      its([:status]) { should eq '404' }
+      its([:title])  { should eq 'Could not find game' }
+      its([:detail]) { should eq 'Could not find a game with id 9999' }
+      its([:source]) { should eq parameter: 'id' }
+    end
+
+    describe 'GET /games/foo' do
+      before { get '/games/foo' }
+
+      it { expect_error(422) }
+
+      subject { error }
+
+      its([:status]) { should eq '422' }
+      its([:title])  { should eq 'Invalid game id' }
+      its([:detail]) { should eq "The provided game id 'foo' should be numeric" }
+      its([:source]) { should eq parameter: 'id' }
+    end
+
+    describe 'POST /games' do
+      before { post '/games', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
+
+      it { expect_data(201) }
+      it { expect(headers['Location']).to match '/games/\d+' }
+
+      subject { data }
+
+      its([:id])         { should match '\d+' }
+      its([:type])       { should eq 'game' }
+      its([:value_dice]) { should eq 8 }
     end
   end
 end
