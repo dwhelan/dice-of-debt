@@ -1,6 +1,7 @@
 require 'grape'
 require 'grape-roar'
 
+# rubocop:disable Metrics/ClassLength
 module DiceOfDebt
   class API
     resource :swagger_doc do
@@ -45,6 +46,21 @@ definitions:
       foo:
         type: string
         example: '1'
+  error:
+    type: object
+    properties:
+      status:
+        type: string
+        example: '404'
+      title:
+        type: string
+        example: 'Could not find the requested game.'
+      detail:
+        type: string
+        example: 'Could not find game with id 456.'
+      source:
+        type: string
+        example: 'TBD.'
 paths:
   /games:
     get:
@@ -92,7 +108,46 @@ paths:
           headers:
             Location:
               type: string
-              description: The URI of the new game.
+              description: The URI to the newly created game.
+  /games/{id}:
+    get:
+      tags:
+        - games
+      summary: Get a game by id.
+      description: Get a game by id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the game to get.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The requested game.
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/game'
+        '404':
+          description: The requested game could not be found.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/error'
+        '422':
+          description: There was invalid data in the request.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/error'
         eos
       end
     end
