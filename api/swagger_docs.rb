@@ -27,10 +27,10 @@ info:
     url: https://opensource.org/licenses/MIT
 tags:
   -
-    name: Games
+    name: games
     description: Everything about games.
 definitions:
-  Game:
+  game:
     type: object
     properties:
       id:
@@ -39,11 +39,17 @@ definitions:
       type:
         type: string
         example: 'game'
+  new_game:
+    type: object
+    properties:
+      foo:
+        type: string
+        example: '1'
 paths:
   /games:
     get:
       tags:
-        - Games
+        - games
       summary: Get all games.
       description: Get all games.
       responses:
@@ -56,12 +62,23 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/definitions/Game'
+                  $ref: '#/definitions/game'
     post:
       tags:
-        - Games
-      summary: Create a game.
-      description: Create a game.
+        - games
+      summary: Create a new game.
+      description: Create a new game.
+      parameters:
+        - name: body
+          in: body
+          description: Game to add.
+          required: true
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/new_game'
       responses:
         '201':
           summary: The game just created.
@@ -71,7 +88,7 @@ paths:
             properties:
               data:
                 type: object
-                $ref: '#/definitions/Game'
+                $ref: '#/definitions/game'
         eos
       end
     end

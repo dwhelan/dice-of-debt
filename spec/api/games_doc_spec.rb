@@ -8,7 +8,7 @@ module DiceOfDebt
     before { get '/swagger_doc.json' }
 
     describe 'Game definition' do
-      let(:definition) { json[:definitions][:Game] }
+      let(:definition) { json[:definitions][:game] }
       subject { definition }
 
       its([:type]) { should eq 'object' }
@@ -35,12 +35,14 @@ module DiceOfDebt
     describe '/games' do
       let(:games) { json[:paths][:'/games'] }
       let(:responses) { operation[:responses] }
+      let(:parameters) { operation[:parameters] }
+
       subject { operation }
 
       describe 'get' do
         let(:operation) { games[:get] }
 
-        its([:tags])        { should eq ['Games'] }
+        its([:tags])        { should eq ['games'] }
         its([:summary])     { should eq 'Get all games.' }
         its([:description]) { should eq 'Get all games.' }
 
@@ -53,7 +55,7 @@ module DiceOfDebt
             describe 'schema' do
               subject { responses[:'200'][:schema] }
               its([:type])       { should eq 'object' }
-              its([:properties]) { should eq data: { type: 'array', items: { :$ref => '#/definitions/Game' } } }
+              its([:properties]) { should eq data: { type: 'array', items: { :$ref => '#/definitions/game' } } }
             end
           end
         end
@@ -62,9 +64,23 @@ module DiceOfDebt
       describe 'post' do
         let(:operation) { games[:post] }
 
-        its([:tags])        { should eq ['Games'] }
-        its([:summary])     { should eq 'Create a game.' }
-        its([:description]) { should eq 'Create a game.' }
+        its([:tags])        { should eq ['games'] }
+        its([:summary])     { should eq 'Create a new game.' }
+        its([:description]) { should eq 'Create a new game.' }
+
+        describe 'parameters' do
+          subject { parameters[0] }
+
+          its([:in])          { should eq 'body' }
+          its([:required])    { should be true }
+          its([:description]) { should eq 'Game to add.' }
+
+          describe 'schema' do
+            subject { parameters[0][:schema] }
+            its([:type])       { should eq 'object' }
+            its([:properties]) { should eq data: { type: 'object', :$ref => '#/definitions/new_game' } }
+          end
+        end
 
         describe 'responses' do
           describe '201' do
@@ -75,7 +91,7 @@ module DiceOfDebt
             describe 'schema' do
               subject { responses[:'201'][:schema] }
               its([:type])       { should eq 'object' }
-              its([:properties]) { should eq data: { type: 'object', :$ref => '#/definitions/Game' } }
+              its([:properties]) { should eq data: { type: 'object', :$ref => '#/definitions/game' } }
             end
           end
         end
