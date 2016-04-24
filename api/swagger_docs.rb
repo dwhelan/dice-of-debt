@@ -63,10 +63,31 @@ definitions:
         example: 'Not Found'
       detail:
         type: string
-        example: 'Could not find a game with id 123.'
+        example: Could not find a game with id 123.
       source:
         type: object
         $ref: '#/definitions/error_source'
+  validation_error:
+    type: object
+    properties:
+      status:
+        type: string
+        example: '422'
+      title:
+        type: string
+        example: 'Not Found'
+      detail:
+        type: string
+        example: Could not find a game with id 123.
+      source:
+        type: object
+        $ref: '#/definitions/error_source'
+    example:
+      status: '422'
+      title: Validation error
+      detail: A game id must be numeric
+      source:
+        parameter: id
   error:
       type: object
       properties:
@@ -161,14 +182,14 @@ paths:
                 items:
                   $ref: '#/definitions/not_found_error'
         '422':
-          description: There was invalid data in the request.
+          description: The game id provided must be numeric.
           schema:
             type: object
             properties:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/error'
+                  $ref: '#/definitions/validation_error'
         eos
       end
     end

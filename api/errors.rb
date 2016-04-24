@@ -37,8 +37,7 @@ module DiceOfDebt
     module ErrorResponse
       def self.build(status, errors)
         headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
-        # [status, headers, ErrorArrayPresenter.represent(errors)]
-        [status, headers, ErrorArrayPresenter.represent(errors).to_json]
+        [status, headers, [ErrorArrayPresenter.represent(errors).to_json]]
       end
     end
 
@@ -66,8 +65,12 @@ module DiceOfDebt
     end
 
     resource :errors do
-      desc 'Raise an error.', hidden: true
+      desc 'Raise an error.'
       post do
+        fail 'Internal Server Error'
+      end
+
+      get do
         fail 'Internal Server Error'
       end
     end
