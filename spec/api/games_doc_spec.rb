@@ -93,6 +93,12 @@ module DiceOfDebt
               its([:type])       { should eq 'object' }
               its([:properties]) { should eq data: { type: 'object', :$ref => '#/definitions/game' } }
             end
+
+            describe 'Location header' do
+              subject { responses[:'201'][:headers][:Location] }
+              its([:type])        { should eq 'string' }
+              its([:description]) { should eq 'The URI of the new game.' }
+            end
           end
         end
       end

@@ -89,6 +89,10 @@ paths:
               data:
                 type: object
                 $ref: '#/definitions/game'
+          headers:
+            Location:
+              type: string
+              description: The URI of the new game.
         eos
       end
     end
