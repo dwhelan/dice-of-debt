@@ -40,6 +40,9 @@ definitions:
       type:
         type: string
         example: 'game'
+      value_dice:
+        type: integer
+        example: 8
   new_game:
     type: object
     properties:
