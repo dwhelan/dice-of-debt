@@ -18,6 +18,7 @@ module DiceOfDebt
       its([:id])         { should eq '1' }
       its([:type])       { should eq 'game' }
       its([:value_dice]) { should eq 8 }
+      its([:debt_dice])  { should eq 4 }
     end
 
     describe 'GET /games/1' do
@@ -30,6 +31,7 @@ module DiceOfDebt
       its([:id])         { should eq '1' }
       its([:type])       { should eq 'game' }
       its([:value_dice]) { should eq 8 }
+      its([:debt_dice])  { should eq 4 }
     end
 
     describe 'GET /games/9999' do
@@ -69,6 +71,7 @@ module DiceOfDebt
       its([:id])         { should match '\d+' }
       its([:type])       { should eq 'game' }
       its([:value_dice]) { should eq 8 }
+      its([:debt_dice])  { should eq 4 }
     end
   end
 end

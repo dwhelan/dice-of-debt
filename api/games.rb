@@ -6,6 +6,7 @@ module DiceOfDebt
       type 'game'
 
       property :value_dice, getter: ->(_) { value_dice.count }
+      property :debt_dice,  getter: ->(_) { debt_dice.count  }
     end
 
     module GameDocumentPresenter

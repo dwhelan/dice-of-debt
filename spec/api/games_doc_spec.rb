@@ -43,6 +43,13 @@ module DiceOfDebt
           its([:type])    { should eq 'integer' }
           its([:example]) { should eq 8 }
         end
+
+        describe 'debt_dice' do
+          subject { properties[:debt_dice] }
+
+          its([:type])    { should eq 'integer' }
+          its([:example]) { should eq 4 }
+        end
       end
     end
 

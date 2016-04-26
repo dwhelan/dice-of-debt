@@ -43,6 +43,9 @@ definitions:
       value_dice:
         type: integer
         example: 8
+      debt_dice:
+        type: integer
+        example: 4
   new_game:
     type: object
     properties:
