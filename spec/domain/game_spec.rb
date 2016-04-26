@@ -15,23 +15,23 @@ module DiceOfDebt
 
     describe 'initially' do
       its(:value)              { should be 0 }
-      its(:"iterations.count") { should be config.iterations }
+      its(:'iterations.count') { should be config.iterations }
     end
 
     describe 'rolling value dice' do
       before { game.roll_value_dice }
 
       its(:value)                 { should be 8 }
-      its(:"iteration.new_value") { should be 8 }
-      its(:"iteration.value")     { should be 8 }
+      its(:'iteration.new_value') { should be 8 }
+      its(:'iteration.value')     { should be 8 }
     end
 
     describe 'rolling debt dice' do
       before { game.roll_debt_dice }
 
       its(:value)             { should be(-4) }
-      its(:"iteration.value") { should be(-4) }
-      its(:"iteration.debt")  { should be 4 }
+      its(:'iteration.value') { should be(-4) }
+      its(:'iteration.debt')  { should be 4 }
     end
 
     describe 'after one iteration' do
@@ -67,7 +67,7 @@ module DiceOfDebt
       its(:sides)  { should be 6 }
       its(:roller) { should be_a RandomRoller }
 
-      its(:"roller.sides") { should be 6 }
+      its(:'roller.sides') { should be 6 }
     end
 
     describe 'debt_dice' do
@@ -77,7 +77,7 @@ module DiceOfDebt
       its(:sides)  { should be 6 }
       its(:roller) { should be_a RandomRoller }
 
-      its(:"roller.sides") { should be 6 }
+      its(:'roller.sides') { should be 6 }
     end
   end
 end
