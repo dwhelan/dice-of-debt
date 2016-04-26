@@ -33,9 +33,10 @@ module DiceOfDebt
       end
 
       post do
-        game = GameDocumentPresenter.represent(Game.new).from_json request.body.string
-        present repository.create(game), with: GameDocumentPresenter
+        game = GameDocumentPresenter.represent(Game.new).from_json request.body.read
+        game = repository.create(game)
         header 'Location', "/games/#{game.id}"
+        present game, with: GameDocumentPresenter
       end
 
       params do

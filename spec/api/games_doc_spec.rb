@@ -90,7 +90,7 @@ module DiceOfDebt
         subject { parameters[0] }
 
         its([:in])          { should eq 'body' }
-        its([:required])    { should be true }
+        its([:required])    { should be false }
         its([:description]) { should eq 'Game to add.' }
 
         describe 'schema' do

@@ -48,10 +48,6 @@ definitions:
         example: 4
   new_game:
     type: object
-    properties:
-      foo:
-        type: string
-        example: '1'
   error_source:
     type: object
     properties:
@@ -117,7 +113,7 @@ paths:
         - name: body
           in: body
           description: Game to add.
-          required: true
+          required: false
           schema:
             type: object
             properties:
