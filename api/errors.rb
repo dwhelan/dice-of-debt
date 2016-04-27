@@ -47,6 +47,7 @@ module DiceOfDebt
 
         status error.status
         present [error], with: ErrorArrayPresenter
+        nil
       end
     end
 

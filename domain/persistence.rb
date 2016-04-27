@@ -15,6 +15,7 @@ module DiceOfDebt
           define(:create) do
             result :one
           end
+          define(:update)
         end
       end
     end
@@ -57,6 +58,10 @@ module DiceOfDebt
       result = @rom_container.commands[:games][:create].call(game.attributes)
       game.id = result[:id]
       game
+    end
+
+    def update(game)
+      @rom_container.commands[:games][:update].call(game.attributes)
     end
   end
 end

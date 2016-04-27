@@ -1,9 +1,13 @@
+require 'pad'
+
 module DiceOfDebt
   # The Iteration class is responsible for keeping track of the new value, debt and total value for each iteration.
   class Iteration
+    attr_reader :id
     attr_accessor :new_value, :debt, :previous, :next
 
     def initialize(previous = nil)
+      @id = previous ? previous.id + 1 : 1
       self.previous  = previous
       self.debt      = 0
       self.new_value = 0

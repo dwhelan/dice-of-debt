@@ -22,6 +22,28 @@ module DiceOfDebt
       resource_presenter GamePresenter
     end
 
+    helpers do
+      def find_game(id)
+        if id !~ /\d+/
+          error(
+              status: 422,
+              title: 'Invalid game id',
+              detail: "The provided game id '#{id}' should be numeric",
+              source: { parameter: :id }
+          )
+        elsif game = Persistence.game_repository.with_id(id)
+          game
+        else
+          error(
+              status: 404,
+              title: 'Could not find game',
+              detail: "Could not find a game with id #{id}",
+              source: { parameter: :id }
+          )
+        end
+      end
+    end
+
     resource :games do
       helpers do
         def repository
@@ -45,25 +67,11 @@ module DiceOfDebt
       end
 
       route_param :id do
+
         get do
-          id = params[:id]
           # rubocop:disable Lint/AssignmentInCondition
-          if id !~ /\d+/
-            error(
-              status: 422,
-              title: 'Invalid game id',
-              detail: "The provided game id '#{id}' should be numeric",
-              source: { parameter: :id }
-            )
-          elsif game = repository.with_id(id)
+          if game = find_game(params[:id])
             present game, with: GameDocumentPresenter
-          else
-            error(
-              status: 404,
-              title: 'Could not find game',
-              detail: "Could not find a game with id #{id}",
-              source: { parameter: :id }
-            )
           end
         end
       end
