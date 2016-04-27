@@ -32,6 +32,7 @@ module DiceOfDebt
       its([:type])       { should eq 'game' }
       its([:value_dice]) { should eq 8 }
       its([:debt_dice])  { should eq 4 }
+      its([:value])      { should eq 0 }
     end
 
     describe 'GET /games/9999' do
