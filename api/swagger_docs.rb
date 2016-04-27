@@ -49,8 +49,6 @@ definitions:
       debt_dice:
         type: integer
         example: 4
-  new_game:
-    type: object
   error_source:
     type: object
     properties:
@@ -112,21 +110,10 @@ paths:
         - games
       summary: Create a new game.
       description: Create a new game.
-      parameters:
-        - name: body
-          in: body
-          description: Game to add.
-          required: false
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                $ref: '#/definitions/new_game'
       responses:
         '201':
           summary: The game just created.
-          description: The created game including any automatically created properties.
+          description: The game just created.
           schema:
             type: object
             properties:

@@ -93,25 +93,13 @@ module DiceOfDebt
       its([:summary])     { should eq 'Create a new game.' }
       its([:description]) { should eq 'Create a new game.' }
 
-      describe 'parameters' do
-        subject { parameters[0] }
-
-        its([:in])          { should eq 'body' }
-        its([:required])    { should be false }
-        its([:description]) { should eq 'Game to add.' }
-
-        describe 'schema' do
-          subject { parameters[0][:schema] }
-          its([:type])       { should eq 'object' }
-          its([:properties]) { should eq data: { type: 'object', :$ref => '#/definitions/new_game' } }
-        end
-      end
+      it { expect(parameters).to be_nil }
 
       describe 'responses' do
         describe '201' do
           subject { responses[:'201'] }
-          its([:summary])     { should eq 'The game just created.' }
-          its([:description]) { should eq 'The created game including any automatically created properties.' }
+          its([:summary])     { should_not be_blank }
+          its([:description]) { should_not be_blank }
 
           describe 'schema' do
             subject { responses[:'201'][:schema] }
@@ -122,7 +110,7 @@ module DiceOfDebt
           describe 'Location header' do
             subject { responses[:'201'][:headers][:Location] }
             its([:type])        { should eq 'string' }
-            its([:description]) { should eq 'The URI to the newly created game.' }
+            its([:description]) { should_not be_blank }
           end
         end
       end
@@ -132,8 +120,8 @@ module DiceOfDebt
       let(:operation) { json[:paths][:'/games/{id}'][:get] }
 
       its([:tags])        { should eq ['games'] }
-      its([:summary])     { should eq 'Get a game by id.' }
-      its([:description]) { should eq 'Get a game by id.' }
+      its([:summary])     { should should_not be_blank }
+      its([:description]) { should should_not be_blank }
 
       describe 'parameters' do
         subject { parameters[0] }
@@ -141,14 +129,14 @@ module DiceOfDebt
         its([:name])        { should eq 'id' }
         its([:in])          { should eq 'path' }
         its([:required])    { should be true }
-        its([:description]) { should eq 'The id of the game to get.' }
+        its([:description]) { should_not be_blank }
         its([:type])        { should eq 'string' }
       end
 
       describe 'responses' do
         describe '200' do
           subject { responses[:'200'] }
-          its([:description]) { should eq 'The requested game.' }
+          its([:description]) { should_not be_blank }
 
           describe 'schema' do
             subject { responses[:'200'][:schema] }
@@ -159,7 +147,7 @@ module DiceOfDebt
 
         describe '404' do
           subject { responses[:'404'] }
-          its([:description]) { should eq 'The requested game could not be found.' }
+          its([:description]) { should_not be_blank }
 
           describe 'schema' do
             subject { responses[:'404'][:schema] }
