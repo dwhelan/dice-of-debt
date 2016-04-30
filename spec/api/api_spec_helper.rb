@@ -43,7 +43,15 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
-    let(:json)    { symbolize_keys(JSON.parse(body)) }
+    let(:json)    do
+      begin
+        symbolize_keys(JSON.parse(body))
+      rescue
+        puts body
+        raise
+      end
+
+    end
     let(:data)    { json[:data] }
     let(:errors)  { json[:errors] }
     let(:error)   { errors.first }

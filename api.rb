@@ -23,5 +23,7 @@ module DiceOfDebt
     route :any, '*path' do
       error(status: 404, title: 'Invalid URI')
     end
+
+    puts routes
   end
 end
