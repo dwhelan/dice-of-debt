@@ -15,7 +15,7 @@ module DiceOfDebt
 
     describe 'initially' do
       its(:value)              { should be 0 }
-      its(:'iterations.count') { should be config.iterations }
+      its(:'iterations.count') { should be 1 }
     end
 
     describe 'rolling value dice' do

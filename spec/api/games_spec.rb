@@ -1,4 +1,5 @@
 require_relative 'api_spec_helper'
+require 'rspec/collection_matchers'
 
 module DiceOfDebt
   describe API do
@@ -33,6 +34,7 @@ module DiceOfDebt
       its([:value_dice]) { should eq 8 }
       its([:debt_dice])  { should eq 4 }
       its([:value])      { should eq 0 }
+      its([:iterations]) { should have(1).item }
     end
 
     describe 'GET /games/9999' do

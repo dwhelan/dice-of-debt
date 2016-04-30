@@ -24,5 +24,6 @@ group 'test' do
   gem 'guard-rspec', '~> 4.6'
   gem 'rack-test',   '~> 0.6'
   gem 'rspec',       '~> 3.4'
+  gem 'rspec-collection_matchers', '~> 1.1'
   gem 'rspec-its',   '~> 1.1'
 end

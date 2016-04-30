@@ -8,6 +8,8 @@ module DiceOfDebt
       property :value_dice, getter: ->(_) { value_dice.count }
       property :debt_dice,  getter: ->(_) { debt_dice.count  }
       property :value
+
+      collection :iterations, extend: IterationRepresenter#, as: :iterations, embedded: true
     end
 
     module GameDocumentPresenter
@@ -69,10 +71,8 @@ module DiceOfDebt
       route_param :id do
 
         get do
-          # rubocop:disable Lint/AssignmentInCondition
-          if game = find_game(params[:id])
-            present game, with: GameDocumentPresenter
-          end
+          game = find_game(params[:id])
+          present game, with: GameDocumentPresenter if game
         end
       end
     end

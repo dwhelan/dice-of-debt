@@ -32,7 +32,11 @@ module DiceOfDebt
 
     def expect_response(status_code, types)
       expect(status).to eq status_code
-      expect(headers['Content-Type']).to eq 'application/vnd.api+json'
+      if json.keys != types
+        expect(json).to eq types
+      else
+        expect(headers['Content-Type']).to eq 'application/vnd.api+json'
+      end
       expect(json.keys).to eq types
     end
 

@@ -8,6 +8,12 @@ module DiceOfDebt
       property :value
     end
 
+    module IterationArrayRepresenter
+      include ResourceArrayPresenter
+
+      resource_presenter IterationRepresenter
+    end
+
     module IterationDocumentRepresenter
       include ResourcePresenter
 

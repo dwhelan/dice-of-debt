@@ -16,19 +16,19 @@ module DiceOfDebt
     end
 
     def end_iteration
-      iterations.next if iteration.next
+      iterations << Iteration.new if iterations.size < configuration.iterations
     end
 
     def value
-      iteration.value
+      iterations.inject(0) {|sum, i| sum+i.value }
     end
 
     def iteration
-      iterations.current
+      iterations.last
     end
 
     def iterations
-      @iterations ||= Iterations.new(configuration.iterations)
+      @iterations ||= [Iteration.new];#Iterations.new(configuration.iterations)
     end
 
     def value_dice
