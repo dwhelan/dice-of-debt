@@ -8,7 +8,7 @@ module DiceOfDebt
     include Pad.entity
 
     def roll_value_dice
-      iteration.new_value = value_dice.roll
+      iteration.value = value_dice.roll
     end
 
     def roll_debt_dice

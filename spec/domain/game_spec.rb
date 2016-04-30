@@ -21,9 +21,9 @@ module DiceOfDebt
     describe 'rolling value dice' do
       before { game.roll_value_dice }
 
-      its(:score)                 { should be 8 }
-      its(:'iteration.new_value') { should be 8 }
-      its(:'iteration.score')     { should be 8 }
+      its(:score)             { should be 8 }
+      its(:'iteration.value') { should be 8 }
+      its(:'iteration.score') { should be 8 }
     end
 
     describe 'rolling debt dice' do
