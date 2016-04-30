@@ -9,7 +9,7 @@ module DiceOfDebt
       property :debt_dice,  getter: ->(_) { debt_dice.count  }
       property :value
 
-      collection :iterations, extend: IterationRepresenter#, as: :iterations, embedded: true
+      collection :iterations, extend: IterationRepresenter
     end
 
     module GameDocumentPresenter
@@ -26,23 +26,33 @@ module DiceOfDebt
 
     helpers do
       def find_game(id)
-        if id !~ /\d+/
-          error(
-              status: 422,
-              title: 'Invalid game id',
-              detail: "The provided game id '#{id}' should be numeric",
-              source: { parameter: :id }
-          )
-        elsif game = Persistence.game_repository.with_id(id)
-          game
+        if valid_game_id?(id)
+          error_for_invalid_game_id(id)
         else
-          error(
-              status: 404,
-              title: 'Could not find game',
-              detail: "Could not find a game with id #{id}",
-              source: { parameter: :id }
-          )
+          Persistence.game_repository.with_id(id) || error_for_game_not_found(id)
         end
+      end
+
+      def valid_game_id?(id)
+        id !~ /\d+/
+      end
+
+      def error_for_invalid_game_id(id)
+        error(
+          status: 422,
+          title: 'Invalid game id',
+          detail: "The provided game id '#{id}' should be numeric",
+          source: { parameter: :id }
+        )
+      end
+
+      def error_for_game_not_found(id)
+        error(
+          status: 404,
+          title: 'Could not find game',
+          detail: "Could not find a game with id #{id}",
+          source: { parameter: :id }
+        )
       end
     end
 
@@ -69,7 +79,6 @@ module DiceOfDebt
       end
 
       route_param :id do
-
         get do
           game = find_game(params[:id])
           present game, with: GameDocumentPresenter if game

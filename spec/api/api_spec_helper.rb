@@ -30,6 +30,7 @@ module DiceOfDebt
       expect_response(status_code, [:errors])
     end
 
+    # rubocop:disable Metrics/AbcSize
     def expect_response(status_code, types)
       expect(status).to eq status_code
       if json.keys != types
@@ -37,7 +38,6 @@ module DiceOfDebt
       else
         expect(headers['Content-Type']).to eq 'application/vnd.api+json'
       end
-      expect(json.keys).to eq types
     end
 
     let(:headers) { last_response.headers }

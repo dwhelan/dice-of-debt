@@ -20,7 +20,7 @@ module DiceOfDebt
     end
 
     def value
-      iterations.inject(0) {|sum, i| sum+i.value }
+      iterations.inject(0) { |sum, i| sum + i.value }
     end
 
     def iteration
@@ -28,7 +28,7 @@ module DiceOfDebt
     end
 
     def iterations
-      @iterations ||= [Iteration.new];#Iterations.new(configuration.iterations)
+      @iterations ||= [Iteration.new]
     end
 
     def value_dice

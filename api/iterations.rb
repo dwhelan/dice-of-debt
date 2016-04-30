@@ -23,7 +23,8 @@ module DiceOfDebt
     resource :games do
       route_param :id do
         post 'iterations' do
-          if game = find_game(params[:id])
+          game = find_game(params[:id])
+          if game
             game.roll_value_dice
             game.roll_debt_dice
             iteration = game.iteration

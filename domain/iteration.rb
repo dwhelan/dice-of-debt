@@ -20,9 +20,5 @@ module DiceOfDebt
     def initial_value
       previous ? previous.value : 0
     end
-
-    def entries
-      binding.pry
-    end
   end
 end
