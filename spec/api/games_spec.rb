@@ -33,7 +33,7 @@ module DiceOfDebt
       its([:type])       { should eq 'game' }
       its([:value_dice]) { should eq 8 }
       its([:debt_dice])  { should eq 4 }
-      its([:value])      { should eq 0 }
+      its([:score])      { should eq 0 }
       its([:iterations]) { should have(1).item }
     end
 

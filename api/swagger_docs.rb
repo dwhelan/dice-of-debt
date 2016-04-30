@@ -40,7 +40,7 @@ definitions:
       type:
         type: string
         example: 'game'
-      value:
+      score:
         type: integer
         example: 0
       value_dice:

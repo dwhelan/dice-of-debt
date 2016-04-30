@@ -7,7 +7,7 @@ module DiceOfDebt
 
       property :value_dice, getter: ->(_) { value_dice.count }
       property :debt_dice,  getter: ->(_) { debt_dice.count  }
-      property :value
+      property :score
 
       collection :iterations, extend: IterationRepresenter
     end
@@ -68,7 +68,7 @@ module DiceOfDebt
       end
 
       post do
-        game = GameDocumentPresenter.represent(Game.new).from_json request.body.read
+        game = GameDocumentPresenter.represent(Game.new)
         game = repository.create(game)
         header 'Location', "/games/#{game.id}"
         present game, with: GameDocumentPresenter

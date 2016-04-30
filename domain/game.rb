@@ -19,7 +19,7 @@ module DiceOfDebt
       iterations << Iteration.new if iterations.size < configuration.iterations
     end
 
-    def value
+    def score
       iterations.inject(0) { |sum, i| sum + i.value }
     end
 

@@ -14,14 +14,14 @@ module DiceOfDebt
     end
 
     describe 'initially' do
-      its(:value)              { should be 0 }
+      its(:score)              { should be 0 }
       its(:'iterations.count') { should be 1 }
     end
 
     describe 'rolling value dice' do
       before { game.roll_value_dice }
 
-      its(:value)                 { should be 8 }
+      its(:score)                 { should be 8 }
       its(:'iteration.new_value') { should be 8 }
       its(:'iteration.value')     { should be 8 }
     end
@@ -29,7 +29,7 @@ module DiceOfDebt
     describe 'rolling debt dice' do
       before { game.roll_debt_dice }
 
-      its(:value)             { should be(-4) }
+      its(:score)             { should be(-4) }
       its(:'iteration.value') { should be(-4) }
       its(:'iteration.debt')  { should be 4 }
     end
@@ -38,14 +38,14 @@ module DiceOfDebt
       before { play_one_iteration }
 
       its(:iteration) { should be game.iterations[1] }
-      its(:value)     { should be 4 }
+      its(:score)     { should be 4 }
     end
 
     describe 'after 10 iterations' do
       before { 10.times { play_one_iteration } }
 
       its(:iteration) { should be game.iterations[9] }
-      its(:value)     { should be 40 }
+      its(:score)     { should be 40 }
     end
 
     def play_one_iteration
