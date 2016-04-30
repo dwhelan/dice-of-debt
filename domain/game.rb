@@ -20,7 +20,7 @@ module DiceOfDebt
     end
 
     def score
-      iterations.inject(0) { |sum, i| sum + i.value }
+      iterations.inject(0) { |sum, i| sum + i.score }
     end
 
     def iteration

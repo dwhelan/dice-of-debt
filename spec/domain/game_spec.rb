@@ -23,14 +23,14 @@ module DiceOfDebt
 
       its(:score)                 { should be 8 }
       its(:'iteration.new_value') { should be 8 }
-      its(:'iteration.value')     { should be 8 }
+      its(:'iteration.score')     { should be 8 }
     end
 
     describe 'rolling debt dice' do
       before { game.roll_debt_dice }
 
       its(:score)             { should be(-4) }
-      its(:'iteration.value') { should be(-4) }
+      its(:'iteration.score') { should be(-4) }
       its(:'iteration.debt')  { should be 4 }
     end
 

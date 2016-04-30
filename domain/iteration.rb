@@ -6,14 +6,12 @@ module DiceOfDebt
     attr_reader :id
     attr_accessor :new_value, :debt, :previous, :next
 
-    def initialize(previous = nil)
-      @id = previous ? previous.id + 1 : 1
-      self.previous  = previous
+    def initialize
       self.debt      = 0
       self.new_value = 0
     end
 
-    def value
+    def score
       initial_value + new_value - debt
     end
 

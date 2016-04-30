@@ -5,7 +5,7 @@ module DiceOfDebt
 
       type 'iteration'
 
-      property :value
+      property :score
     end
 
     module IterationArrayRepresenter
