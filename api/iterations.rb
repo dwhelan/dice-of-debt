@@ -22,6 +22,12 @@ module DiceOfDebt
       resource_presenter IterationRepresenter
     end
 
+    module IterationArrayDocumentRepresenter
+      include ResourceArrayPresenter
+
+      resource_presenter IterationRepresenter
+    end
+
     resource :games do
       route_param :game_id do
         resource :iterations do
@@ -38,6 +44,10 @@ module DiceOfDebt
           end
 
           get do
+            game = find_game(params[:game_id])
+            if game
+              present game.iterations, with: IterationArrayDocumentRepresenter
+            end
           end
 
           route_param :id do

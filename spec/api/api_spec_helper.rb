@@ -23,18 +23,18 @@ module DiceOfDebt
     end
 
     def expect_data(status_code)
-      expect_response(status_code, [:data])
+      expect(status).to eq status_code
+      expect_response(:data)
     end
 
     def expect_error(status_code)
-      expect_response(status_code, [:errors])
+      expect(status).to eq status_code
+      expect_response(:errors)
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def expect_response(status_code, types)
-      expect(status).to eq status_code
+    def expect_response(*types)
       if json.keys != types
-        expect(json).to eq types
+        expect(json).to eq types # Output full json to help diagnose failure
       else
         expect(headers['Content-Type']).to eq 'application/vnd.api+json'
       end
@@ -43,6 +43,10 @@ module DiceOfDebt
     let(:headers) { last_response.headers }
     let(:status)  { last_response.status  }
     let(:body)    { last_response.body    }
+    let(:data)    { json[:data] }
+    let(:errors)  { json[:errors] }
+    let(:error)   { errors.first }
+
     let(:json)    do
       begin
         symbolize_keys(JSON.parse(body))
@@ -50,11 +54,7 @@ module DiceOfDebt
         puts body
         raise
       end
-
     end
-    let(:data)    { json[:data] }
-    let(:errors)  { json[:errors] }
-    let(:error)   { errors.first }
 
     subject { last_response }
   end

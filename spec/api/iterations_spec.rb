@@ -16,13 +16,14 @@ module DiceOfDebt
 
       subject { data[0] }
 
-      its([:id])         { should eq '1' }
-      its([:type])       { should eq 'iteration' }
-      its([:value_dice]) { should eq 0 }
-      its([:debt_dice])  { should eq 8 }
+      its([:id])    { should eq '1' }
+      its([:type])  { should eq 'iteration' }
+      its([:value]) { should eq 0 }
+      its([:debt])  { should eq 0 }
+      its([:score]) { should eq 0 }
     end
 
-    fdescribe 'GET /games/1/iterations/1' do
+    describe 'GET /games/1/iterations/1' do
       before { get '/games/1/iterations/1' }
 
       it { expect_data 200 }
@@ -36,20 +37,20 @@ module DiceOfDebt
       its([:score]) { should eq 0 }
     end
 
-    describe 'GET /games/9999' do
-      before { get '/games/9999' }
+    xdescribe 'GET /games/1/iterations/9999' do
+      before { get '/games/1/iterations/9999' }
 
       it { expect_error 404 }
 
       subject { error }
 
       its([:status]) { should eq '404' }
-      its([:title])  { should eq 'Could not find game' }
-      its([:detail]) { should eq 'Could not find a game with id 9999' }
+      its([:title])  { should eq 'Could not find iteration' }
+      its([:detail]) { should eq 'Could not find an iteration with id 9999' }
       its([:source]) { should eq parameter: 'id' }
     end
 
-    describe 'GET /games/foo' do
+    xdescribe 'GET /games/foo' do
       before { get '/games/foo' }
 
       it { expect_error 422 }
@@ -62,7 +63,7 @@ module DiceOfDebt
       its([:source]) { should eq parameter: 'id' }
     end
 
-    describe 'POST /games' do
+    xdescribe 'POST /games' do
       before { post '/games', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
