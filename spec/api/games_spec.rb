@@ -12,7 +12,7 @@ module DiceOfDebt
     describe 'GET /games' do
       before { get '/games' }
 
-      it { expect_data(200) }
+      it { expect_data 200 }
 
       subject { data[0] }
 
@@ -25,7 +25,7 @@ module DiceOfDebt
     describe 'GET /games/1' do
       before { get '/games/1' }
 
-      it { expect_data(200) }
+      it { expect_data 200 }
 
       subject { data }
 
@@ -40,7 +40,7 @@ module DiceOfDebt
     describe 'GET /games/9999' do
       before { get '/games/9999' }
 
-      it { expect_error(404) }
+      it { expect_error 404 }
 
       subject { error }
 
@@ -53,7 +53,7 @@ module DiceOfDebt
     describe 'GET /games/foo' do
       before { get '/games/foo' }
 
-      it { expect_error(422) }
+      it { expect_error 422 }
 
       subject { error }
 
@@ -66,7 +66,7 @@ module DiceOfDebt
     describe 'POST /games' do
       before { post '/games', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
-      it { expect_data(201) }
+      it { expect_data 201 }
       it { expect(headers['Location']).to match '/games/\d+' }
 
       subject { data }
