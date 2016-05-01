@@ -6,7 +6,7 @@ require_relative '../../api'
 DiceOfDebt::Persistence.configuration = [:sql, 'sqlite::memory']
 
 RSpec.configure do |config|
-  config.before :suite  do
+  config.before :suite do
     load './Rakefile'
     Rake::Task['db:migrate'].invoke
 
@@ -45,11 +45,8 @@ module DiceOfDebt
     end
 
     def expect_response(*types)
-      if json.keys != types
-        expect(json).to eq types # Output full json to help diagnose failure
-      else
-        expect(headers['Content-Type']).to eq 'application/vnd.api+json'
-      end
+      expect(headers['Content-Type']).to eq 'application/vnd.api+json'
+      expect(json).to eq types if json.keys != types # Output full json to help diagnose failure
     end
 
     let(:headers) { last_response.headers }
