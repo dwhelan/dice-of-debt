@@ -6,26 +6,34 @@ require 'rom-sql'
 module DiceOfDebt
   # A persistence facade
   class Persistence
-    def self.rom_container
-      @rom_container ||= ROM.container(:sql, 'sqlite::memory') do |rom|
-        rom.use :macros
-        rom.relation :games
+    class << self
+      attr_writer :configuration
 
-        rom.commands(:games) do
-          define(:create) do
-            result :one
+      def configuration
+        @configuration ||= [:sql, 'postgres://localhost/dice_of_debt']
+      end
+
+      def rom_container
+        @rom_container ||= ROM.container(*configuration) do |rom|
+          rom.use :macros
+          rom.relation :games
+
+          rom.commands(:games) do
+            define(:create) do
+              result :one
+            end
+            define(:update)
           end
-          define(:update)
         end
       end
-    end
 
-    def self.game_repository
-      @game_repo ||= GameRepository.new(rom_container)
-    end
+      def game_repository
+        @game_repo ||= GameRepository.new(rom_container)
+      end
 
-    def self.connection
-      rom_container.gateways[:default].connection
+      def connection
+        rom_container.gateways[:default].connection
+      end
     end
   end
 
@@ -36,13 +44,9 @@ module DiceOfDebt
     def initialize(rom_container, options = {})
       super
       @rom_container = rom_container
+
+      # TODO: move this to some test setup
       connection = Persistence.connection
-
-      # TODO: move this to a migration
-      connection.create_table :games do
-        primary_key :id
-      end
-
       connection[:games].insert id: '1'
     end
 
