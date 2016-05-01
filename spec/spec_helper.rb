@@ -27,14 +27,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
-
-  config.before(:suite) do
-    load './Rakefile'
-    Rake::Task['db:migrate'].invoke
-    # `rake db:migrate`
-  end
 end
 
 require_relative '../domain'
-
-DiceOfDebt::Persistence.configuration = [:sql, 'sqlite::memory']

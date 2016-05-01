@@ -3,6 +3,18 @@ require 'rack/test'
 
 require_relative '../../api'
 
+DiceOfDebt::Persistence.configuration = [:sql, 'sqlite::memory']
+
+RSpec.configure do |config|
+  config.before :suite  do
+    load './Rakefile'
+    Rake::Task['db:migrate'].invoke
+
+    connection = DiceOfDebt::Persistence.connection
+    connection[:games].insert id: '1'
+  end
+end
+
 module DiceOfDebt
   shared_context 'api test' do
     include Rack::Test::Methods
@@ -57,17 +69,5 @@ module DiceOfDebt
     end
 
     subject { last_response }
-  end
-
-  shared_context 'populate database' do
-    before :all do
-      connection = Persistence.connection
-
-      connection.create_table :games do
-        primary_key :id
-      end
-
-      connection[:games].insert id: '1'
-    end
   end
 end

@@ -44,10 +44,6 @@ module DiceOfDebt
     def initialize(rom_container, options = {})
       super
       @rom_container = rom_container
-
-      # TODO: move this to some test setup
-      connection = Persistence.connection
-      connection[:games].insert id: '1'
     end
 
     def all
