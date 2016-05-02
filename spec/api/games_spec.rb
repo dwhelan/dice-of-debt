@@ -16,10 +16,8 @@ module DiceOfDebt
 
       subject { data[0] }
 
-      its([:id])         { should eq '1' }
-      its([:type])       { should eq 'game' }
-      its([:value_dice]) { should eq 8 }
-      its([:debt_dice])  { should eq 4 }
+      its([:id])   { should eq '1' }
+      its([:type]) { should eq 'game' }
     end
 
     describe 'GET /games/1' do
@@ -75,6 +73,7 @@ module DiceOfDebt
       its([:type])       { should eq 'game' }
       its([:value_dice]) { should eq 8 }
       its([:debt_dice])  { should eq 4 }
+      its([:score])      { should eq 0 }
     end
   end
 end
