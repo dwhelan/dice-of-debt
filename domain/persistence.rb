@@ -55,7 +55,8 @@ module DiceOfDebt
     end
 
     def create(game)
-      result = @rom_container.commands[:games][:create].call(game.attributes)
+      attributes = game.attributes.reject { |key, _| key == :id }
+      result = @rom_container.commands[:games][:create].call(attributes)
       game.id = result[:id]
       game
     end
