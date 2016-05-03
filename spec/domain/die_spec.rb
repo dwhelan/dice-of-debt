@@ -4,7 +4,9 @@ module DiceOfDebt
   describe Die do
     it { expect { Die.new 0 } .to raise_error ArgumentError }
 
-    describe 'a multi-sided die' do
+    it { expect(Die.new(12).sides).to eq 12 }
+
+    describe 'a 6 sided die' do
       its(:sides) { should eq 6 }
       its(:value) { should eq 0 }
 
