@@ -9,7 +9,7 @@ module DiceOfDebt
 
     let(:game1) { { games: { id: '1' } } }
 
-    describe 'GET /games/1/iterations' do
+    xdescribe 'GET /games/1/iterations' do
       before { get '/games/1/iterations' }
 
       it { expect_data 200 }
@@ -23,7 +23,7 @@ module DiceOfDebt
       its([:score]) { should eq 0 }
     end
 
-    describe 'GET /games/1/iterations/1' do
+    xdescribe 'GET /games/1/iterations/1' do
       before { get '/games/1/iterations/1' }
 
       it { expect_data 200 }

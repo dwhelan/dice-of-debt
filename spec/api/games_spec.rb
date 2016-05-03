@@ -32,7 +32,7 @@ module DiceOfDebt
       its([:value_dice]) { should eq 8 }
       its([:debt_dice])  { should eq 4 }
       its([:score])      { should eq 0 }
-      its([:iterations]) { should have(1).item }
+      its([:iterations]) { should have(0).iterations }
     end
 
     describe 'GET /games/9999' do

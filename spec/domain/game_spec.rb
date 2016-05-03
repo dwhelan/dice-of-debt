@@ -14,44 +14,54 @@ module DiceOfDebt
     end
 
     describe 'initially' do
-      its(:score)              { should be 0 }
-      its(:'iterations.count') { should be 1 }
+      its(:score)      { should be 0 }
+      its(:iterations) { should have(0).iterations }
     end
 
-    describe 'rolling value dice' do
-      before { game.roll_value_dice }
+    describe 'first iteration' do
+      # before { game.start_iteration }
 
-      its(:score)             { should be 8 }
-      its(:'iteration.value') { should be 8 }
-      its(:'iteration.score') { should be 8 }
-    end
+      describe 'rolling value dice' do
+        before { game.roll_value_dice }
 
-    describe 'rolling debt dice' do
-      before { game.roll_debt_dice }
+        its(:score)             { should be 8 }
+        its(:'iteration.value') { should be 8 }
+        its(:'iteration.score') { should be 8 }
+      end
 
-      its(:score)             { should be(-4) }
-      its(:'iteration.score') { should be(-4) }
-      its(:'iteration.debt')  { should be 4 }
-    end
+      describe 'rolling debt dice' do
+        before { game.roll_debt_dice }
 
-    describe 'after one iteration' do
-      before { play_one_iteration }
+        its(:score)             { should be(-4) }
+        its(:'iteration.score') { should be(-4) }
+        its(:'iteration.debt')  { should be 4 }
+      end
 
-      its(:iteration) { should be game.iterations[1] }
-      its(:score)     { should be 4 }
-    end
+      describe 'after one iteration' do
+        before { play_one_iteration }
 
-    describe 'after 10 iterations' do
-      before { 10.times { play_one_iteration } }
+        its(:score) { should be 4 }
+      end
 
-      its(:iteration) { should be game.iterations[9] }
-      its(:score)     { should be 40 }
-    end
+      describe 'after 10 iterations' do
+        before { 10.times { play_one_iteration } }
 
-    def play_one_iteration
-      game.roll_value_dice
-      game.roll_debt_dice
-      game.end_iteration
+        its(:iteration) { should be game.iterations[9] }
+        its(:score)     { should be 40 }
+      end
+
+      describe 'after 11 iterations' do
+        before { 11.times { play_one_iteration } }
+
+        its(:iteration) { should be game.iterations[9] }
+        its(:score)     { should be 40 }
+      end
+
+      def play_one_iteration
+        game.roll_value_dice
+        game.roll_debt_dice
+        game.end_iteration
+      end
     end
   end
 

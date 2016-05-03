@@ -15,8 +15,12 @@ module DiceOfDebt
       iteration.debt = debt_dice.roll
     end
 
-    def end_iteration
+    def start_iteration
       iterations << Iteration.new if iterations.size < configuration.iterations
+    end
+
+    def end_iteration
+      iteration.end
     end
 
     def score
@@ -24,11 +28,12 @@ module DiceOfDebt
     end
 
     def iteration
+      start_iteration if iterations.empty? || iterations.last.complete?
       iterations.last
     end
 
     def iterations
-      @iterations ||= [Iteration.new]
+      @iterations ||= []
     end
 
     def value_dice
