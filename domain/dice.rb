@@ -4,11 +4,11 @@ module DiceOfDebt
     attr_accessor :dice
 
     def initialize(options)
-      self.dice = Array.new(options.count) { Die.new(options) }
+      self.dice = Array.new(options.count) { Die.new(options.roller) }
     end
 
     def roll
-      dice.reduce(0) { |sum, die| sum + die.roll }
+      dice.map(&:roll)
     end
 
     def count

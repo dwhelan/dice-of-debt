@@ -8,11 +8,11 @@ module DiceOfDebt
     include Pad.entity
 
     def roll_value_dice
-      iteration.value = value_dice.roll
+      iteration.value = value_dice.roll.reduce(0, :+)
     end
 
     def roll_debt_dice
-      iteration.debt = debt_dice.roll
+      iteration.debt = debt_dice.roll.reduce(0, :+)
     end
 
     def start_iteration
