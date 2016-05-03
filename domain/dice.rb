@@ -4,7 +4,7 @@ module DiceOfDebt
     attr_accessor :dice
 
     def initialize(options)
-      self.dice = Array.new(options.count) { Die.new(options.roller) }
+      self.dice = Array.new(options.count) { Die.new(options.sides) }
     end
 
     def roll

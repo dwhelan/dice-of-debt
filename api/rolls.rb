@@ -49,14 +49,13 @@ module DiceOfDebt
             game = find_game(params[:game_id])
             if game
               roll = Roll.new(game)
-
-            #   game.roll_value_dice
-            #   game.roll_debt_dice
-            #   iteration = game.iteration
-            #   game.end_iteration
-            #   Persistence.game_repository.update(game)
-            #   present iteration, with: RollDocumentRepresenter
               present roll, with: RollDocumentRepresenter
+              #   game.roll_value_dice
+              #   game.roll_debt_dice
+              #   iteration = game.iteration
+              #   game.end_iteration
+              #   Persistence.game_repository.update(game)
+              #   present iteration, with: RollDocumentRepresenter
             end
           end
 

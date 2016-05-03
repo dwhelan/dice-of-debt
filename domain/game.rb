@@ -51,10 +51,8 @@ module DiceOfDebt
 
     def configuration
       @configuration ||= begin
-        sides      = 6
-        roller     = RandomRoller.new(sides)
-        value_dice = OpenStruct.new(count: 8, sides: sides, roller: roller)
-        debt_dice  = OpenStruct.new(count: 4, sides: sides, roller: roller)
+        value_dice = OpenStruct.new(count: 8, sides: 6)
+        debt_dice  = OpenStruct.new(count: 4, sides: 6)
 
         OpenStruct.new(value_dice: value_dice, debt_dice: debt_dice, iterations: 10)
       end

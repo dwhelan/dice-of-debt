@@ -8,9 +8,10 @@ module DiceOfDebt
     let(:roller)  { double('roller', roll: 1) }
 
     before do
-      config.value_dice.roller = config.debt_dice.roller = roller
       config.value_dice.count  = 8
+      config.value_dice.sides  = 1
       config.debt_dice.count   = 4
+      config.debt_dice.sides   = 1
     end
 
     describe 'initially' do
@@ -73,11 +74,8 @@ module DiceOfDebt
     describe 'value_dice' do
       subject { Game.new.config.value_dice }
 
-      its(:count)  { should be 8 }
-      its(:sides)  { should be 6 }
-      its(:roller) { should be_a RandomRoller }
-
-      its(:'roller.sides') { should be 6 }
+      its(:count) { should be 8 }
+      its(:sides) { should be 6 }
     end
 
     describe 'debt_dice' do
@@ -85,9 +83,6 @@ module DiceOfDebt
 
       its(:count)  { should be 4 }
       its(:sides)  { should be 6 }
-      its(:roller) { should be_a RandomRoller }
-
-      its(:'roller.sides') { should be 6 }
     end
   end
 end
