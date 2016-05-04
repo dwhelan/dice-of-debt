@@ -33,6 +33,11 @@ module DiceOfDebt
       specify 'roll with array of values' do
         expect(subject.roll([5, [6]])).to eq [5, 6]
       end
+
+      specify 'should provide a total' do
+        subject.roll(5, 6)
+        expect(subject.total).to eq 11
+      end
     end
   end
 end

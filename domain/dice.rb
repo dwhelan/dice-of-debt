@@ -1,5 +1,5 @@
 module DiceOfDebt
-  # The Dice class create a set of dice and allows them to be rolled together in game play.
+  # The Dice class creates an array of dice and allows them to be rolled together.
   class Dice
     attr_reader :values
 
@@ -14,6 +14,10 @@ module DiceOfDebt
 
     def count
       dice.count
+    end
+
+    def total
+      values.reduce(0, :+)
     end
 
     private
