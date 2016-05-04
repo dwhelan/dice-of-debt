@@ -13,17 +13,25 @@ module DiceOfDebt
 
       specify "it's value should be the same as the last roll" do
         expected = subject.roll
-        expect(subject.value).to eq expected
+        expect(subject.values).to eq expected
       end
 
-      specify 'roll with values' do
+      specify 'roll with values should use value' do
         expect(subject.roll(5, 6)).to eq [5, 6]
       end
 
-      specify 'roll with missing values' do
+      specify 'roll random values with missing values' do
         expect(subject.roll(5)[0]).to eq 5
         expect(subject.roll(5)[1]).to be > 0
         expect(subject.roll(5)[1]).to be < 7
+      end
+
+      specify 'ignore roll with extra values' do
+        expect(subject.roll(5, 6, 7)).to eq [5, 6]
+      end
+
+      specify 'roll with array of values' do
+        expect(subject.roll([5, [6]])).to eq [5, 6]
       end
     end
   end

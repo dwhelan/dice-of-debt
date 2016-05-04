@@ -1,16 +1,15 @@
 module DiceOfDebt
   # The Dice class create a set of dice and allows them to be rolled together in game play.
   class Dice
-    attr_accessor :dice
-    attr_reader :value
+    attr_reader :values
 
     def initialize(count, sides = 6)
       self.dice = Array.new(count) { Die.new(sides) }
     end
 
     def roll(*values)
-      self.value = values.map.with_index { |value, i| dice[i].roll(value) }
-      self.value.fill(values.count, dice.count - values.count) { |i| dice[i].roll }
+      values = values.flatten.slice(0, dice.count)
+      self.values = roll_specified(values) + roll_random(values)
     end
 
     def count
@@ -19,6 +18,15 @@ module DiceOfDebt
 
     private
 
-    attr_writer :value
+    attr_writer :values
+    attr_accessor :dice
+
+    def roll_specified(values)
+      values.map.with_index { |value, i| dice[i].roll(value) }
+    end
+
+    def roll_random(values)
+      (values.count..dice.count - 1).each.map { |i| dice[i].roll }
+    end
   end
 end
