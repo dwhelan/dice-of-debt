@@ -3,22 +3,22 @@ module DiceOfDebt
   class SetOfDice
     attr_reader :values
 
-    def initialize(set= {})
+    def initialize(set = {})
       self.set = set
     end
 
-    def roll(values={})
+    def roll(values = {})
       self.values = roll_random.merge(roll_specified(values))
     end
 
     def roll_specified(values)
       values.each_with_object({}) do |(k, v), rolls|
-        rolls[k] = set[k].roll(v) if set.has_key?(k)
+        rolls[k] = set[k].roll(v) if set.key?(k)
       end
     end
 
     def roll_random
-      set.each_with_object({}) { |(k, v), rolls| rolls[k] ||= set[k].roll }
+      set.each_with_object({}) { |(k, _), rolls| rolls[k] ||= set[k].roll }
     end
 
     private

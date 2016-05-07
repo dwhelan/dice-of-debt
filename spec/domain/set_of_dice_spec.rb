@@ -23,9 +23,9 @@ module DiceOfDebt
       subject { SetOfDice.new(dice: Dice.new(2)) }
 
       describe 'should generate missing values' do
-        it { expect(subject.roll).to eq  dice: [6, 6] }
-        it { expect(subject.roll({})).to eq  dice: [6, 6] }
-        it { expect(subject.roll(dice: [])).to eq  dice: [6, 6] }
+        it { expect(subject.roll).to eq dice: [6, 6] }
+        it { expect(subject.roll({})).to eq dice: [6, 6] }
+        it { expect(subject.roll(dice: [])).to eq dice: [6, 6] }
         it { expect(subject.roll(dice: [1])).to eq dice: [1, 6] }
       end
 
