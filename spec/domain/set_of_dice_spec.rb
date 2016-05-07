@@ -14,13 +14,14 @@ module DiceOfDebt
       describe 'empty set rolls should always return an empty hash' do
         it { expect(subject.roll).to eq({}) }
         it { expect(subject.roll({})).to eq({}) }
-        it { expect(subject.roll(first: [])).to eq({}) }
-        it { expect(subject.roll(first: [1])).to eq({}) }
-        it { expect(subject.roll(first: [1, 2], second: [1])).to eq({}) }
+        it { expect(subject.roll(dice: [])).to eq({}) }
+        it { expect(subject.roll(dice: [1])).to eq({}) }
+        it { expect(subject.roll(dice: [1, 2], second: [1])).to eq({}) }
       end
     end
+
     context 'set of one' do
-      subject { SetOfDice.new(dice: Dice.new(2)) }
+      subject { SetOfDice.new(dice: Dice.new(count: 2)) }
 
       describe 'should generate missing values' do
         it { expect(subject.roll).to eq dice: [6, 6] }
@@ -35,8 +36,8 @@ module DiceOfDebt
       end
     end
 
-    describe 'tset of two' do
-      subject { SetOfDice.new first: Dice.new(2), second: Dice.new(2) }
+    describe 'set of two' do
+      subject { SetOfDice.new first: Dice.new(count: 2), second: Dice.new(count: 2) }
 
       describe 'should generate missing values' do
         it { expect(subject.roll). to eq first: [6, 6], second: [6, 6] }

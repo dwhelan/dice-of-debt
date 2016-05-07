@@ -3,8 +3,12 @@ module DiceOfDebt
   class Dice
     attr_reader :values
 
-    def initialize(count, sides = 6)
-      self.dice = Array.new(count) { Die.new(sides) }
+    DEFAULTS = { count: 1, sides: 6 }
+
+    def initialize(options)
+      options = DEFAULTS.merge(options.to_h)
+
+      self.dice = Array.new(options[:count]) { Die.new(options[:sides]) }
     end
 
     def roll(*values)
