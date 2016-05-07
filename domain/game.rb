@@ -8,11 +8,13 @@ module DiceOfDebt
     include Pad.entity
 
     def roll_value_dice
-      iteration.value = value_dice.roll.reduce(0, :+)
+      value_dice.roll
+      iteration.value = value_dice.total
     end
 
     def roll_debt_dice
-      iteration.debt = debt_dice.roll.reduce(0, :+)
+      debt_dice.roll
+      iteration.debt = debt_dice.total
     end
 
     def start_iteration
@@ -37,11 +39,13 @@ module DiceOfDebt
     end
 
     def value_dice
-      @value_dice ||= Dice.new(configuration.value_dice.count, configuration.value_dice.sides)
+      config = configuration.value_dice
+      @value_dice ||= Dice.new(config.count, config.sides)
     end
 
     def debt_dice
-      @debt_dice ||= Dice.new(configuration.debt_dice.count, configuration.debt_dice.sides)
+      config = configuration.debt_dice
+      @debt_dice ||= Dice.new(config.count, config.sides)
     end
 
     def config
@@ -50,12 +54,12 @@ module DiceOfDebt
     end
 
     def configuration
-      @configuration ||= begin
-        value_dice = OpenStruct.new(count: 8, sides: 6)
-        debt_dice  = OpenStruct.new(count: 4, sides: 6)
-
-        OpenStruct.new(value_dice: value_dice, debt_dice: debt_dice, iterations: 10)
-      end
+      @configuration ||=
+        OpenStruct.new(
+          value_dice: OpenStruct.new(count: 8, sides: 6),
+          debt_dice:  OpenStruct.new(count: 4, sides: 6),
+          iterations: 10
+        )
     end
   end
 end

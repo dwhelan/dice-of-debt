@@ -10,7 +10,7 @@ module DiceOfDebt
     end
 
     def roll(value = random_roll)
-      fail ArgumentError, 'the value must be > 0 and <= sides' if value < 1 || value > sides
+      fail ArgumentError, 'the value rolled must be > 0 and <= sides on a die' if value < 1 || value > sides
       self.value = value
     end
 
