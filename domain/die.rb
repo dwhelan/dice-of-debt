@@ -3,9 +3,12 @@ module DiceOfDebt
   class Die
     attr_reader :value, :sides
 
-    def initialize(sides = 6)
-      fail ArgumentError, 'a die must have at least one side' if sides < 1
-      self.sides = sides
+    DEFAULTS = { sides: 6 }
+
+    def initialize(options)
+      options = DEFAULTS.merge(options.to_h)
+      fail ArgumentError, 'a die must have at least one side' if options[:sides] < 1
+      self.sides = options[:sides]
       self.value = 0
     end
 
