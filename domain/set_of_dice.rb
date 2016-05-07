@@ -12,10 +12,9 @@ module DiceOfDebt
     end
 
     def roll_specified(values)
-      values.each_with_object({}) {
-          |(k, v), rolls|
-        # binding.pry
-        rolls[k] = set[k] ? set[k].roll(v) : v }
+      values.each_with_object({}) do |(k, v), rolls|
+        rolls[k] = set[k].roll(v) if set.has_key?(k)
+      end
     end
 
     def roll_random
