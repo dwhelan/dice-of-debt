@@ -11,9 +11,9 @@ module DiceOfDebt
       self.dice = Array.new(options[:count]) { Die.new(options) }
     end
 
-    def roll(*values)
-      values = values.flatten.slice(0, dice.count)
-      self.values = roll_specified(values) + roll_random(values)
+    def roll(*die_rolls)
+      die_rolls = die_rolls.flatten.slice(0, dice.count)
+      self.values = roll_specified(die_rolls) + roll_random(die_rolls)
     end
 
     def count
@@ -29,12 +29,12 @@ module DiceOfDebt
     attr_writer :values
     attr_accessor :dice
 
-    def roll_specified(values)
-      values.map.with_index { |value, i| dice[i].roll(value) }
+    def roll_specified(die_rolls)
+      die_rolls.map.with_index { |value, i| dice[i].roll(value) }
     end
 
-    def roll_random(values)
-      (values.count..dice.count - 1).each.map { |i| dice[i].roll }
+    def roll_random(die_rolls)
+      (die_rolls.count..dice.count - 1).each.map { |i| dice[i].roll }
     end
   end
 end

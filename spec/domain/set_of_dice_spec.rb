@@ -8,7 +8,7 @@ module DiceOfDebt
 
     before { ensure_that_random_roll_is_always_a_six }
 
-    describe 'empty set' do
+    context 'empty set' do
       subject { SetOfDice.new }
 
       describe 'empty set rolls should always return an empty hash' do
@@ -21,7 +21,7 @@ module DiceOfDebt
     end
 
     context 'set of one' do
-      subject { SetOfDice.new(dice: Dice.new(count: 2)) }
+      subject { SetOfDice.new dice: Dice.new(count: 2) }
 
       describe 'should generate missing values' do
         it { expect(subject.roll).to eq dice: [6, 6] }
@@ -36,7 +36,7 @@ module DiceOfDebt
       end
     end
 
-    describe 'set of two' do
+    context 'set of two' do
       subject { SetOfDice.new first: Dice.new(count: 2), second: Dice.new(count: 2) }
 
       describe 'should generate missing values' do

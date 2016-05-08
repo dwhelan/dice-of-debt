@@ -12,18 +12,18 @@ module DiceOfDebt
       self.value = 0
     end
 
-    def roll(value = random_roll)
-      fail ArgumentError, 'the value rolled must be > 0 and <= sides on a die' if value < 1 || value > sides
-      self.value = value
-    end
-
-    def random_roll
-      Random.rand(sides) + 1
+    def roll(roll = random_roll)
+      fail ArgumentError, 'the roll must be > 0 and <= sides on a die' if roll < 1 || roll > sides
+      self.value = roll
     end
 
     private
 
     attr_accessor :roller
     attr_writer :value, :sides
+
+    def random_roll
+      Random.rand(sides) + 1
+    end
   end
 end

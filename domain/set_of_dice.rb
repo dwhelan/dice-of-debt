@@ -3,27 +3,26 @@ module DiceOfDebt
   class SetOfDice
     attr_reader :values
 
-    def initialize(set = {})
-      self.set = set
+    def initialize(dice = {})
+      self.dice = dice
     end
 
-    def roll(values = {})
-      self.values = roll_random.merge(roll_specified(values))
-    end
-
-    def roll_specified(values)
-      values.each_with_object({}) do |(k, v), rolls|
-        rolls[k] = set[k].roll(v) if set.key?(k)
-      end
-    end
-
-    def roll_random
-      set.each_with_object({}) { |(k, _), rolls| rolls[k] ||= set[k].roll }
+    def roll(dice_rolls = {})
+      self.values = roll_random.merge(roll_specified(dice_rolls))
     end
 
     private
 
     attr_writer :values
-    attr_accessor :set
+    attr_accessor :dice
+
+    def roll_specified(dice_rolls)
+      rolls_to_use = dice_rolls.select { |k, _| dice.key?(k) }
+      rolls_to_use.each_with_object({}) { |(k, v), rolls| rolls[k] = dice[k].roll(v) }
+    end
+
+    def roll_random
+      dice.each_with_object({}) { |(k, _), rolls| rolls[k] = dice[k].roll }
+    end
   end
 end
