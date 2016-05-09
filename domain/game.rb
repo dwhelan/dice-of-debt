@@ -39,12 +39,11 @@ module DiceOfDebt
     end
 
     def value_dice
-      @value_dice ||= Dice.new(configuration[:dice][:value])
-      # dice[:value]
+      dice[:value]
     end
 
     def debt_dice
-      @debt_dice ||= Dice.new(configuration[:dice][:debt])
+      dice[:debt]
     end
 
     def config
@@ -61,7 +60,7 @@ module DiceOfDebt
         {
           dice: {
             value: { count: 8, sides: 6 },
-            debt:  { count: 4, sides: 6 },
+            debt:  { count: 4, sides: 6 }
           },
           iterations: 10
         }

@@ -11,6 +11,10 @@ module DiceOfDebt
       self.values = roll_random.merge(roll_specified(dice_rolls))
     end
 
+    def [](name)
+      dice[name]
+    end
+
     private
 
     attr_writer :values
