@@ -1,8 +1,6 @@
 module DiceOfDebt
   # The Dice class creates an array of dice and allows them to be rolled together.
   class Dice
-    attr_reader :values
-
     DEFAULTS = { count: 1 }
 
     def initialize(options)
@@ -13,7 +11,7 @@ module DiceOfDebt
 
     def roll(*die_rolls)
       die_rolls = die_rolls.flatten.slice(0, dice.count)
-      self.values = roll_specified(die_rolls) + roll_random(die_rolls)
+      roll_specified(die_rolls) + roll_random(die_rolls)
     end
 
     def count
@@ -21,12 +19,11 @@ module DiceOfDebt
     end
 
     def total
-      values.reduce(0, :+)
+      dice.map(&:value).reduce(0, :+)
     end
 
     private
 
-    attr_writer :values
     attr_accessor :dice
 
     def roll_specified(die_rolls)
