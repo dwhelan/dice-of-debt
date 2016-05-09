@@ -7,14 +7,10 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
-    def roll_value_dice
-      value_dice.roll
-      iteration.value = value_dice.total
-    end
-
-    def roll_debt_dice
-      debt_dice.roll
-      iteration.debt = debt_dice.total
+    def roll
+      dice.roll
+      iteration.value = dice[:value].total
+      iteration.debt  = dice[:debt].total
     end
 
     def start_iteration
@@ -36,14 +32,6 @@ module DiceOfDebt
 
     def iterations
       @iterations ||= []
-    end
-
-    def value_dice
-      dice[:value]
-    end
-
-    def debt_dice
-      dice[:debt]
     end
 
     def config

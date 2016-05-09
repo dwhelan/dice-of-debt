@@ -34,8 +34,7 @@ module DiceOfDebt
           post do
             game = find_game(params[:game_id])
             if game
-              game.roll_value_dice
-              game.roll_debt_dice
+              game.roll
               iteration = game.iteration
               game.end_iteration
               Persistence.game_repository.update(game)
