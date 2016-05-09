@@ -9,9 +9,9 @@ module DiceOfDebt
 
     before do
       config[:value_dice][:count]  = 8
-      config[:value_dice].sides  = 1
+      config[:value_dice][:sides]  = 1
       config[:debt_dice][:count]   = 4
-      config[:debt_dice].sides   = 1
+      config[:debt_dice][:sides]   = 1
     end
 
     describe 'initially' do
