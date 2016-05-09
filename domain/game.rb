@@ -39,11 +39,11 @@ module DiceOfDebt
     end
 
     def value_dice
-      @value_dice ||= Dice.new(configuration.value_dice)
+      @value_dice ||= Dice.new(configuration[:value_dice])
     end
 
     def debt_dice
-      @debt_dice ||= Dice.new(configuration.debt_dice)
+      @debt_dice ||= Dice.new(configuration[:debt_dice])
     end
 
     def config

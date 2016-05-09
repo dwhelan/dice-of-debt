@@ -48,7 +48,8 @@ module DiceOfDebt
           post do
             game = find_game(params[:game_id])
             if game
-              roll = Roll.new(game)
+              roll = game.roll(params[:data])
+              header 'Location', "/games/#{game.id}/rolls/1"
               present roll, with: RollDocumentRepresenter
               #   game.roll_value_dice
               #   game.roll_debt_dice

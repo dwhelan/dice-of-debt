@@ -8,10 +8,10 @@ module DiceOfDebt
     let(:roller)  { double('roller', roll: 1) }
 
     before do
-      config.value_dice.count  = 8
-      config.value_dice.sides  = 1
-      config.debt_dice.count   = 4
-      config.debt_dice.sides   = 1
+      config[:value_dice].count  = 8
+      config[:value_dice].sides  = 1
+      config[:debt_dice].count   = 4
+      config[:debt_dice].sides   = 1
     end
 
     describe 'initially' do
@@ -20,8 +20,6 @@ module DiceOfDebt
     end
 
     describe 'first iteration' do
-      # before { game.start_iteration }
-
       describe 'rolling value dice' do
         before { game.roll_value_dice }
 
@@ -72,14 +70,14 @@ module DiceOfDebt
     its(:iterations) { should be 10 }
 
     describe 'value_dice' do
-      subject { Game.new.config.value_dice }
+      subject { Game.new.config[:value_dice] }
 
       its(:count) { should be 8 }
       its(:sides) { should be 6 }
     end
 
     describe 'debt_dice' do
-      subject { Game.new.config.debt_dice }
+      subject { Game.new.config[:debt_dice] }
 
       its(:count)  { should be 4 }
       its(:sides)  { should be 6 }
