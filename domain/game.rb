@@ -18,7 +18,7 @@ module DiceOfDebt
     end
 
     def start_iteration
-      iterations << Iteration.new if iterations.size < configuration.iterations
+      iterations << Iteration.new if iterations.size < configuration[:iterations]
     end
 
     def end_iteration
@@ -53,11 +53,11 @@ module DiceOfDebt
 
     def configuration
       @configuration ||=
-        OpenStruct.new(
-          value_dice: OpenStruct.new(count: 8, sides: 6),
-          debt_dice:  OpenStruct.new(count: 4, sides: 6),
+        {
+          value_dice: { count: 8, sides: 6 },
+          debt_dice:  { count: 4, sides: 6 },
           iterations: 10
-        )
+        }
     end
   end
 end

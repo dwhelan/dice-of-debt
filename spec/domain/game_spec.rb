@@ -67,20 +67,20 @@ module DiceOfDebt
   describe 'configuration' do
     subject { Game.new.config }
 
-    its(:iterations) { should be 10 }
+    its([:iterations]) { should be 10 }
 
     describe 'value_dice' do
       subject { Game.new.config[:value_dice] }
 
-      its(:count) { should be 8 }
-      its(:sides) { should be 6 }
+      its([:count]) { should be 8 }
+      its([:sides]) { should be 6 }
     end
 
     describe 'debt_dice' do
       subject { Game.new.config[:debt_dice] }
 
-      its(:count)  { should be 4 }
-      its(:sides)  { should be 6 }
+      its([:count])  { should be 4 }
+      its([:sides])  { should be 6 }
     end
   end
 end
