@@ -3,8 +3,8 @@ module DiceOfDebt
   class SetOfDice
     attr_reader :values
 
-    def initialize(dice = {})
-      self.dice = dice
+    def initialize(options = {})
+      self.dice = Hash[options.map { |name, dice_options| [name, Dice.new(dice_options)] }]
     end
 
     def roll(dice_rolls = {})

@@ -21,7 +21,7 @@ module DiceOfDebt
     end
 
     context 'set of one' do
-      subject { SetOfDice.new dice: Dice.new(count: 2) }
+      subject { SetOfDice.new dice: { count: 2 } }
 
       describe 'should generate missing values' do
         it { expect(subject.roll).to eq dice: [6, 6] }
@@ -37,7 +37,7 @@ module DiceOfDebt
     end
 
     context 'set of two' do
-      subject { SetOfDice.new first: Dice.new(count: 2), second: Dice.new(count: 2) }
+      subject { SetOfDice.new first: { count: 2 }, second: { count: 2 } }
 
       describe 'should generate missing values' do
         it { expect(subject.roll). to eq first: [6, 6], second: [6, 6] }

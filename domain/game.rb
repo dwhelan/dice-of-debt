@@ -40,6 +40,7 @@ module DiceOfDebt
 
     def value_dice
       @value_dice ||= Dice.new(configuration[:dice][:value])
+      # dice[:value]
     end
 
     def debt_dice
@@ -49,6 +50,10 @@ module DiceOfDebt
     def config
       yield configuration if block_given?
       configuration
+    end
+
+    def dice
+      @dice ||= SetOfDice.new(configuration[:dice])
     end
 
     def configuration
