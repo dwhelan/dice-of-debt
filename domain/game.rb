@@ -8,9 +8,10 @@ module DiceOfDebt
     include Pad.entity
 
     def roll
-      dice.roll
-      iteration.value = dice[:value].total
-      iteration.debt  = dice[:debt].total
+      dice.roll.tap do
+        iteration.value = dice[:value].total
+        iteration.debt  = dice[:debt].total
+      end
     end
 
     def start_iteration

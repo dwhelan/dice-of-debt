@@ -9,6 +9,13 @@ module DiceOfDebt
       its(:iterations) { should have(0).iterations }
     end
 
+    specify 'roll' do
+      expect(subject.roll).to eq(
+        value: [1, 1, 1, 1, 1, 1, 1, 1],
+        debt:  [1, 1, 1, 1]
+      )
+    end
+
     describe 'first iteration' do
       describe 'rolling' do
         before { subject.roll }
@@ -39,8 +46,8 @@ module DiceOfDebt
       end
     end
 
-    its(:config) do
-      should eq(
+    specify 'config' do
+      expect(subject.config).to eq(
         dice: {
           value: { count: 8, sides: 6 },
           debt:  { count: 4, sides: 6 }
