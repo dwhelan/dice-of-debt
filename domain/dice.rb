@@ -6,7 +6,7 @@ module DiceOfDebt
     DEFAULTS = { count: 1 }
 
     def initialize(options)
-      options = DEFAULTS.merge(options.to_h)
+      options = DEFAULTS.merge(options)
 
       self.dice = Array.new(options[:count]) { Die.new(options) }
     end
