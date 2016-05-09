@@ -23,7 +23,7 @@ module DiceOfDebt
     attr_writer :value, :sides
 
     def random_roll
-      Random.rand(sides) + 1
+      RandomRoller.roll(sides)
     end
   end
 end

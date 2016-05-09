@@ -2,11 +2,7 @@ require 'spec_helper'
 
 module DiceOfDebt
   describe SetOfDice do
-    def ensure_that_random_roll_is_always_a_six
-      allow(Random).to receive(:rand) { 5 }
-    end
-
-    before { ensure_that_random_roll_is_always_a_six }
+    before { allow(RandomRoller).to receive(:roll) { 6 } }
 
     context 'empty set' do
       subject { SetOfDice.new }
