@@ -63,18 +63,16 @@ module DiceOfDebt
       its([:source]) { should eq parameter: 'id' }
     end
 
-    xdescribe 'POST /games/1/rolls' do
+    fdescribe 'POST /games/1/rolls' do
       before { post '/games/1/rolls', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
-      it { expect(headers['Location']).to match '/games/1/rolls/\d+' }
+      it { expect(headers['Location']).to match '/games/1/rolls/1' }
 
       subject { data }
 
       its([:id])         { should match '\d+' }
-      its([:type])       { should eq 'game' }
-      its([:value_dice]) { should eq 8 }
-      its([:debt_dice])  { should eq 4 }
+      its([:type])       { should eq 'roll' }
     end
   end
 end

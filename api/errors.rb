@@ -1,13 +1,14 @@
 module DiceOfDebt
   class API
     class Error
-      attr_reader :status, :title, :detail, :source
+      attr_reader :status, :title, :detail, :source, :backtrace
 
       def initialize(opts = {})
         @status = opts[:status] || 500
         @title  = opts[:title] || Rack::Utils::HTTP_STATUS_CODES[status]
         @detail = opts[:detail] || title
         @source = opts[:source]
+        @backtrace = opts[:backtrace]
       end
 
       def self.exposures
@@ -26,6 +27,7 @@ module DiceOfDebt
       property :title
       property :detail
       property :source
+      property :backtrace if ENV['RACK_ENV'] != 'production'
     end
 
     module ErrorArrayPresenter
@@ -52,7 +54,7 @@ module DiceOfDebt
     end
 
     rescue_from :all do |e|
-      error = API::Error.new(status: 500, title: e.message)
+      error = API::Error.new(status: 500, title: e.message, backtrace: e.backtrace)
       ErrorResponse.build error.status, [error]
     end
 

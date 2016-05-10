@@ -7,10 +7,10 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
-    def roll
-      dice.roll.tap do
-        iteration.value = dice[:value].total
-        iteration.debt  = dice[:debt].total
+    def roll(fixed_rolls = {})
+      dice.roll(fixed_rolls).tap do
+        iteration.value = dice[:value].value
+        iteration.debt  = dice[:debt].value
       end
     end
 

@@ -2,14 +2,9 @@ module DiceOfDebt
   class Roll
     attr_accessor :id
 
-    def initialize(game)
+    def initialize(game, rolls)
       self.game = game
       self.id   = game.iterations.count
-    end
-
-    def roll
-      game.roll_value_dice
-      game.roll_debt_dice
     end
 
     private
@@ -48,8 +43,8 @@ module DiceOfDebt
           post do
             game = find_game(params[:game_id])
             if game
-              roll = game.roll(params[:data])
-              header 'Location', "/games/#{game.id}/rolls/1"
+              roll = Roll.new(game, game.roll(params[:data]))
+              header 'Location', "/games/#{game.id}/rolls/#{roll.id}"
               present roll, with: RollDocumentRepresenter
               #   game.roll_value_dice
               #   game.roll_debt_dice
