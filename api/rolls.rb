@@ -1,15 +1,15 @@
 module DiceOfDebt
   class Roll
-    attr_accessor :id
+    attr_reader :id, :rolls
 
     def initialize(game, rolls)
-      self.game = game
-      self.id   = game.iterations.count
+      self.id    = game.iterations.count
+      self.rolls = rolls
     end
 
     private
 
-    attr_accessor :game
+    attr_writer :id, :rolls
   end
 
   class API
@@ -17,6 +17,9 @@ module DiceOfDebt
       include ResourcePresenter
 
       type 'roll'
+
+      property :value, getter: ->(_) { rolls[:value] }
+      property :debt,  getter: ->(_) { rolls[:debt] }
     end
 
     module RollArrayRepresenter

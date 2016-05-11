@@ -63,7 +63,8 @@ module DiceOfDebt
       its([:source]) { should eq parameter: 'id' }
     end
 
-    fdescribe 'POST /games/1/rolls' do
+    describe 'POST /games/1/rolls' do
+      before { allow(RandomRoller).to receive(:roll) { 6 } }
       before { post '/games/1/rolls', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
@@ -71,8 +72,10 @@ module DiceOfDebt
 
       subject { data }
 
-      its([:id])         { should match '\d+' }
-      its([:type])       { should eq 'roll' }
+      its([:id])    { should eq '1' }
+      its([:type])  { should eq 'roll' }
+      its([:value]) { should eq [6, 6, 6, 6, 6, 6, 6, 6] }
+      its([:debt])  { should eq [6, 6, 6, 6] }
     end
   end
 end
