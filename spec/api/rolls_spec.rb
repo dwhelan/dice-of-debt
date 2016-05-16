@@ -63,19 +63,24 @@ module DiceOfDebt
       its([:source]) { should eq parameter: 'id' }
     end
 
-    describe 'POST /games/1/rolls' do
+    describe 'POST /rolls with no specified rolls' do
+      let(:roll) { { type: 'roll', relationships: { game: { data: { type: 'game', id: '1' } } } } }
       before { allow(RandomRoller).to receive(:roll) { 6 } }
-      before { post '/games/1/rolls', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
+      before { post '/rolls', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
-      it { expect(headers['Location']).to match '/games/1/rolls/1' }
+      it { expect(headers['Location']).to eq '/rolls/1' }
 
       subject { data }
 
-      its([:id])    { should eq '1' }
-      its([:type])  { should eq 'roll' }
-      its([:value]) { should eq [6, 6, 6, 6, 6, 6, 6, 6] }
-      its([:debt])  { should eq [6, 6, 6, 6] }
+      its([:id])   { should eq '1' }
+      its([:type]) { should eq 'roll' }
+
+      describe 'attributes' do
+        subject { data[:attributes] }
+        its([:value]) { should eq [6, 6, 6, 6, 6, 6, 6, 6] }
+        its([:debt])  { should eq [6, 6, 6, 6] }
+      end
     end
   end
 end

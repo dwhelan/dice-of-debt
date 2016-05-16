@@ -35,6 +35,21 @@ post /games/1/roll
     debt_dice: [2, 5]
   }
 
+post /rolls
+
+  data: {
+    type: roll
+    attributes: {
+      value_dice: [3, 4, 6]
+      debt_dice: [2, 5]
+    },
+    relationships: {
+      game: {
+        data: { type: game, id: 1 }
+      }
+    }
+  }
+
 get /games/1/rolls
   [
     {
