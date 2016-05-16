@@ -11,7 +11,7 @@ module DiceOfDebt
         property :score
       end
 
-      collection :iterations, extend: IterationRepresenter
+      collection :iterations, extend: IterationRepresenter, as: :included
     end
 
     module GameDocumentPresenter

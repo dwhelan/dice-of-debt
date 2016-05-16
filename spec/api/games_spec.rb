@@ -20,15 +20,11 @@ module DiceOfDebt
       its([:type]) { should eq 'game' }
     end
 
-    describe 'GET /games/1' do
-      before { get '/games/1' }
-
-      it { expect_data 200 }
-
+    shared_examples :empty_game do
       subject { data }
 
-      its([:id])         { should eq '1' }
-      its([:type])       { should eq 'game' }
+      its([:id])   { should match '\d+' }
+      its([:type]) { should eq 'game' }
 
       describe 'attributes' do
         subject { data[:attributes] }
@@ -37,7 +33,20 @@ module DiceOfDebt
         its([:debt_dice])  { should eq 4 }
         its([:score])      { should eq 0 }
       end
-      its([:iterations]) { should have(0).iterations }
+
+      describe 'included' do
+        subject { data[:included] }
+
+        its(:count) { should eq 0 }
+      end
+    end
+
+    describe 'GET /games/1' do
+      before { get '/games/1' }
+
+      it { expect_data 200 }
+
+      include_examples :empty_game
     end
 
     describe 'GET /games/9999' do
@@ -72,19 +81,7 @@ module DiceOfDebt
       it { expect_data 201 }
       it { expect(headers['Location']).to match '/games/\d+' }
 
-      subject { data }
-
-      its([:id])         { should match '\d+' }
-      its([:type])       { should eq 'game' }
-
-      describe 'attributes' do
-        subject { data[:attributes] }
-
-        its([:value_dice]) { should eq 8 }
-        its([:debt_dice])  { should eq 4 }
-        its([:score])      { should eq 0 }
-      end
-      its([:iterations]) { should have(0).iterations }
+      include_examples :empty_game
     end
   end
 end
