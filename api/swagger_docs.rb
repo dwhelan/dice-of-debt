@@ -40,6 +40,12 @@ definitions:
       type:
         type: string
         example: 'game'
+      attributes:
+        type: object
+        $ref: '#/definitions/game_attributes'
+  game_attributes:
+    type: object
+    properties:
       score:
         type: integer
         example: 0
