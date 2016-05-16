@@ -5,22 +5,7 @@ module DiceOfDebt
   describe API do
     include_context 'api test'
 
-    subject { last_response }
-
-    let(:game1) { { games: { id: '1' } } }
-
-    describe 'GET /games' do
-      before { get '/games' }
-
-      it { expect_data 200 }
-
-      subject { data[0] }
-
-      its([:id])   { should eq '1' }
-      its([:type]) { should eq 'game' }
-    end
-
-    shared_examples :empty_game do
+    shared_examples :initial_game do
       subject { data }
 
       its([:id])   { should match '\d+' }
@@ -41,12 +26,23 @@ module DiceOfDebt
       end
     end
 
+    describe 'GET /games' do
+      before { get '/games' }
+
+      it { expect_data 200 }
+
+      subject { data[0] }
+
+      its([:id])   { should eq '1' }
+      its([:type]) { should eq 'game' }
+    end
+
     describe 'GET /games/1' do
       before { get '/games/1' }
 
       it { expect_data 200 }
 
-      include_examples :empty_game
+      include_examples :initial_game
     end
 
     describe 'GET /games/9999' do
@@ -81,7 +77,7 @@ module DiceOfDebt
       it { expect_data 201 }
       it { expect(headers['Location']).to match '/games/\d+' }
 
-      include_examples :empty_game
+      include_examples :initial_game
     end
   end
 end
