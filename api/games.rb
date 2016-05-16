@@ -5,9 +5,11 @@ module DiceOfDebt
 
       type 'game'
 
-      property :value_dice, getter: ->(_) { dice[:value].count }
-      property :debt_dice,  getter: ->(_) { dice[:debt].count  }
-      property :score
+      nested :attributes do
+        property :value_dice, getter: ->(_) { dice[:value].count }
+        property :debt_dice,  getter: ->(_) { dice[:debt].count  }
+        property :score
+      end
 
       collection :iterations, extend: IterationRepresenter
     end

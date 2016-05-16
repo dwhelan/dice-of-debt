@@ -29,9 +29,14 @@ module DiceOfDebt
 
       its([:id])         { should eq '1' }
       its([:type])       { should eq 'game' }
-      its([:value_dice]) { should eq 8 }
-      its([:debt_dice])  { should eq 4 }
-      its([:score])      { should eq 0 }
+
+      describe 'attributes' do
+        subject { data[:attributes] }
+
+        its([:value_dice]) { should eq 8 }
+        its([:debt_dice])  { should eq 4 }
+        its([:score])      { should eq 0 }
+      end
       its([:iterations]) { should have(0).iterations }
     end
 
@@ -71,9 +76,15 @@ module DiceOfDebt
 
       its([:id])         { should match '\d+' }
       its([:type])       { should eq 'game' }
-      its([:value_dice]) { should eq 8 }
-      its([:debt_dice])  { should eq 4 }
-      its([:score])      { should eq 0 }
+
+      describe 'attributes' do
+        subject { data[:attributes] }
+
+        its([:value_dice]) { should eq 8 }
+        its([:debt_dice])  { should eq 4 }
+        its([:score])      { should eq 0 }
+      end
+      its([:iterations]) { should have(0).iterations }
     end
   end
 end
