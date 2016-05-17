@@ -2,8 +2,8 @@ module DiceOfDebt
   class Roll
     attr_reader :id, :rolls
 
-    def initialize(game, rolls)
-      self.id = game.iterations.count
+    def initialize(id, rolls)
+      self.id    = id
       self.rolls = rolls
     end
 

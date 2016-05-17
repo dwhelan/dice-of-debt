@@ -8,11 +8,11 @@ module DiceOfDebt
     include Pad.entity
 
     def roll(fixed_rolls = {})
-      rolls = dice.roll(fixed_rolls).tap do |rolls|
+      rolls = dice.roll(fixed_rolls).tap do
         iteration.value = dice[:value].value
         iteration.debt  = dice[:debt].value
       end
-      Roll.new(self, rolls)
+      Roll.new(iterations.count, rolls)
     end
 
     def start_iteration
