@@ -35,7 +35,7 @@ module DiceOfDebt
         game = find_game(game_id)
         if game
           fixed_rolls = params['data']['attributes'] || {}
-          roll = game.roll(fixed_rolls)
+          roll = game.iteration.roll(fixed_rolls)
           header 'Location', "/rolls/#{roll.id}"
           present roll, with: RollDocumentRepresenter
         end

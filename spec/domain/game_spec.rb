@@ -10,7 +10,7 @@ module DiceOfDebt
     end
 
     describe 'roll' do
-      subject { Game.new.roll }
+      subject { Game.new.iteration.roll }
 
       it { should be_a Roll }
       its(:rolls) { should eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt:  [1, 1, 1, 1] }
@@ -18,7 +18,7 @@ module DiceOfDebt
 
     describe 'first iteration' do
       describe 'rolling' do
-        before { subject.roll }
+        before { subject.iteration.roll }
 
         its(:'iteration.value') { should be 8 }
         its(:'iteration.debt')  { should be 4 }
@@ -41,7 +41,7 @@ module DiceOfDebt
       end
 
       def play_one_iteration
-        subject.roll
+        subject.iteration.roll
         subject.end_iteration
       end
     end

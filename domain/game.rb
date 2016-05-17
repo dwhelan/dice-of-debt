@@ -7,16 +7,8 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
-    def roll(fixed_rolls = {})
-      rolls = dice.roll(fixed_rolls).tap do
-        iteration.value = dice[:value].value
-        iteration.debt  = dice[:debt].value
-      end
-      Roll.new(iterations.count, rolls)
-    end
-
     def start_iteration
-      iterations << Iteration.new if iterations.size < configuration[:iterations]
+      iterations << Iteration.new(dice) if iterations.size < configuration[:iterations]
     end
 
     def end_iteration
