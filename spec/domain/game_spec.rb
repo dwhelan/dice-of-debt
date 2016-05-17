@@ -9,11 +9,11 @@ module DiceOfDebt
       its(:iterations) { should have(0).iterations }
     end
 
-    specify 'roll' do
-      expect(subject.roll).to eq(
-        value: [1, 1, 1, 1, 1, 1, 1, 1],
-        debt:  [1, 1, 1, 1]
-      )
+    describe 'roll' do
+      subject { Game.new.roll }
+
+      it { should be_a Roll }
+      its(:rolls) { should eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt:  [1, 1, 1, 1] }
     end
 
     describe 'first iteration' do
