@@ -31,52 +31,60 @@ tags:
     name: games
     description: Everything about games.
 definitions:
-  game:
-    type: object
+  resource:
     properties:
       id:
         type: string
+        readOnly: true
         example: '1'
       type:
         type: string
+        readOnly: true
         example: 'game'
+  game:
+    allOf:
+      - $ref: "#/definitions/resource"
+    properties:
       attributes:
-        type: object
         $ref: '#/definitions/game_attributes'
+        readOnly: true
   game_attributes:
-    type: object
     properties:
       score:
         type: integer
+        readOnly: true
         example: 0
       value_dice:
         type: integer
+        readOnly: true
         example: 8
       debt_dice:
         type: integer
+        readOnly: true
         example: 4
   error_source:
-    type: object
     properties:
       parameter:
         type: string
+        readOnly: true
         example: 'id'
   error:
-    type: object
     properties:
       status:
         type: string
+        readOnly: true
       title:
         type: string
+        readOnly: true
       detail:
         type: string
+        readOnly: true
       source:
-        type: object
         $ref: '#/definitions/error_source'
+        readOnly: true
   not_found_error:
     allOf:
-    - type: object
-    - $ref: '#/definitions/error'
+      - $ref: '#/definitions/error'
     example:
       status: '404'
       title: Not Found
@@ -85,8 +93,7 @@ definitions:
         parameter: id
   validation_error:
     allOf:
-    - type: object
-    - $ref: '#/definitions/error'
+      - $ref: '#/definitions/error'
     example:
       status: '422'
       title: Invalid game id
