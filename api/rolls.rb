@@ -5,7 +5,7 @@ module DiceOfDebt
 
       type :roll
 
-      nested :attributes do
+      attributes do
         property :value, getter: ->(_) { rolls[:value] }
         property :debt,  getter: ->(_) { rolls[:debt] }
       end

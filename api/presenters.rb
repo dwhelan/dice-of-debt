@@ -9,10 +9,15 @@ module DiceOfDebt
   end
 
   module ResourcePresenter
+    # rubocop:disable Metrics/MethodLength
     def self.included(base)
       base.include Presenter
 
       base.property :id, getter: ->(_) { id.to_s }
+
+      def base.attributes(&block)
+        nested(:attributes, inherit: true, &block)
+      end
 
       def base.type(type)
         property :type, getter: ->(_) { type }
