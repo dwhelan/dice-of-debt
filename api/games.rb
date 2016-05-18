@@ -17,23 +17,11 @@ module DiceOfDebt
       end
 
       def self.as_document(resource)
-        if resource
-          resource.extend(self)
-          { 'data' => resource.to_hash }
-        end
+        { 'data' => resource.extend(self).to_hash } if resource
       end
 
-      # def self.as_document_array(resources)
-      #   if resource
-      #     resource.extend(self)
-      #     { 'data' => resource.to_hash }
-      #   end
-      # end
-
-      module DocumentArray
-        include ResourceArrayPresenter
-
-        resource_presenter GamePresenter
+      def self.as_document_array(resources)
+        { 'data' => resources.map{|resource| resource.extend(self).to_hash } }
       end
     end
 
@@ -77,8 +65,7 @@ module DiceOfDebt
       end
 
       get do
-        present repository.all, with: GamePresenter::DocumentArray
-        # GamePresenter.as_document_array(repository.all)
+        GamePresenter.as_document_array(repository.all)
       end
 
       post do
