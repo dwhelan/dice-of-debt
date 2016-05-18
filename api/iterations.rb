@@ -10,24 +10,6 @@ module DiceOfDebt
       property :score
     end
 
-    module IterationArrayRepresenter
-      include ResourceArrayPresenter
-
-      resource_presenter IterationRepresenter
-    end
-
-    module IterationDocumentRepresenter
-      include ResourcePresenter
-
-      resource_presenter IterationRepresenter
-    end
-
-    module IterationArrayDocumentRepresenter
-      include ResourceArrayPresenter
-
-      resource_presenter IterationRepresenter
-    end
-
     resource :games do
       route_param :game_id do
         resource :iterations do
@@ -38,21 +20,19 @@ module DiceOfDebt
               iteration = game.iteration
               game.end_iteration
               Persistence.game_repository.update(game)
-              present iteration, with: IterationDocumentRepresenter
+              IterationRepresenter.as_document(iteration)
             end
           end
 
           get do
             game = find_game(params[:game_id])
-            if game
-              present game.iterations, with: IterationArrayDocumentRepresenter
-            end
+            IterationRepresenter.as_document(game.iteration)
           end
 
           route_param :id do
             get do
               game = find_game(params[:game_id])
-              present game.iteration, with: IterationDocumentRepresenter if game
+              IterationRepresenter.as_document(game.iteration)
             end
           end
         end

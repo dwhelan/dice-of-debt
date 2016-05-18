@@ -68,14 +68,4 @@ module DiceOfDebt
       end
     end
   end
-
-  module ResourceArrayPresenter
-    def self.included(base)
-      base.include Presenter
-
-      def base.resource_presenter(presenter)
-        collection :entries, as: 'data', extend: presenter, embedded: true
-      end
-    end
-  end
 end
