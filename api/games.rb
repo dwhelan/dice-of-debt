@@ -57,7 +57,7 @@ module DiceOfDebt
       end
 
       get do
-        GamePresenter.as_document_array(repository.all)
+        GamePresenter.as_document(repository.all)
       end
 
       post do

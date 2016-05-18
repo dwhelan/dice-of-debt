@@ -11,24 +11,6 @@ module DiceOfDebt
       end
     end
 
-    module RollArrayRepresenter
-      include ResourceArrayPresenter
-
-      resource_presenter RollRepresenter
-    end
-
-    module RollDocumentRepresenter
-      include ResourcePresenter
-
-      resource_presenter RollRepresenter
-    end
-
-    module RollArrayDocumentRepresenter
-      include ResourceArrayPresenter
-
-      resource_presenter RollRepresenter
-    end
-
     resource :rolls do
       post do
         game_id = params['data']['relationships']['game']['data']['id']
@@ -37,9 +19,9 @@ module DiceOfDebt
           fixed_rolls = params['data']['attributes'] || {}
           roll = game.iteration.roll(fixed_rolls)
           header 'Location', "/rolls/#{roll.id}"
-          present roll, with: RollDocumentRepresenter
+          RollRepresenter.as_document(roll)
         end
-      end\
+      end
     end
   end
 end

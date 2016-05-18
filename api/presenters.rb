@@ -9,6 +9,13 @@ module DiceOfDebt
   end
 
   module ResourcePresenter
+    def self.included(base)
+      base.include Presenter
+      base.extend ClassMethods
+
+      base.property :id, getter: ->(_) { id.to_s }
+    end
+
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     module ClassMethods
       def attributes(&block)
@@ -47,25 +54,18 @@ module DiceOfDebt
         property :type, getter: ->(_) { type }
       end
 
-      def as_document(resource)
-        { 'data' => resource.extend(self).to_hash } if resource
-      end
-
-      def as_document_array(resources)
-        { 'data' => resources.map { |resource| resource.extend(self).to_hash } }
+      def as_document(resources)
+        if resources.is_a? Array
+          { 'data' => resources.map { |resource| resource.extend(self).to_hash } }
+        else
+          { 'data' => resources.extend(self).to_hash } if resources
+        end
       end
 
       def resource_presenter(presenter)
         self.representation_wrap = :data
         include presenter
       end
-    end
-
-    def self.included(base)
-      base.include Presenter
-      base.extend ClassMethods
-
-      base.property :id, getter: ->(_) { id.to_s }
     end
   end
 
