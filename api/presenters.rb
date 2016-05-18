@@ -19,8 +19,8 @@ module DiceOfDebt
         nested(:attributes, inherit: true, &block)
       end
 
-      def base.includes(&block)
-        nested(:included, inherit: true, &block)
+      def base.relationships(&block)
+        nested(:relationships, inherit: true, &block)
 
         class_eval do
           define_method :to_hash do |*args|
@@ -28,10 +28,10 @@ module DiceOfDebt
 
             data = hash['data']
             if data
-              data['relationships'] = data['included'].map do |name, relationship|
+              data['included'] = data['relationships'].values.flatten
+              data['relationships'] = data['relationships'].map do |name, relationship|
                 [name, data: relationship_data(relationship)]
               end.to_h
-              data['included'] = data['included'].values.flatten
             end
 
             hash

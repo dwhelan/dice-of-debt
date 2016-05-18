@@ -11,7 +11,7 @@ module DiceOfDebt
         property :score
       end
 
-      includes do
+      relationships do
         collection :iterations, extend: IterationRepresenter
         collection :rolls, extend: RollRepresenter
       end

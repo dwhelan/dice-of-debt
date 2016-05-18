@@ -19,10 +19,16 @@ module DiceOfDebt
         its([:score])      { should eq 0 }
       end
 
-      xdescribe 'included' do
+      describe 'relationships' do
         subject { data[:included] }
 
-        its(:count) { should eq 0 }
+        its(:count) { should > 0 }
+      end
+
+      describe 'included' do
+        subject { data[:included] }
+
+        its(:count) { should > 0 }
       end
     end
 
@@ -40,7 +46,7 @@ module DiceOfDebt
     describe 'GET /games/1' do
       before { get '/games/1' }
 
-      it { puts data;expect_data 200 }
+      it { expect_data 200 }
 
       include_examples :initial_game
     end
