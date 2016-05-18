@@ -1,7 +1,7 @@
 module DiceOfDebt
   class API
-    module GamePresenter
-      include ResourcePresenter
+    module GameRepresenter
+      include ResourceRepresenter
 
       type 'game'
 
@@ -57,19 +57,19 @@ module DiceOfDebt
       end
 
       get do
-        GamePresenter.as_document(repository.all)
+        GameRepresenter.as_document(repository.all)
       end
 
       post do
         game = repository.create
         header 'Location', "/games/#{game.id}"
-        GamePresenter.as_document(game)
+        GameRepresenter.as_document(game)
       end
 
       route_param :id do
         get do
           game = find_game(params[:id])
-          GamePresenter.as_document(game)
+          GameRepresenter.as_document(game)
         end
       end
     end

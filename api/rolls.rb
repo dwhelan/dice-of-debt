@@ -1,7 +1,7 @@
 module DiceOfDebt
   class API
     module RollRepresenter
-      include ResourcePresenter
+      include ResourceRepresenter
 
       type :roll
 

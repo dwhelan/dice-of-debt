@@ -1,16 +1,16 @@
 require 'roar/json'
 
 module DiceOfDebt
-  module Presenter
+  module Representer
     def self.included(base)
       base.include Roar::JSON
       base.include Grape::Roar::Representer
     end
   end
 
-  module ResourcePresenter
+  module ResourceRepresenter
     def self.included(base)
-      base.include Presenter
+      base.include Representer
       base.extend ClassMethods
 
       base.property :id, getter: ->(_) { id.to_s }
@@ -18,6 +18,10 @@ module DiceOfDebt
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     module ClassMethods
+      def type(type)
+        property :type, getter: ->(_) { type }
+      end
+
       def attributes(&block)
         nested(:attributes, inherit: true, &block)
       end
@@ -50,21 +54,12 @@ module DiceOfDebt
         end
       end
 
-      def type(type)
-        property :type, getter: ->(_) { type }
-      end
-
       def as_document(resources)
         if resources.is_a? Array
           { 'data' => resources.map { |resource| resource.extend(self).to_hash } }
         else
           { 'data' => resources.extend(self).to_hash } if resources
         end
-      end
-
-      def resource_presenter(presenter)
-        self.representation_wrap = :data
-        include presenter
       end
     end
   end

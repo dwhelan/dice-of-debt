@@ -21,7 +21,7 @@ module DiceOfDebt
     end
 
     module ErrorPresenter
-      include Presenter
+      include Representer
 
       property :status, getter: ->(_) { status.to_s }
       property :title
@@ -31,7 +31,7 @@ module DiceOfDebt
     end
 
     module ErrorArrayPresenter
-      include Presenter
+      include Representer
 
       collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
     end

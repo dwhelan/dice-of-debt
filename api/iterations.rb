@@ -1,7 +1,7 @@
 module DiceOfDebt
   class API
     module IterationRepresenter
-      include ResourcePresenter
+      include ResourceRepresenter
 
       type 'iteration'
 
