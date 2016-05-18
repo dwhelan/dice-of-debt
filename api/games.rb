@@ -15,14 +15,6 @@ module DiceOfDebt
         collection :iterations, extend: IterationRepresenter
         collection :rolls, extend: RollRepresenter
       end
-
-      def self.as_document(resource)
-        { 'data' => resource.extend(self).to_hash } if resource
-      end
-
-      def self.as_document_array(resources)
-        { 'data' => resources.map{|resource| resource.extend(self).to_hash } }
-      end
     end
 
     helpers do

@@ -8,10 +8,6 @@ module DiceOfDebt
     end
   end
 
-  module DocumentPresenter
-
-  end
-
   module ResourcePresenter
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     module ClassMethods
@@ -51,31 +47,25 @@ module DiceOfDebt
         property :type, getter: ->(_) { type }
       end
 
+      def as_document(resource)
+        { 'data' => resource.extend(self).to_hash } if resource
+      end
+
+      def as_document_array(resources)
+        { 'data' => resources.map { |resource| resource.extend(self).to_hash } }
+      end
+
       def resource_presenter(presenter)
         self.representation_wrap = :data
         include presenter
       end
-
     end
 
     def self.included(base)
       base.include Presenter
       base.extend ClassMethods
 
-      # document_module = Module.new do
-      #   include Presenter
-      #
-      #   self.representation_wrap = :data
-      # end
-      #
-      # base.const_set(:Document, document_module)
-
       base.property :id, getter: ->(_) { id.to_s }
-
-      # def base.attributes(&block)
-      #   nested(:attributes, inherit: true, &block)
-      # end
-
     end
   end
 
