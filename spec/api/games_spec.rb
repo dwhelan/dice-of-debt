@@ -40,7 +40,7 @@ module DiceOfDebt
     describe 'GET /games/1' do
       before { get '/games/1' }
 
-      it { expect_data 200 }
+      it { puts data;expect_data 200 }
 
       include_examples :initial_game
     end

@@ -19,16 +19,30 @@ module DiceOfDebt
         nested(:attributes, inherit: true, &block)
       end
 
-      # rubocop:disable Lint/NestedMethodDefinition
       def base.includes(&block)
         nested(:included, inherit: true, &block)
 
         class_eval do
-          # TODO: Fix hack below that enforces that "included" is an array. Could this be done in representer instead?
-          def to_hash(*args)
-            h = super
-            h['data']['included'] = h['data']['included'].values.flatten if h['data'] && h['data']['included']
-            h
+          define_method :to_hash do |*args|
+            hash = super(*args)
+
+            data = hash['data']
+            if data
+              data['relationships'] = data['included'].map do |name, relationship|
+                [name, data: relationship_data(relationship)]
+              end.to_h
+              data['included'] = data['included'].values.flatten
+            end
+
+            hash
+          end
+
+          define_method :relationship_data do |relationship|
+            if relationship.is_a? Array
+              relationship.map { |r| relationship_data(r) }
+            else
+              { 'id' => relationship['id'], 'type' => relationship['type'] }
+            end
           end
         end
       end
