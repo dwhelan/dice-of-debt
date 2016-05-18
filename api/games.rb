@@ -15,18 +15,26 @@ module DiceOfDebt
         collection :iterations, extend: IterationRepresenter
         collection :rolls, extend: RollRepresenter
       end
-    end
 
-    module GameDocumentPresenter
-      include ResourcePresenter
+      def self.as_document(resource)
+        if resource
+          resource.extend(self)
+          { 'data' => resource.to_hash }
+        end
+      end
 
-      resource_presenter GamePresenter
-    end
+      # def self.as_document_array(resources)
+      #   if resource
+      #     resource.extend(self)
+      #     { 'data' => resource.to_hash }
+      #   end
+      # end
 
-    module GameArrayDocumentPresenter
-      include ResourceArrayPresenter
+      module DocumentArray
+        include ResourceArrayPresenter
 
-      resource_presenter GamePresenter
+        resource_presenter GamePresenter
+      end
     end
 
     helpers do
@@ -69,24 +77,20 @@ module DiceOfDebt
       end
 
       get do
-        present repository.all, with: GameArrayDocumentPresenter
+        present repository.all, with: GamePresenter::DocumentArray
+        # GamePresenter.as_document_array(repository.all)
       end
 
       post do
-        game = GameDocumentPresenter.represent(Game.new)
-        game = repository.create(game)
+        game = repository.create
         header 'Location', "/games/#{game.id}"
-        present game, with: GameDocumentPresenter
-      end
-
-      params do
-        requires :id
+        GamePresenter.as_document(game)
       end
 
       route_param :id do
         get do
           game = find_game(params[:id])
-          present game, with: GameDocumentPresenter if game
+          GamePresenter.as_document(game)
         end
       end
     end

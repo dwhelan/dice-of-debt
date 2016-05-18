@@ -54,7 +54,7 @@ module DiceOfDebt
       games.where(id: id).as(Game).one
     end
 
-    def create(game)
+    def create(game = Game.new)
       attributes = game.attributes.reject { |key, _| key == :id }
       result = @rom_container.commands[:games][:create].call(attributes)
       game.id = result[:id]
