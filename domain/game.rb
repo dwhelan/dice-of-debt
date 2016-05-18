@@ -37,6 +37,11 @@ module DiceOfDebt
       @dice ||= SetOfDice.new(configuration[:dice])
     end
 
+    def rolls
+      start_iteration
+      @rolls ||= [Roll.new(2, {}), Roll.new(3, {})]
+    end
+
     def configuration
       @configuration ||=
         {

@@ -11,8 +11,9 @@ module DiceOfDebt
         property :score
       end
 
-      nested :included do
-        collection :iterations, extend: IterationRepresenter, as: nil
+      includes do
+        collection :iterations, extend: IterationRepresenter
+        collection :rolls, extend: RollRepresenter
       end
     end
 

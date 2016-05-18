@@ -9,7 +9,7 @@ module DiceOfDebt
   end
 
   module ResourcePresenter
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def self.included(base)
       base.include Presenter
 
@@ -17,6 +17,20 @@ module DiceOfDebt
 
       def base.attributes(&block)
         nested(:attributes, inherit: true, &block)
+      end
+
+      # rubocop:disable Lint/NestedMethodDefinition
+      def base.includes(&block)
+        nested(:included, inherit: true, &block)
+
+        class_eval do
+          # TODO: Fix hack below that enforces that "included" is an array. Could this be done in representer instead?
+          def to_hash(*args)
+            h = super
+            h['data']['included'] = h['data']['included'].values.flatten if h['data'] && h['data']['included']
+            h
+          end
+        end
       end
 
       def base.type(type)
