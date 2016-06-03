@@ -13,11 +13,11 @@ module DiceOfDebt
 
     resource :rolls do
       post do
-        game_id = params['data']['relationships']['game']['data']['id']
-        game = find_game(game_id)
+        game = find_game(params[:game_id])
         if game
           fixed_rolls = params['data']['attributes'] || {}
-          roll = game.iteration.roll(fixed_rolls)
+          roll = GamePlayer.new(game).roll(fixed_rolls)
+
           header 'Location', "/rolls/#{roll.id}"
           RollRepresenter.as_document(roll)
         end

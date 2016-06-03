@@ -10,32 +10,23 @@ module DiceOfDebt
       property :score
     end
 
-    resource :games do
-      route_param :game_id do
-        resource :iterations do
-          post do
-            game = find_game(params[:game_id])
-            if game
-              game.roll
-              iteration = game.iteration
-              game.end_iteration
-              Persistence.game_repository.update(game)
-              IterationRepresenter.as_document(iteration)
-            end
-          end
-
-          get do
-            game = find_game(params[:game_id])
-            IterationRepresenter.as_document(game.iteration)
-          end
-
-          route_param :id do
-            get do
-              game = find_game(params[:game_id])
-              IterationRepresenter.as_document(game.iteration)
-            end
-          end
+    resource :iterations do
+      post do
+        game_id = params['data']['relationships']['game']['data']['id']
+        game = find_game(game_id)
+        # game = find_game(params[:game_id])
+        if game
+          game.roll
+          iteration = game.iteration
+          game.end_iteration
+          Persistence.game_repository.update(game)
+          IterationRepresenter.as_document(iteration)
         end
+      end
+
+      get do
+        game = find_game(params[:game_id])
+        IterationRepresenter.as_document(game.iterations)
       end
     end
   end

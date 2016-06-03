@@ -1,5 +1,4 @@
 require_relative 'api_spec_helper'
-require 'rspec/collection_matchers'
 
 module DiceOfDebt
   describe API do

@@ -1,5 +1,4 @@
 require_relative 'api_spec_helper'
-require 'rspec/collection_matchers'
 
 module DiceOfDebt
   describe API do
@@ -9,25 +8,12 @@ module DiceOfDebt
 
     let(:game1) { { games: { id: '1' } } }
 
-    xdescribe 'GET /games/1/iterations' do
-      before { get '/games/1/iterations' }
-
-      it { expect_data 200 }
-
-      subject { data[0] }
-
-      its([:id])    { should eq '1' }
-      its([:type])  { should eq 'iteration' }
-      its([:value]) { should eq 0 }
-      its([:debt])  { should eq 0 }
-      its([:score]) { should eq 0 }
-    end
-
     describe 'POST /rolls with no specified rolls' do
-      let(:roll) { { type: 'roll', relationships: { game: { data: { type: 'game', id: '1' } } } } }
+      let(:roll) { { type: 'roll' } }
       before { allow(RandomRoller).to receive(:roll) { 6 } }
-      before { post '/rolls', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
+      before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
+      it { expect_data 201 }
       it { expect_data 201 }
       it { expect(headers['Location']).to eq '/rolls/1' }
 

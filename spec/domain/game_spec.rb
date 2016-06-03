@@ -46,6 +46,25 @@ module DiceOfDebt
       end
     end
 
+    describe 'persistence' do
+      let(:player) { GamePlayer.new }
+      let(:repository) { Persistence.game_repository }
+
+      describe 'create' do
+        let!(:game) { player.game }
+
+        it { expect(game.id).to be > 0 }
+
+        describe 'update' do
+          before { player.roll }
+
+          let(:updated_game){ repository.with_id game.id }
+
+          it { expect(updated_game).to have(1).iterations }
+        end
+      end
+    end
+
     specify 'config' do
       expect(subject.config).to eq(
         dice: {

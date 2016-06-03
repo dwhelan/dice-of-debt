@@ -3,11 +3,12 @@ require 'pad'
 module DiceOfDebt
   # The Iteration class is responsible for keeping track of the value, debt and overall score for each iteration.
   class Iteration
-    attr_reader :id, :value, :debt
+    include Pad.entity
+    attr_reader :value, :debt
+    attr_accessor :game
 
-    def initialize(dice)
-      self.dice   = dice
-      self.id     = 1
+    def initialize(game)
+      self.game   = game
       self.debt   = 0
       self.value  = 0
       self.status = :started
@@ -33,9 +34,13 @@ module DiceOfDebt
       status == :complete
     end
 
+    def dice
+      game.dice
+    end
+
     private
 
-    attr_writer :id, :value, :debt
-    attr_accessor :status, :dice
+    attr_writer :value, :debt
+    attr_accessor :status
   end
 end

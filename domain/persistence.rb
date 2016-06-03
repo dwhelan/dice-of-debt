@@ -16,19 +16,34 @@ module DiceOfDebt
       def rom_container
         @rom_container ||= ROM.container(*configuration) do |rom|
           rom.use :macros
-          rom.relation :games
+
+          rom.relation :iterations
+
+          rom.relation :games do
+            def with_iterations
+              qualified.inner_join(:iterations, game_id: :id)
+            end
+          end
 
           rom.commands(:games) do
-            define(:create) do
-              result :one
-            end
+            define(:create)
             define(:update)
           end
+
+          rom.commands(:iterations) do
+            define(:create)
+            define(:update)
+          end
+
         end
       end
 
       def game_repository
         @game_repo ||= GameRepository.new(rom_container)
+      end
+
+      def iteration_repository
+        @iteration_repo ||= IterationRepository.new(rom_container)
       end
 
       def connection
@@ -37,32 +52,54 @@ module DiceOfDebt
     end
   end
 
-  # Retrieves games from the persistence store.
-  class GameRepository < ROM::Repository
-    relations :games
-
+  class Repository < ROM::Repository
     def initialize(rom_container, options = {})
       super
       @rom_container = rom_container
     end
 
-    def all
-      games.as(Game).to_a
+    def command(operation, relation)
+      @rom_container.commands[relation][operation]
+    end
+  end
+
+  class IterationRepository < Repository
+    relations :iterations
+
+    def create(iteration)
+      attributes = iteration.attributes.reject{|k,v| k == :id}.merge(game_id: iteration.game.id)
+      iteration.id = command(:create, :iterations).call(attributes).one![:id]
+      iteration
     end
 
-    def with_id(id)
-      games.where(id: id).as(Game).one
+    def for_game(game)
+      result = iterations.where(game_id: game.id).as(Iteration).to_a
+      result.each {|iteration| iteration.game = game}
+      result
     end
+  end
+
+  # Retrieves games from the persistence store.
+  class GameRepository < Repository
+    relations :games, :iterations
 
     def create(game = Game.new)
-      attributes = game.attributes.reject { |key, _| key == :id }
-      result = @rom_container.commands[:games][:create].call(attributes)
-      game.id = result[:id]
+      game.id = command(:create, :games).call({}).first[:id]
       game
     end
 
-    def update(game)
-      @rom_container.commands[:games][:update].call(game.attributes)
+    def all
+      games.as(Game).to_a.tap do |all_games|
+        all_games.each do |game|
+        game.iterations =  Persistence.iteration_repository.for_game(game)
+        end
+      end
+    end
+
+    def with_id(id)
+      game = games.where(id: id).as(Game).one
+      game.iterations = Persistence.iteration_repository.for_game(game) if game
+      game
     end
   end
 end

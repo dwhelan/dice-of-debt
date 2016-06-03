@@ -7,8 +7,11 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
+    attr_writer :iterations
+    attribute :iterations, Array[Iteration]
+
     def start_iteration
-      iterations << Iteration.new(dice) if iterations.size < configuration[:iterations]
+      iterations << Iteration.new(self) if iterations.size < configuration[:iterations]
     end
 
     def end_iteration

@@ -4,6 +4,7 @@ require 'rake'
 require 'rspec'
 require 'coveralls'
 require 'simplecov'
+require 'rspec/collection_matchers'
 require 'rspec/its'
 require 'pry-byebug'
 
