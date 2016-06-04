@@ -9,7 +9,12 @@ module DiceOfDebt
 
     attr_writer :iterations
     attribute :iterations, Array[Iteration]
+    attribute :score, Integer, default: 0
 
+    # def initialize(*args)
+    #   binding.pry
+    #   super
+    # end
     def start_iteration
       iterations << Iteration.new(self) if iterations.size < configuration[:iterations]
     end
@@ -18,9 +23,9 @@ module DiceOfDebt
       iteration.end
     end
 
-    def score
-      iterations.map(&:score).reduce(0, :+)
-    end
+    # def score
+    #   iterations.map(&:score).reduce(0, :+)
+    # end
 
     def iteration
       start_iteration if iterations.empty? || iterations.last.complete?
@@ -38,6 +43,12 @@ module DiceOfDebt
 
     def dice
       @dice ||= SetOfDice.new(configuration[:dice])
+    end
+
+    def roll(fixed_rolls = {})
+      iteration.roll(fixed_rolls).tap do
+        self.score += iteration.score
+      end
     end
 
     def rolls

@@ -18,7 +18,7 @@ module DiceOfDebt
 
     describe 'first iteration' do
       describe 'rolling' do
-        before { subject.iteration.roll }
+        before { subject.roll }
 
         its(:'iteration.value') { should be 8 }
         its(:'iteration.debt')  { should be 4 }
@@ -33,15 +33,8 @@ module DiceOfDebt
         its(:score)     { should be 40 }
       end
 
-      describe 'after 11 iterations' do
-        before { 11.times { play_one_iteration } }
-
-        its(:iteration) { should be subject.iterations[9] }
-        its(:score)     { should be 40 }
-      end
-
       def play_one_iteration
-        subject.iteration.roll
+        subject.roll
         subject.end_iteration
       end
     end
