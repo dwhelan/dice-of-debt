@@ -61,6 +61,10 @@ module DiceOfDebt
     def command(operation, relation)
       @rom_container.commands[relation][operation]
     end
+    
+    def save(object)
+      object.id ? update(object) : create(object)
+    end
   end
 
   class IterationRepository < Repository

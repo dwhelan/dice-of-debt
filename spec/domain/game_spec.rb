@@ -13,7 +13,7 @@ module DiceOfDebt
       subject { Game.new.iteration.roll }
 
       it { should be_a Roll }
-      its(:rolls) { should eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt:  [1, 1, 1, 1] }
+      its(:rolls) { should eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
     end
 
     describe 'first iteration' do
@@ -43,25 +43,6 @@ module DiceOfDebt
       def play_one_iteration
         subject.iteration.roll
         subject.end_iteration
-      end
-    end
-
-    describe 'persistence' do
-      let(:player) { GamePlayer.new }
-      let(:repository) { Persistence.game_repository }
-
-      describe 'create' do
-        let!(:game) { player.game }
-
-        it { expect(game.id).to be > 0 }
-
-        describe 'update' do
-          before { player.roll }
-
-          let(:updated_game){ repository.with_id game.id }
-
-          it { expect(updated_game).to have(1).iterations }
-        end
       end
     end
 

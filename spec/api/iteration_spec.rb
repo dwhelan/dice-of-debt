@@ -8,7 +8,7 @@ module DiceOfDebt
 
     let(:game1) { { games: { id: '1' } } }
 
-    describe 'GET /iterations' do
+    xdescribe 'GET /iterations' do
       let(:roll) { { type: 'roll', relationships: { game: { data: { type: 'game', id: '1' } } } } }
       before { post '/rolls', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
       before { get '/iterations?game_id=1' }
@@ -17,7 +17,7 @@ module DiceOfDebt
 
       it { expect_data 200 }
       it { expect(data).to be_an Array }
-      it { expect(data).to have(1).iterations }
+      it { expect(data).to have(1).iteration }
 
       # its([:id])    { should eq '1' }
       # its([:type])  { should eq 'iteration' }

@@ -2,13 +2,13 @@ module DiceOfDebt
   class GamePlayer
     attr_reader :game
 
-    def initialize(game = Persistence.game_repository.create)
+    def initialize(game)
       self.game = game
     end
 
     def roll(fixed_rolls = {})
       iteration.roll(fixed_rolls).tap do
-        Persistence.iteration_repository.create(iteration)
+        Persistence.iteration_repository.save(iteration)
       end
     end
 
