@@ -65,6 +65,11 @@ module DiceOfDebt
     def save(object)
       object.id ? update(object) : create(object)
     end
+
+    def update(object)
+      attributes = object.attributes.reject{|k,v| k == :id}
+      command(:update, self.class.relations.first).call(attributes)
+    end
   end
 
   class IterationRepository < Repository
@@ -90,6 +95,11 @@ module DiceOfDebt
     def create(game = Game.new)
       game.id = command(:create, :games).call({}).first[:id]
       game
+    end
+
+    def update(game)
+      attributes = {}
+      command(:update, :games).call(attributes)
     end
 
     def all
