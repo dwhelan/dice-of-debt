@@ -27,7 +27,9 @@ module DiceOfDebt
 
           rom.commands(:games) do
             define(:create)
-            define(:update)
+            define(:update, type: :update) do
+              result :one
+            end
           end
 
           rom.commands(:iterations) do
@@ -77,7 +79,7 @@ module DiceOfDebt
 
     def create(iteration)
       attributes = iteration.attributes.reject{|k,v| k == :id}.merge(game_id: iteration.game.id)
-      iteration.id = command(:create, :iterations).call(attributes).one![:id]
+      iteration.id = command(:create, :iterations).call(attributes).first[:id]
       iteration
     end
 
@@ -98,8 +100,7 @@ module DiceOfDebt
     end
 
     def update(game)
-      attributes = {}
-      command(:update, :games).call(attributes)
+      games.where(id: game.id).update(score: game.score)
     end
 
     def all

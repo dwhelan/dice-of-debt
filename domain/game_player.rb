@@ -7,9 +7,9 @@ module DiceOfDebt
     end
 
     def roll(fixed_rolls = {})
-      iteration.roll(fixed_rolls).tap do
-        Persistence.iteration_repository.save(iteration)
+      game.roll(fixed_rolls).tap do
         Persistence.game_repository.save(game)
+        Persistence.iteration_repository.save(iteration)
       end
     end
 
