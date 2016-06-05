@@ -24,7 +24,7 @@ module DiceOfDebt
       end
 
       it 'should return the roll for the current iteration' do
-        expect(player.roll()).to be roll
+        expect(player.roll).to be roll
       end
 
       it 'should save the iteration' do

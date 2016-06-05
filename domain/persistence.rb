@@ -13,30 +13,23 @@ module DiceOfDebt
         @configuration ||= [:sql, 'postgres://localhost/dice_of_debt']
       end
 
+      # rubocop:disable Metrics/MethodLength
       def rom_container
         @rom_container ||= ROM.container(*configuration) do |rom|
           rom.use :macros
 
           rom.relation :iterations
-
-          rom.relation :games do
-            def with_iterations
-              qualified.inner_join(:iterations, game_id: :id)
-            end
-          end
+          rom.relation :games
 
           rom.commands(:games) do
             define(:create)
-            define(:update, type: :update) do
-              result :one
-            end
+            define(:update)
           end
 
           rom.commands(:iterations) do
             define(:create)
             define(:update)
           end
-
         end
       end
 
@@ -63,13 +56,13 @@ module DiceOfDebt
     def command(operation, relation)
       @rom_container.commands[relation][operation]
     end
-    
+
     def save(object)
       object.id ? update(object) : create(object)
     end
 
     def update(object)
-      attributes = object.attributes.reject{|k,v| k == :id}
+      attributes = object.attributes.reject { |k, _| k == :id }
       command(:update, self.class.relations.first).call(attributes)
     end
   end
@@ -78,14 +71,14 @@ module DiceOfDebt
     relations :iterations
 
     def create(iteration)
-      attributes = iteration.attributes.reject{|k,v| k == :id}.merge(game_id: iteration.game.id)
+      attributes = iteration.attributes.reject { |k, _| k == :id }.merge(game_id: iteration.game.id)
       iteration.id = command(:create, :iterations).call(attributes).first[:id]
       iteration
     end
 
     def for_game(game)
       result = iterations.where(game_id: game.id).as(Iteration).to_a
-      result.each {|iteration| iteration.game = game}
+      result.each { |iteration| iteration.game = game }
       result
     end
   end
@@ -106,7 +99,7 @@ module DiceOfDebt
     def all
       games.as(Game).to_a.tap do |all_games|
         all_games.each do |game|
-        game.iterations =  Persistence.iteration_repository.for_game(game)
+          game.iterations = Persistence.iteration_repository.for_game(game)
         end
       end
     end
