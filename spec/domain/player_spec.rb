@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 module DiceOfDebt
-  describe GamePlayer do
+  describe Player do
     before { allow(RandomRoller).to receive(:roll) { 1 } }
 
     describe 'roll' do
       let(:game) { Game.new }
       let(:iteration) { game.iteration }
-      let(:player) { GamePlayer.new game }
+      let(:player) { Player.new game }
       let(:repository) { Persistence.game_repository }
       let(:roll) { Roll.new(1, {}) }
       let(:rolls) { {} }

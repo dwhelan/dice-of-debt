@@ -1,5 +1,5 @@
 module DiceOfDebt
-  class GamePlayer
+  class Player
     attr_reader :game
 
     def initialize(game)
