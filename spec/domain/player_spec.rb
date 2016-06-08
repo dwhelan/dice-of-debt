@@ -6,15 +6,19 @@ module DiceOfDebt
 
     describe 'roll' do
       let(:game) { Game.new }
-      let(:iteration) { game.iteration }
       let(:player) { Player.new game }
       let(:repository) { Persistence.game_repository }
       let(:roll) { Roll.new(1, {}) }
       let(:rolls) { {} }
 
       before do
-        allow(game).to receive(:roll).with(rolls) { roll }
+        allow(game).to receive(:roll) { roll }
         allow(Persistence.game_repository).to receive(:save)
+      end
+
+      it 'should default roll to be an empty hash' do
+        player.roll
+        expect(game).to have_received(:roll).with({})
       end
 
       it 'should send roll to the game' do
@@ -27,7 +31,7 @@ module DiceOfDebt
       end
 
       it 'should save the game' do
-        player.roll(rolls)
+        player.roll
         expect(Persistence.game_repository).to have_received(:save).with(game)
       end
     end
