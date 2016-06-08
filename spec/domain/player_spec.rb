@@ -13,17 +13,17 @@ module DiceOfDebt
       let(:rolls) { {} }
 
       before do
-        allow(iteration).to receive(:roll).with(rolls) { roll }
+        allow(game).to receive(:roll).with(rolls) { roll }
         allow(Persistence.iteration_repository).to receive(:save)
         allow(Persistence.game_repository).to receive(:save)
       end
 
-      it 'should roll for the current iteration' do
+      it 'should send roll to the game' do
         player.roll(rolls)
-        expect(iteration).to have_received(:roll).with(rolls)
+        expect(game).to have_received(:roll).with(rolls)
       end
 
-      it 'should return the roll for the current iteration' do
+      it 'should return the roll from the game' do
         expect(player.roll).to be roll
       end
 
@@ -35,28 +35,6 @@ module DiceOfDebt
       it 'should save the game' do
         player.roll(rolls)
         expect(Persistence.game_repository).to have_received(:save).with(game)
-      end
-
-      context 'iteration complete' do
-        before do
-          allow(iteration).to receive(:complete?) { true }
-          player.roll(rolls)
-        end
-
-        it 'should start a new iteration' do
-          expect(game).to have(2).iterations
-        end
-      end
-
-      context 'iteration not yet complete' do
-        before do
-          allow(iteration).to receive(:complete?) { false }
-          player.roll(rolls)
-        end
-
-        it 'should use current iteration' do
-          expect(game).to have(1).iterations
-        end
       end
     end
   end
