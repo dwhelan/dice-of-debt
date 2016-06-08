@@ -56,8 +56,8 @@ module DiceOfDebt
     specify 'config' do
       expect(subject.config).to eq(
         dice: {
-            value: { count: 8, sides: 6 },
-            debt:  { count: 4, sides: 6 }
+          value: { count: 8, sides: 6 },
+          debt:  { count: 4, sides: 6 }
         },
         iterations: 10
       )

@@ -94,6 +94,7 @@ module DiceOfDebt
 
     def update(game)
       games.where(id: game.id).update(score: game.score)
+      Persistence.iteration_repository.save(game.iterations.last)
     end
 
     def all

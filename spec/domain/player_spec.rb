@@ -14,7 +14,6 @@ module DiceOfDebt
 
       before do
         allow(game).to receive(:roll).with(rolls) { roll }
-        allow(Persistence.iteration_repository).to receive(:save)
         allow(Persistence.game_repository).to receive(:save)
       end
 
@@ -25,11 +24,6 @@ module DiceOfDebt
 
       it 'should return the roll from the game' do
         expect(player.roll).to be roll
-      end
-
-      it 'should save the iteration' do
-        player.roll(rolls)
-        expect(Persistence.iteration_repository).to have_received(:save).with(iteration)
       end
 
       it 'should save the game' do

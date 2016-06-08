@@ -2,6 +2,7 @@ TODO: Assign ids via persister
 TODO: Validate JSON - consider use of JSON:schema
 TODO: Figure out how to handle re-roll (1) patch iteration (2) roll resource
 TODO: Use strings rather than integers for rolls
+TODO: Database transactions for rolls
 
 get /games/1
   score:
