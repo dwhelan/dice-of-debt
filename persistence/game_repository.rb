@@ -4,14 +4,16 @@ module DiceOfDebt
   class GameRepository < Repository
     relations :games
 
-    def create(game = Game.new)
-      game.id = command(:create, :games).call({}).first[:id]
-      game
+    def create
+      Game.new.tap do |game|
+        game.id = command(:create, :games).call({}).first[:id]
+      end
     end
 
     def update(game)
-      games.where(id: game.id).update(score: game.score)
-      Persistence.iteration_repository.save(game.iterations.last)
+      games.where(id: game.id).update(score: game.score).tap do
+        Persistence.iteration_repository.save(game.iterations.last)
+      end
     end
 
     def all
