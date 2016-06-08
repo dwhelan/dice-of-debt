@@ -33,3 +33,4 @@ RSpec.configure do |config|
 end
 
 require_relative '../domain'
+require_relative '../persistence'
