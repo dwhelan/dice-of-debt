@@ -85,7 +85,7 @@ module DiceOfDebt
 
   # Retrieves games from the persistence store.
   class GameRepository < Repository
-    relations :games, :iterations
+    relations :games
 
     def create(game = Game.new)
       game.id = command(:create, :games).call({}).first[:id]
@@ -100,15 +100,21 @@ module DiceOfDebt
     def all
       games.as(Game).to_a.tap do |all_games|
         all_games.each do |game|
-          game.iterations = Persistence.iteration_repository.for_game(game)
+          game.iterations = iterations_for_game(game)
         end
       end
     end
 
     def with_id(id)
-      game = games.where(id: id).as(Game).one
-      game.iterations = Persistence.iteration_repository.for_game(game) if game
-      game
+      games.where(id: id).as(Game).one.tap do |game|
+        game.iterations = iterations_for_game(game) if game
+      end
+    end
+
+    private
+
+    def iterations_for_game(game)
+      Persistence.iteration_repository.for_game(game)
     end
   end
 end
