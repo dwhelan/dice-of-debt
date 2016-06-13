@@ -70,7 +70,7 @@ module DiceOfDebt
         expect(subject.by_id(43).score).to eq 123
       end
 
-      specify 'with a single iteration' do
+      specify 'should save iteration with a single iteration' do
         game.score = 124
         expect(Persistence.iteration_repository).to receive(:save).with(game.iteration)
 
@@ -79,7 +79,7 @@ module DiceOfDebt
         expect(subject.by_id(43).score).to eq 124
       end
 
-      specify 'with multiple iterations' do
+      specify 'should save last iteration with multiple iterations' do
         game.score = 125
         game.end_iteration
         game.end_iteration

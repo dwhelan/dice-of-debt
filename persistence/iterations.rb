@@ -1,4 +1,26 @@
 module DiceOfDebt
+  class Iterations < ROM::Relation[:sql]
+    dataset :iterations
+
+    view(:by_id, [:id, :game_id]) do |id|
+      where(id: id).select(:id, :game_id)
+    end
+
+    view(:by_game_id, [:id, :game_id]) do |game_id|
+      where(game_id: game_id).select(:id, :game_id)
+    end
+  end
+
+  class CreateIteration < ROM::Commands::Create[:sql]
+    register_as :create
+    relation :iterations
+  end
+
+  class UpdateIteration < ROM::Commands::Update[:sql]
+    register_as :update
+    relation :iterations
+  end
+
   class IterationRepository < Repository
     relations :iterations, :games
 
