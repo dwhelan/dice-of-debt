@@ -3,7 +3,7 @@ require 'spec_helper'
 module DiceOfDebt
   describe Iteration do
     before { allow(RandomRoller).to receive(:roll) { 1 } }
-    subject { Iteration.new(Game.new) }
+    subject { Iteration.new(game: Game.new) }
 
     describe 'initially' do
       its(:score) { should be 0 }

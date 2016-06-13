@@ -10,12 +10,7 @@ module DiceOfDebt
     end
 
     def save(object)
-      object.id ? update(object) : create(object)
-    end
-
-    def update(object)
-      attributes = object.attributes.reject { |k, _| k == :id }
-      command(:update, self.class.relations.first).call(attributes)
+      object.id ? update(object) : create(object) if object
     end
   end
 end

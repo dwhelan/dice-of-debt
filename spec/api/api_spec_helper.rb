@@ -1,23 +1,20 @@
-require 'spec_helper'
+require 'persistent_spec_helper'
 require 'rack/test'
 
 require_relative '../../api'
 
-DiceOfDebt::Persistence.configuration = [:sql, 'sqlite::memory']
-
-RSpec.configure do |config|
-  config.before :suite do
-    load './Rakefile'
-    Rake::Task['db:migrate'].invoke
-
-    connection = DiceOfDebt::Persistence.connection
-    connection[:games].insert id: '1'
-  end
-end
-
 module DiceOfDebt
   shared_context 'api test' do
     include Rack::Test::Methods
+
+    before do
+      insert_data :games, id: 1, score: 0
+    end
+
+    after do
+      delete_data :iterations, game_id: 1
+      delete_data :games, id: 1
+    end
 
     def symbolize_keys(object)
       case object

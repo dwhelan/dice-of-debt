@@ -7,11 +7,11 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
-    attribute :iterations, Array[Iteration]
-    attribute :score, Integer, default: 0
+    attribute :score,      Integer,          default: 0
+    attribute :iterations, Array[Iteration], default: []
 
     def start_iteration
-      iterations << Iteration.new(self) if iterations.size < configuration[:iterations]
+      iterations << new_iteration if iterations.size < configuration[:iterations]
     end
 
     def end_iteration
@@ -21,10 +21,6 @@ module DiceOfDebt
     def iteration
       start_iteration if iterations.empty? || iterations.last.complete?
       iterations.last
-    end
-
-    def iterations
-      @iterations ||= []
     end
 
     def dice
@@ -56,6 +52,12 @@ module DiceOfDebt
           },
           iterations: 10
         }
+    end
+
+    private
+
+    def new_iteration
+      Iteration.new(game: self)
     end
   end
 end

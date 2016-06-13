@@ -7,30 +7,18 @@ module DiceOfDebt
   # A persistence facade
   class Persistence
     class << self
-      attr_writer :configuration
+      attr_writer :configuration, :rom_container
 
-      def configuration
-        @configuration ||= [:sql, 'postgres://localhost/dice_of_debt']
+      def options
+        @options ||= [:sql, 'sqlite::memory']
       end
 
-      # rubocop:disable Metrics/MethodLength
+      def configuration
+        @configuration ||= ROM::Configuration.new(*options)
+      end
+
       def rom_container
-        @rom_container ||= ROM.container(*configuration) do |rom|
-          rom.use :macros
-
-          rom.relation :iterations
-          rom.relation :games
-
-          rom.commands(:games) do
-            define(:create)
-            define(:update)
-          end
-
-          rom.commands(:iterations) do
-            define(:create)
-            define(:update)
-          end
-        end
+        @rom_container ||= ROM.container(configuration)
       end
 
       def game_repository

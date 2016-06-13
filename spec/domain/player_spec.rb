@@ -5,11 +5,10 @@ module DiceOfDebt
     before { allow(RandomRoller).to receive(:roll) { 1 } }
 
     describe 'roll' do
-      let(:game) { Game.new }
+      let(:game)   { Game.new }
       let(:player) { Player.new game }
-      let(:repository) { Persistence.game_repository }
-      let(:roll) { Roll.new(1, {}) }
-      let(:rolls) { {} }
+      let(:roll)   { Roll.new(1, {}) }
+      let(:rolls)  { {} }
 
       before do
         allow(game).to receive(:roll) { roll }

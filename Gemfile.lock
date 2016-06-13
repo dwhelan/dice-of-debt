@@ -195,7 +195,7 @@ GEM
       ruby-progressbar (~> 1.7)
       tins (<= 1.6.0)
     ruby-progressbar (1.7.5)
-    sequel (4.30.0)
+    sequel (4.35.0)
     shellany (0.0.1)
     simplecov (0.10.0)
       docile (~> 1.1.0)
