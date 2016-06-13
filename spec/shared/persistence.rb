@@ -9,4 +9,3 @@ module DiceOfDebt
     end
   end
 end
-

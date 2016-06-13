@@ -3,7 +3,12 @@ module DiceOfDebt
     relations :iterations, :games
 
     def create(iteration)
-      attributes = { value: iteration.value, debt: iteration.debt, status: iteration.status.to_s, game_id: iteration.game.id }
+      attributes = {
+        value:   iteration.value,
+        debt:    iteration.debt,
+        status:  iteration.status.to_s,
+        game_id: iteration.game.id
+      }
       iteration.id = command(:create, :iterations).call(attributes).first[:id]
       iteration
     end

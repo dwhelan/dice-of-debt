@@ -1,7 +1,6 @@
 # Retrieves games from the persistence store.
 
 module DiceOfDebt
-
   class Games < ROM::Relation[:sql]
     dataset :games
 
@@ -55,9 +54,8 @@ module DiceOfDebt
     relations :games, :iterations
 
     def by_id(id)
-      if attributes = games.by_id(id).combine_children(many: iterations).one
-        game_from_attributes(attributes)
-      end
+      attributes = games.by_id(id).combine_children(many: iterations).one
+      game_from_attributes(attributes) if attributes
     end
 
     def all

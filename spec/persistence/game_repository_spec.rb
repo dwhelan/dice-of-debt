@@ -20,7 +20,7 @@ module DiceOfDebt
 
     describe 'by_id' do
       specify 'with bad id' do
-        expect(subject.by_id 424242).to be_nil
+        expect(subject.by_id 999).to be_nil
       end
 
       specify 'with no iterations' do
@@ -40,13 +40,13 @@ module DiceOfDebt
 
     describe 'all' do
       specify 'game with no iterations' do
-        game = subject.all.select {|game| game.id == 41 } .first
+        game = subject.all.find { |g| g.id == 41 }
         expect(game.attributes).to include(id: 41)
         expect(game.iterations).to be_empty
       end
 
       specify 'with iterations' do
-        game = subject.all.select {|game| game.id == 42 } .first
+        game = subject.all.find { |g| g.id == 42 }
         expect(game.attributes).to include(id: 42)
         expect(game.iterations.count).to eq 2
         expect(game.iterations[0].attributes).to include(id: 420, game: game)

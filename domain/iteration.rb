@@ -1,7 +1,6 @@
 require 'pad'
 
 module DiceOfDebt
-
   # Define empty Game to allow Virtus attribute to reference it
   # TODO: try using Virtus finalization
   class Game
