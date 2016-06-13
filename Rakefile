@@ -14,6 +14,6 @@ require 'rom/sql/rake_task'
 
 namespace :db do
   task :setup do
-    DiceOfDebt::Persistence.rom_container
+    DiceOfDebt::Persistence.rom
   end
 end

@@ -42,7 +42,7 @@ module DiceOfDebt
 
     def create
       Game.new.tap do |game|
-        game.id = command(:create, :games).call({})[:id]
+        game.id = Persistence.command(:create, :games).call({})[:id]
       end
     end
 
