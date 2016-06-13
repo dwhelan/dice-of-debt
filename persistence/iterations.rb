@@ -4,11 +4,11 @@ module DiceOfDebt
 
     dataset :iterations
 
-    view(:by_id, [:id, :game_id]) do |id|
+    def by_id(id)
       where(id: id).select(:id, :game_id)
     end
 
-    view(:by_game_id, [:id, :game_id]) do |game_id|
+    def by_game_id(game_id)
       where(game_id: game_id).select(:id, :game_id)
     end
   end

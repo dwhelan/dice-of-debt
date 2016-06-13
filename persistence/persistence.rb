@@ -19,6 +19,10 @@ module DiceOfDebt
         @rom ||= ROM.container(configuration)
       end
 
+      def connection
+        rom.gateways[:default].connection
+      end
+
       def command(operation, relation)
         rom.commands[relation][operation]
       end
@@ -29,10 +33,6 @@ module DiceOfDebt
 
       def iteration_repository
         @iteration_repository ||= IterationRepository.new(rom)
-      end
-
-      def connection
-        rom.gateways[:default].connection
       end
     end
   end

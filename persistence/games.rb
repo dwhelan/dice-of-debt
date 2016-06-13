@@ -6,7 +6,7 @@ module DiceOfDebt
 
     dataset :games
 
-    view(:by_id, [:id, :score]) do |id|
+    def by_id(id)
       where(id: id).select(:id, :score)
     end
   end
