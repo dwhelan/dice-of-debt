@@ -9,16 +9,23 @@ module DiceOfDebt
     view(:by_game_id, [:id, :game_id]) do |game_id|
       where(game_id: game_id).select(:id, :game_id)
     end
+
+    Persistence.configuration.register_relation(self)
   end
 
   class CreateIteration < ROM::Commands::Create[:sql]
     register_as :create
     relation :iterations
+    result :one
+
+    Persistence.configuration.register_command(self)
   end
 
   class UpdateIteration < ROM::Commands::Update[:sql]
     register_as :update
     relation :iterations
+
+    Persistence.configuration.register_command(self)
   end
 
   class IterationRepository < Repository
@@ -31,7 +38,7 @@ module DiceOfDebt
         status:  iteration.status.to_s,
         game_id: iteration.game.id
       }
-      iteration.id = command(:create, :iterations).call(attributes).first[:id]
+      iteration.id = command(:create, :iterations).call(attributes)[:id]
       iteration
     end
 

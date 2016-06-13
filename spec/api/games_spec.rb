@@ -79,7 +79,7 @@ module DiceOfDebt
     describe 'POST /games' do
       before { post '/games', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
-      it { expect_data 201 }
+      fit { expect_data 201 }
       it { expect(headers['Location']).to match '/games/\d+' }
 
       include_examples :initial_game

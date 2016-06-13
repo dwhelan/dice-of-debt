@@ -7,26 +7,24 @@ module DiceOfDebt
     view(:by_id, [:id, :score]) do |id|
       where(id: id).select(:id, :score)
     end
+
+    Persistence.configuration.register_relation(self)
   end
 
   class CreateGame < ROM::Commands::Create[:sql]
     register_as :create
     relation :games
     result :one
+
+    Persistence.configuration.register_command(self)
   end
 
   class UpdateGame < ROM::Commands::Update[:sql]
     register_as :update
     relation :games
-    result :one
+
+    Persistence.configuration.register_command(self)
   end
-
-  config = Persistence.configuration
-  config.register_relation(Games)
-  config.register_command(CreateGame, UpdateGame)
-
-  config.register_relation(Iterations)
-  config.register_command(CreateIteration, UpdateIteration)
 
   class GameRepository < Repository
     relations :games, :iterations
