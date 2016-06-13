@@ -1,4 +1,3 @@
-require 'dry-data'
 require 'rom'
 require 'rom-repository'
 require 'rom-sql'
@@ -7,12 +6,14 @@ module DiceOfDebt
   # A persistence facade
   class Persistence
     class << self
-      def options
-        @options ||= [:sql, 'sqlite::memory']
+      attr_writer :database_uri
+
+      def database_uri
+        @database_uri ||= 'postgres://localhost/dice_of_debt'
       end
 
       def configuration
-        @configuration ||= ROM::Configuration.new(*options)
+        @configuration ||= ROM::Configuration.new(:sql, database_uri)
       end
 
       def rom

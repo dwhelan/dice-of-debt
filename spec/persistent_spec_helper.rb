@@ -10,3 +10,5 @@ RSpec.configure do |config|
     # DB.loggers << Logger.new($stdout)
   end
 end
+
+DiceOfDebt::Persistence.database_uri = 'sqlite::memory'
