@@ -1,3 +1,4 @@
+require_relative 'persistence/auto_register'
 require_relative 'persistence/persistence'
 require_relative 'persistence/repository'
 require_relative 'persistence/iterations'

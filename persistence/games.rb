@@ -2,28 +2,28 @@
 
 module DiceOfDebt
   class Games < ROM::Relation[:sql]
+    include AutoRegister
+
     dataset :games
 
     view(:by_id, [:id, :score]) do |id|
       where(id: id).select(:id, :score)
     end
-
-    Persistence.configuration.register_relation(self)
   end
 
   class CreateGame < ROM::Commands::Create[:sql]
+    include AutoRegister
+
     register_as :create
     relation :games
     result :one
-
-    Persistence.configuration.register_command(self)
   end
 
   class UpdateGame < ROM::Commands::Update[:sql]
+    include AutoRegister
+
     register_as :update
     relation :games
-
-    Persistence.configuration.register_command(self)
   end
 
   class GameRepository < Repository

@@ -1,5 +1,7 @@
 module DiceOfDebt
   class Iterations < ROM::Relation[:sql]
+    include AutoRegister
+
     dataset :iterations
 
     view(:by_id, [:id, :game_id]) do |id|
@@ -9,23 +11,21 @@ module DiceOfDebt
     view(:by_game_id, [:id, :game_id]) do |game_id|
       where(game_id: game_id).select(:id, :game_id)
     end
-
-    Persistence.configuration.register_relation(self)
   end
 
   class CreateIteration < ROM::Commands::Create[:sql]
+    include AutoRegister
+
     register_as :create
     relation :iterations
     result :one
-
-    Persistence.configuration.register_command(self)
   end
 
   class UpdateIteration < ROM::Commands::Update[:sql]
+    include AutoRegister
+
     register_as :update
     relation :iterations
-
-    Persistence.configuration.register_command(self)
   end
 
   class IterationRepository < Repository
