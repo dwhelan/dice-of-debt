@@ -19,7 +19,7 @@ module DiceOfDebt
           game.roll
           iteration = game.iteration
           game.end_iteration
-          Persistence.game_repository.update(game)
+          Persistence::ROM.game_repository.update(game)
           IterationRepresenter.as_document(iteration)
         end
       end

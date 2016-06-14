@@ -42,13 +42,13 @@ module DiceOfDebt
 
     def create
       Game.new.tap do |game|
-        game.id = Persistence.command(:create, :games).call({})[:id]
+        game.id = Persistence::ROM.command(:create, :games).call({})[:id]
       end
     end
 
     def update(game)
       games.where(id: game.id).update(score: game.score).tap do
-        Persistence.iteration_repository.save(game.iterations.last)
+        Persistence::ROM.iteration_repository.save(game.iterations.last)
       end
     end
 

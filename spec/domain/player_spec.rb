@@ -12,7 +12,7 @@ module DiceOfDebt
 
       before do
         allow(game).to receive(:roll) { roll }
-        allow(Persistence.game_repository).to receive(:save)
+        allow(Persistence::ROM.game_repository).to receive(:save)
       end
 
       it 'should default roll to be an empty hash' do
@@ -31,7 +31,7 @@ module DiceOfDebt
 
       it 'should save the game' do
         player.roll
-        expect(Persistence.game_repository).to have_received(:save).with(game)
+        expect(Persistence::ROM.game_repository).to have_received(:save).with(game)
       end
     end
   end

@@ -2,7 +2,7 @@ require 'persistent_spec_helper'
 
 module DiceOfDebt
   describe GameRepository do
-    subject { Persistence.game_repository }
+    subject { Persistence::ROM.game_repository }
 
     before :all do
       insert_data :games, id: 41, score: 98
@@ -72,7 +72,7 @@ module DiceOfDebt
 
       specify 'should save iteration with a single iteration' do
         game.score = 124
-        expect(Persistence.iteration_repository).to receive(:save).with(game.iteration)
+        expect(Persistence::ROM.iteration_repository).to receive(:save).with(game.iteration)
 
         subject.update game
 
@@ -83,8 +83,8 @@ module DiceOfDebt
         game.score = 125
         game.end_iteration
         game.end_iteration
-        expect(Persistence.iteration_repository).to receive(:save).with(game.iterations.last)
-        expect(Persistence.iteration_repository).not_to receive(:save).with(game.iterations.first)
+        expect(Persistence::ROM.iteration_repository).to receive(:save).with(game.iterations.last)
+        expect(Persistence::ROM.iteration_repository).not_to receive(:save).with(game.iterations.first)
 
         subject.update game
 

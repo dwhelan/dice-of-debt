@@ -22,7 +22,7 @@ module DiceOfDebt
         if valid_game_id?(id)
           error_for_invalid_game_id(id)
         else
-          Persistence.game_repository.by_id(id) || error_for_game_not_found(id)
+          Persistence::ROM.game_repository.by_id(id) || error_for_game_not_found(id)
         end
       end
 
@@ -52,7 +52,7 @@ module DiceOfDebt
     resource :games do
       helpers do
         def repository
-          Persistence.game_repository
+          Persistence::ROM.game_repository
         end
       end
 

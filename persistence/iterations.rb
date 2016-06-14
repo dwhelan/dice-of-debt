@@ -38,7 +38,7 @@ module DiceOfDebt
         status:  iteration.status.to_s,
         game_id: iteration.game.id
       }
-      iteration.id = Persistence.command(:create, :iterations).call(attributes)[:id]
+      iteration.id = Persistence::ROM.command(:create, :iterations).call(attributes)[:id]
       iteration
     end
 

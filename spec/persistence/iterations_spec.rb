@@ -2,12 +2,12 @@ require 'persistent_spec_helper'
 
 module DiceOfDebt
   describe IterationRepository do
-    let(:repository) { Persistence.iteration_repository }
+    let(:repository) { Persistence::ROM.iteration_repository }
 
     before { allow(RandomRoller).to receive(:roll) { 1 } }
 
     specify 'create' do
-      game = Persistence.game_repository.create
+      game = Persistence::ROM.game_repository.create
       iteration = Iteration.new(game: game)
 
       repository.create(iteration)

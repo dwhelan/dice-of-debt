@@ -1,0 +1,377 @@
+I, [2016-06-14T00:39:43.043092 #49124]  INFO -- : (0.000091s) PRAGMA foreign_keys = 1
+I, [2016-06-14T00:39:43.043180 #49124]  INFO -- : (0.000037s) PRAGMA case_sensitive_like = 1
+I, [2016-06-14T00:39:43.043291 #49124]  INFO -- : (0.000081s) SELECT sqlite_version()
+I, [2016-06-14T00:39:43.043475 #49124]  INFO -- : (0.000068s) SELECT * FROM `sqlite_master` WHERE ((`name` != 'sqlite_sequence') AND (`type` = 'table'))
+E, [2016-06-14T00:39:43.210234 #49124] ERROR -- : SQLite3::SQLException: no such table: iterations: SELECT NULL AS 'nil' FROM `iterations` LIMIT 1
+E, [2016-06-14T00:39:43.210572 #49124] ERROR -- : SQLite3::SQLException: no such table: games: SELECT NULL AS 'nil' FROM `games` LIMIT 1
+E, [2016-06-14T00:39:43.212769 #49124] ERROR -- : SQLite3::SQLException: no such table: schema_migrations: SELECT NULL AS 'nil' FROM `schema_migrations` LIMIT 1
+I, [2016-06-14T00:39:43.213129 #49124]  INFO -- : (0.000162s) CREATE TABLE `schema_migrations` (`filename` varchar(255) NOT NULL PRIMARY KEY)
+E, [2016-06-14T00:39:43.213231 #49124] ERROR -- : SQLite3::SQLException: no such table: schema_info: SELECT NULL AS 'nil' FROM `schema_info` LIMIT 1
+I, [2016-06-14T00:39:43.213425 #49124]  INFO -- : (0.000054s) SELECT `filename` FROM `schema_migrations` ORDER BY `filename`
+I, [2016-06-14T00:39:43.215556 #49124]  INFO -- : Begin applying migration 20160501003715_create_games.rb, direction: up
+I, [2016-06-14T00:39:43.215785 #49124]  INFO -- : (0.000096s) CREATE TABLE `games` (`id` integer NOT NULL PRIMARY KEY AUTOINCREMENT)
+I, [2016-06-14T00:39:43.215918 #49124]  INFO -- : (0.000036s) INSERT INTO `schema_migrations` (`filename`) VALUES ('20160501003715_create_games.rb')
+I, [2016-06-14T00:39:43.215944 #49124]  INFO -- : Finished applying migration 20160501003715_create_games.rb, direction: up, took 0.000389 seconds
+I, [2016-06-14T00:39:43.215954 #49124]  INFO -- : Begin applying migration 20160519210248_create_iterations.rb, direction: up
+I, [2016-06-14T00:39:43.216125 #49124]  INFO -- : (0.000071s) CREATE TABLE `iterations` (`id` integer NOT NULL PRIMARY KEY AUTOINCREMENT, `game_id` integer REFERENCES `games`)
+I, [2016-06-14T00:39:43.216223 #49124]  INFO -- : (0.000030s) INSERT INTO `schema_migrations` (`filename`) VALUES ('20160519210248_create_iterations.rb')
+I, [2016-06-14T00:39:43.216242 #49124]  INFO -- : Finished applying migration 20160519210248_create_iterations.rb, direction: up, took 0.000286 seconds
+I, [2016-06-14T00:39:43.216251 #49124]  INFO -- : Begin applying migration 20160604212121_add_score_to_game_table.rb, direction: up
+I, [2016-06-14T00:39:43.216353 #49124]  INFO -- : (0.000039s) PRAGMA foreign_keys
+I, [2016-06-14T00:39:43.216400 #49124]  INFO -- : (0.000014s) PRAGMA foreign_keys = off
+I, [2016-06-14T00:39:43.216461 #49124]  INFO -- : (0.000020s) BEGIN
+I, [2016-06-14T00:39:43.216611 #49124]  INFO -- : (0.000083s) ALTER TABLE `games` ADD COLUMN `score` integer DEFAULT (0)
+I, [2016-06-14T00:39:43.216654 #49124]  INFO -- : (0.000016s) COMMIT
+I, [2016-06-14T00:39:43.216704 #49124]  INFO -- : (0.000014s) PRAGMA foreign_keys = on
+I, [2016-06-14T00:39:43.216791 #49124]  INFO -- : (0.000032s) INSERT INTO `schema_migrations` (`filename`) VALUES ('20160604212121_add_score_to_game_table.rb')
+I, [2016-06-14T00:39:43.216810 #49124]  INFO -- : Finished applying migration 20160604212121_add_score_to_game_table.rb, direction: up, took 0.000556 seconds
+I, [2016-06-14T00:39:43.216819 #49124]  INFO -- : Begin applying migration 20160613033957_add_value_debt_and_status_to_iterations.rb, direction: up
+I, [2016-06-14T00:39:43.216901 #49124]  INFO -- : (0.000027s) PRAGMA foreign_keys
+I, [2016-06-14T00:39:43.216944 #49124]  INFO -- : (0.000016s) PRAGMA foreign_keys = off
+I, [2016-06-14T00:39:43.216986 #49124]  INFO -- : (0.000013s) BEGIN
+I, [2016-06-14T00:39:43.217122 #49124]  INFO -- : (0.000080s) ALTER TABLE `iterations` ADD COLUMN `value` integer DEFAULT (0)
+I, [2016-06-14T00:39:43.217255 #49124]  INFO -- : (0.000076s) ALTER TABLE `iterations` ADD COLUMN `debt` integer DEFAULT (0)
+I, [2016-06-14T00:39:43.217389 #49124]  INFO -- : (0.000077s) ALTER TABLE `iterations` ADD COLUMN `status` varchar(255) DEFAULT ('started')
+I, [2016-06-14T00:39:43.217426 #49124]  INFO -- : (0.000015s) COMMIT
+I, [2016-06-14T00:39:43.217469 #49124]  INFO -- : (0.000013s) PRAGMA foreign_keys = on
+I, [2016-06-14T00:39:43.217546 #49124]  INFO -- : (0.000027s) INSERT INTO `schema_migrations` (`filename`) VALUES ('20160613033957_add_value_debt_and_status_to_iterations.rb')
+I, [2016-06-14T00:39:43.217564 #49124]  INFO -- : Finished applying migration 20160613033957_add_value_debt_and_status_to_iterations.rb, direction: up, took 0.000742 seconds
+I, [2016-06-14T00:39:43.218765 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.281051 #49124]  INFO -- : (0.000070s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.281163 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.281701 #49124]  INFO -- : (0.000046s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.284008 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.284095 #49124]  INFO -- : (0.000028s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.284410 #49124]  INFO -- : (0.000033s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.285149 #49124]  INFO -- : (0.000033s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.285237 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.285551 #49124]  INFO -- : (0.000044s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.286286 #49124]  INFO -- : (0.000087s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.286374 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.286671 #49124]  INFO -- : (0.000031s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.287439 #49124]  INFO -- : (0.000029s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.287526 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.287823 #49124]  INFO -- : (0.000033s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.289580 #49124]  INFO -- : (0.000030s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.289682 #49124]  INFO -- : (0.000044s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.290020 #49124]  INFO -- : (0.000071s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.293161 #49124]  INFO -- : (0.000051s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.293256 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.293668 #49124]  INFO -- : (0.000044s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.294679 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.294800 #49124]  INFO -- : (0.000063s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.295092 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.295969 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.296087 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.296397 #49124]  INFO -- : (0.000055s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.297267 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.297355 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.297666 #49124]  INFO -- : (0.000033s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.298494 #49124]  INFO -- : (0.000031s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.298605 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.299084 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.300403 #49124]  INFO -- : (0.000072s) SELECT * FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.300556 #49124]  INFO -- : (0.000047s) SELECT * FROM `iterations` LIMIT 1
+I, [2016-06-14T00:39:43.303635 #49124]  INFO -- : (0.000093s) SELECT * FROM `games`
+I, [2016-06-14T00:39:43.303903 #49124]  INFO -- : (0.000060s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.305611 #49124]  INFO -- : (0.000038s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.305704 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.306106 #49124]  INFO -- : (0.000045s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.306849 #49124]  INFO -- : (0.000056s) SELECT * FROM `games`
+I, [2016-06-14T00:39:43.307023 #49124]  INFO -- : (0.000051s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.308157 #49124]  INFO -- : (0.000036s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.308250 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.308608 #49124]  INFO -- : (0.000071s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.309160 #49124]  INFO -- : (0.000048s) SELECT * FROM `games`
+I, [2016-06-14T00:39:43.309342 #49124]  INFO -- : (0.000050s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.310344 #49124]  INFO -- : (0.000030s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.310430 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.310746 #49124]  INFO -- : (0.000031s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.311640 #49124]  INFO -- : (0.000061s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.311816 #49124]  INFO -- : (0.000045s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.312001 #49124]  INFO -- : (0.000049s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.312991 #49124]  INFO -- : (0.000031s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.313095 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.313393 #49124]  INFO -- : (0.000034s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.314001 #49124]  INFO -- : (0.000046s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.314173 #49124]  INFO -- : (0.000059s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.314346 #49124]  INFO -- : (0.000066s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.315998 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.316089 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.316409 #49124]  INFO -- : (0.000034s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.317156 #49124]  INFO -- : (0.000056s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.317330 #49124]  INFO -- : (0.000048s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.317518 #49124]  INFO -- : (0.000053s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.318647 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.318768 #49124]  INFO -- : (0.000038s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.319157 #49124]  INFO -- : (0.000036s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.319823 #49124]  INFO -- : (0.000050s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.320034 #49124]  INFO -- : (0.000081s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.320226 #49124]  INFO -- : (0.000049s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.321440 #49124]  INFO -- : (0.000035s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.321553 #49124]  INFO -- : (0.000031s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.321920 #49124]  INFO -- : (0.000037s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.322745 #49124]  INFO -- : (0.000110s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.322983 #49124]  INFO -- : (0.000094s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.323188 #49124]  INFO -- : (0.000052s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.324311 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.324415 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.324805 #49124]  INFO -- : (0.000054s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.325491 #49124]  INFO -- : (0.000045s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.325688 #49124]  INFO -- : (0.000058s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.325864 #49124]  INFO -- : (0.000048s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.326958 #49124]  INFO -- : (0.000031s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.327064 #49124]  INFO -- : (0.000028s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.327450 #49124]  INFO -- : (0.000034s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.328183 #49124]  INFO -- : (0.000051s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.328367 #49124]  INFO -- : (0.000043s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.328544 #49124]  INFO -- : (0.000048s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.331510 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.331599 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.331980 #49124]  INFO -- : (0.000056s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.332782 #49124]  INFO -- : (0.000055s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.332969 #49124]  INFO -- : (0.000045s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.333168 #49124]  INFO -- : (0.000063s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.334378 #49124]  INFO -- : (0.000037s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.334471 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.334849 #49124]  INFO -- : (0.000036s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.335662 #49124]  INFO -- : (0.000076s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.335836 #49124]  INFO -- : (0.000037s) SELECT `id`, `score` FROM `games` WHERE (`id` = '9999')
+I, [2016-06-14T00:39:43.336440 #49124]  INFO -- : (0.000030s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.336548 #49124]  INFO -- : (0.000045s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.336849 #49124]  INFO -- : (0.000032s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.337504 #49124]  INFO -- : (0.000051s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.337669 #49124]  INFO -- : (0.000036s) SELECT `id`, `score` FROM `games` WHERE (`id` = '9999')
+I, [2016-06-14T00:39:43.338196 #49124]  INFO -- : (0.000028s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.338286 #49124]  INFO -- : (0.000028s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.338579 #49124]  INFO -- : (0.000032s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.339230 #49124]  INFO -- : (0.000046s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.339418 #49124]  INFO -- : (0.000037s) SELECT `id`, `score` FROM `games` WHERE (`id` = '9999')
+I, [2016-06-14T00:39:43.339924 #49124]  INFO -- : (0.000028s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.340014 #49124]  INFO -- : (0.000026s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.340325 #49124]  INFO -- : (0.000031s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.340925 #49124]  INFO -- : (0.000044s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.341080 #49124]  INFO -- : (0.000035s) SELECT `id`, `score` FROM `games` WHERE (`id` = '9999')
+I, [2016-06-14T00:39:43.341620 #49124]  INFO -- : (0.000029s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.341735 #49124]  INFO -- : (0.000047s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.342061 #49124]  INFO -- : (0.000032s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.342738 #49124]  INFO -- : (0.000055s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.342915 #49124]  INFO -- : (0.000036s) SELECT `id`, `score` FROM `games` WHERE (`id` = '9999')
+I, [2016-06-14T00:39:43.343510 #49124]  INFO -- : (0.000030s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.343655 #49124]  INFO -- : (0.000034s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.343994 #49124]  INFO -- : (0.000033s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.344832 #49124]  INFO -- : (0.000029s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.344924 #49124]  INFO -- : (0.000026s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.345217 #49124]  INFO -- : (0.000038s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.345980 #49124]  INFO -- : (0.000029s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.346068 #49124]  INFO -- : (0.000028s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.346366 #49124]  INFO -- : (0.000042s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.347112 #49124]  INFO -- : (0.000029s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.347204 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.347506 #49124]  INFO -- : (0.000033s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.348299 #49124]  INFO -- : (0.000031s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.348392 #49124]  INFO -- : (0.000034s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.348739 #49124]  INFO -- : (0.000034s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.349612 #49124]  INFO -- : (0.000034s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.349706 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.350069 #49124]  INFO -- : (0.000048s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.351215 #49124]  INFO -- : (0.000031s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.351455 #49124]  INFO -- : (0.000053s) SELECT * FROM `games` WHERE (`id` IN (2)) LIMIT 1
+I, [2016-06-14T00:39:43.352580 #49124]  INFO -- : (0.000034s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.352710 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.352989 #49124]  INFO -- : (0.000032s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.353432 #49124]  INFO -- : (0.000027s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.353599 #49124]  INFO -- : (0.000051s) SELECT * FROM `games` WHERE (`id` IN (3)) LIMIT 1
+I, [2016-06-14T00:39:43.354497 #49124]  INFO -- : (0.000028s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.354592 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.354908 #49124]  INFO -- : (0.000032s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.355305 #49124]  INFO -- : (0.000027s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.355464 #49124]  INFO -- : (0.000048s) SELECT * FROM `games` WHERE (`id` IN (4)) LIMIT 1
+I, [2016-06-14T00:39:43.360289 #49124]  INFO -- : (0.000041s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.360465 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.360791 #49124]  INFO -- : (0.000036s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.361338 #49124]  INFO -- : (0.000031s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.361601 #49124]  INFO -- : (0.000134s) SELECT * FROM `games` WHERE (`id` IN (5)) LIMIT 1
+I, [2016-06-14T00:39:43.362891 #49124]  INFO -- : (0.000038s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.362986 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.363372 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.363954 #49124]  INFO -- : (0.000031s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.364187 #49124]  INFO -- : (0.000105s) SELECT * FROM `games` WHERE (`id` IN (6)) LIMIT 1
+I, [2016-06-14T00:39:43.365373 #49124]  INFO -- : (0.000028s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.365490 #49124]  INFO -- : (0.000057s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.365831 #49124]  INFO -- : (0.000032s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.366323 #49124]  INFO -- : (0.000030s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.366496 #49124]  INFO -- : (0.000051s) SELECT * FROM `games` WHERE (`id` IN (7)) LIMIT 1
+I, [2016-06-14T00:39:43.367693 #49124]  INFO -- : (0.000029s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.367877 #49124]  INFO -- : (0.000041s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.368222 #49124]  INFO -- : (0.000034s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.368691 #49124]  INFO -- : (0.000031s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.368859 #49124]  INFO -- : (0.000049s) SELECT * FROM `games` WHERE (`id` IN (8)) LIMIT 1
+I, [2016-06-14T00:39:43.369982 #49124]  INFO -- : (0.000035s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.370075 #49124]  INFO -- : (0.000031s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.370461 #49124]  INFO -- : (0.000038s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.370937 #49124]  INFO -- : (0.000032s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.371149 #49124]  INFO -- : (0.000055s) SELECT * FROM `games` WHERE (`id` IN (9)) LIMIT 1
+I, [2016-06-14T00:39:43.372262 #49124]  INFO -- : (0.000035s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.372355 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.372722 #49124]  INFO -- : (0.000037s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.373148 #49124]  INFO -- : (0.000032s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.373373 #49124]  INFO -- : (0.000051s) SELECT * FROM `games` WHERE (`id` IN (10)) LIMIT 1
+I, [2016-06-14T00:39:43.374650 #49124]  INFO -- : (0.000086s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.374751 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.375476 #49124]  INFO -- : (0.000068s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.381914 #49124]  INFO -- : (0.000060s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.382178 #49124]  INFO -- : (0.000044s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.382404 #49124]  INFO -- : (0.000104s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.383137 #49124]  INFO -- : (0.000035s) UPDATE `games` SET `score` = 24 WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.383404 #49124]  INFO -- : (0.000037s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (48, 24, 'started', 1)
+I, [2016-06-14T00:39:43.383637 #49124]  INFO -- : (0.000059s) SELECT * FROM `iterations` WHERE (`id` IN (1)) LIMIT 1
+I, [2016-06-14T00:39:43.384247 #49124]  INFO -- : (0.000034s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.384335 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.384698 #49124]  INFO -- : (0.000036s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.385774 #49124]  INFO -- : (0.000053s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.385944 #49124]  INFO -- : (0.000046s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.386152 #49124]  INFO -- : (0.000094s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.386864 #49124]  INFO -- : (0.000047s) UPDATE `games` SET `score` = 24 WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.386992 #49124]  INFO -- : (0.000033s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (48, 24, 'started', 1)
+I, [2016-06-14T00:39:43.387180 #49124]  INFO -- : (0.000087s) SELECT * FROM `iterations` WHERE (`id` IN (2)) LIMIT 1
+I, [2016-06-14T00:39:43.387697 #49124]  INFO -- : (0.000035s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.387784 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.388147 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.389048 #49124]  INFO -- : (0.000047s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.389209 #49124]  INFO -- : (0.000044s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.389396 #49124]  INFO -- : (0.000047s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.389978 #49124]  INFO -- : (0.000030s) UPDATE `games` SET `score` = 24 WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.390098 #49124]  INFO -- : (0.000034s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (48, 24, 'started', 1)
+I, [2016-06-14T00:39:43.390289 #49124]  INFO -- : (0.000056s) SELECT * FROM `iterations` WHERE (`id` IN (3)) LIMIT 1
+I, [2016-06-14T00:39:43.390804 #49124]  INFO -- : (0.000036s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.390941 #49124]  INFO -- : (0.000074s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.391356 #49124]  INFO -- : (0.000047s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.392312 #49124]  INFO -- : (0.000051s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.392484 #49124]  INFO -- : (0.000044s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.392678 #49124]  INFO -- : (0.000052s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.393356 #49124]  INFO -- : (0.000030s) UPDATE `games` SET `score` = 24 WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.393485 #49124]  INFO -- : (0.000033s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (48, 24, 'started', 1)
+I, [2016-06-14T00:39:43.393676 #49124]  INFO -- : (0.000058s) SELECT * FROM `iterations` WHERE (`id` IN (4)) LIMIT 1
+I, [2016-06-14T00:39:43.394228 #49124]  INFO -- : (0.000034s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.394347 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.394734 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.395601 #49124]  INFO -- : (0.000045s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.395776 #49124]  INFO -- : (0.000042s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.395983 #49124]  INFO -- : (0.000049s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.396565 #49124]  INFO -- : (0.000029s) UPDATE `games` SET `score` = 24 WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.396685 #49124]  INFO -- : (0.000031s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (48, 24, 'started', 1)
+I, [2016-06-14T00:39:43.396866 #49124]  INFO -- : (0.000056s) SELECT * FROM `iterations` WHERE (`id` IN (5)) LIMIT 1
+I, [2016-06-14T00:39:43.397430 #49124]  INFO -- : (0.000035s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.397538 #49124]  INFO -- : (0.000028s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.397906 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.398737 #49124]  INFO -- : (0.000061s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.398930 #49124]  INFO -- : (0.000048s) SELECT `id`, `score` FROM `games` WHERE (`id` = '1')
+I, [2016-06-14T00:39:43.399160 #49124]  INFO -- : (0.000078s) SELECT * FROM `iterations` WHERE (`game_id` IN (1))
+I, [2016-06-14T00:39:43.399847 #49124]  INFO -- : (0.000034s) UPDATE `games` SET `score` = 24 WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.400025 #49124]  INFO -- : (0.000048s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (48, 24, 'started', 1)
+I, [2016-06-14T00:39:43.400219 #49124]  INFO -- : (0.000058s) SELECT * FROM `iterations` WHERE (`id` IN (6)) LIMIT 1
+I, [2016-06-14T00:39:43.400868 #49124]  INFO -- : (0.000045s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.400979 #49124]  INFO -- : (0.000028s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.401875 #49124]  INFO -- : (0.000060s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.404830 #49124]  INFO -- : (0.000031s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.404929 #49124]  INFO -- : (0.000041s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.405254 #49124]  INFO -- : (0.000035s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.408085 #49124]  INFO -- : (0.000043s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.408184 #49124]  INFO -- : (0.000031s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.408560 #49124]  INFO -- : (0.000036s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.411300 #49124]  INFO -- : (0.000032s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.411398 #49124]  INFO -- : (0.000038s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.411824 #49124]  INFO -- : (0.000037s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.414763 #49124]  INFO -- : (0.000034s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.414849 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.415391 #49124]  INFO -- : (0.000046s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.419390 #49124]  INFO -- : (0.000044s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.419486 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.419973 #49124]  INFO -- : (0.000037s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.422786 #49124]  INFO -- : (0.000033s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.422875 #49124]  INFO -- : (0.000031s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.423253 #49124]  INFO -- : (0.000036s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.425868 #49124]  INFO -- : (0.000034s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.425956 #49124]  INFO -- : (0.000030s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.426504 #49124]  INFO -- : (0.000048s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.430022 #49124]  INFO -- : (0.000042s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.430145 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.430478 #49124]  INFO -- : (0.000037s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.434551 #49124]  INFO -- : (0.000257s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.434649 #49124]  INFO -- : (0.000032s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.435014 #49124]  INFO -- : (0.000042s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.438562 #49124]  INFO -- : (0.000038s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.438651 #49124]  INFO -- : (0.000027s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.439218 #49124]  INFO -- : (0.000038s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.442451 #49124]  INFO -- : (0.000036s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.442584 #49124]  INFO -- : (0.000053s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.443150 #49124]  INFO -- : (0.000038s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.446455 #49124]  INFO -- : (0.000037s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.446546 #49124]  INFO -- : (0.000029s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.446845 #49124]  INFO -- : (0.000038s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.449961 #49124]  INFO -- : (0.000040s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.450056 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.450623 #49124]  INFO -- : (0.000039s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.453783 #49124]  INFO -- : (0.000038s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.453876 #49124]  INFO -- : (0.000031s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.454388 #49124]  INFO -- : (0.000040s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.458169 #49124]  INFO -- : (0.000045s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.458270 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.458795 #49124]  INFO -- : (0.000044s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.461626 #49124]  INFO -- : (0.000035s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.461719 #49124]  INFO -- : (0.000033s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.462151 #49124]  INFO -- : (0.000039s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.464530 #49124]  INFO -- : (0.000031s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.464621 #49124]  INFO -- : (0.000031s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.464925 #49124]  INFO -- : (0.000037s) INSERT INTO `games` (`id`, `score`) VALUES (1, 0)
+I, [2016-06-14T00:39:43.467463 #49124]  INFO -- : (0.000050s) DELETE FROM `iterations` WHERE (`game_id` = 1)
+I, [2016-06-14T00:39:43.467558 #49124]  INFO -- : (0.000032s) DELETE FROM `games` WHERE (`id` = 1)
+I, [2016-06-14T00:39:43.499647 #49124]  INFO -- : (0.000084s) INSERT INTO `games` (`id`, `score`) VALUES (41, 98)
+I, [2016-06-14T00:39:43.499752 #49124]  INFO -- : (0.000029s) INSERT INTO `games` (`id`, `score`) VALUES (42, 99)
+I, [2016-06-14T00:39:43.499859 #49124]  INFO -- : (0.000026s) INSERT INTO `games` (`id`, `score`) VALUES (43, 100)
+I, [2016-06-14T00:39:43.499947 #49124]  INFO -- : (0.000031s) INSERT INTO `iterations` (`id`, `game_id`) VALUES (420, 42)
+I, [2016-06-14T00:39:43.500029 #49124]  INFO -- : (0.000027s) INSERT INTO `iterations` (`id`, `game_id`) VALUES (421, 42)
+I, [2016-06-14T00:39:43.500319 #49124]  INFO -- : (0.000032s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.500559 #49124]  INFO -- : (0.000070s) SELECT * FROM `games` WHERE (`id` IN (44)) LIMIT 1
+I, [2016-06-14T00:39:43.501223 #49124]  INFO -- : (0.000051s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.501407 #49124]  INFO -- : (0.000037s) SELECT `id`, `score` FROM `games` WHERE (`id` = 999)
+I, [2016-06-14T00:39:43.501927 #49124]  INFO -- : (0.000046s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.502085 #49124]  INFO -- : (0.000043s) SELECT `id`, `score` FROM `games` WHERE (`id` = 41)
+I, [2016-06-14T00:39:43.502289 #49124]  INFO -- : (0.000054s) SELECT * FROM `iterations` WHERE (`game_id` IN (41))
+I, [2016-06-14T00:39:43.503924 #49124]  INFO -- : (0.000063s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.504148 #49124]  INFO -- : (0.000066s) SELECT `id`, `score` FROM `games` WHERE (`id` = 42)
+I, [2016-06-14T00:39:43.504344 #49124]  INFO -- : (0.000068s) SELECT * FROM `iterations` WHERE (`game_id` IN (42))
+I, [2016-06-14T00:39:43.505278 #49124]  INFO -- : (0.000092s) SELECT * FROM `games`
+I, [2016-06-14T00:39:43.505530 #49124]  INFO -- : (0.000122s) SELECT * FROM `iterations` WHERE (`game_id` IN (2, 3, 4, 5, 6, 7, 8, 9, 10, 41, 42, 43, 44))
+I, [2016-06-14T00:39:43.506700 #49124]  INFO -- : (0.000123s) SELECT * FROM `games`
+I, [2016-06-14T00:39:43.506950 #49124]  INFO -- : (0.000096s) SELECT * FROM `iterations` WHERE (`game_id` IN (2, 3, 4, 5, 6, 7, 8, 9, 10, 41, 42, 43, 44))
+I, [2016-06-14T00:39:43.508188 #49124]  INFO -- : (0.000047s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.508362 #49124]  INFO -- : (0.000043s) SELECT `id`, `score` FROM `games` WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.508520 #49124]  INFO -- : (0.000047s) SELECT * FROM `iterations` WHERE (`game_id` IN (43))
+I, [2016-06-14T00:39:43.508780 #49124]  INFO -- : (0.000033s) UPDATE `games` SET `score` = 123 WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.509107 #49124]  INFO -- : (0.000050s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.509253 #49124]  INFO -- : (0.000040s) SELECT `id`, `score` FROM `games` WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.509410 #49124]  INFO -- : (0.000052s) SELECT * FROM `iterations` WHERE (`game_id` IN (43))
+I, [2016-06-14T00:39:43.509981 #49124]  INFO -- : (0.000044s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.510149 #49124]  INFO -- : (0.000042s) SELECT `id`, `score` FROM `games` WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.510371 #49124]  INFO -- : (0.000055s) SELECT * FROM `iterations` WHERE (`game_id` IN (43))
+I, [2016-06-14T00:39:43.510767 #49124]  INFO -- : (0.000028s) UPDATE `games` SET `score` = 124 WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.511139 #49124]  INFO -- : (0.000042s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.511300 #49124]  INFO -- : (0.000040s) SELECT `id`, `score` FROM `games` WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.511447 #49124]  INFO -- : (0.000046s) SELECT * FROM `iterations` WHERE (`game_id` IN (43))
+I, [2016-06-14T00:39:43.512043 #49124]  INFO -- : (0.000045s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.512213 #49124]  INFO -- : (0.000041s) SELECT `id`, `score` FROM `games` WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.512364 #49124]  INFO -- : (0.000046s) SELECT * FROM `iterations` WHERE (`game_id` IN (43))
+I, [2016-06-14T00:39:43.512802 #49124]  INFO -- : (0.000028s) UPDATE `games` SET `score` = 125 WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.513155 #49124]  INFO -- : (0.000043s) SELECT `id`, `score` FROM `games` LIMIT 1
+I, [2016-06-14T00:39:43.513334 #49124]  INFO -- : (0.000041s) SELECT `id`, `score` FROM `games` WHERE (`id` = 43)
+I, [2016-06-14T00:39:43.513508 #49124]  INFO -- : (0.000071s) SELECT * FROM `iterations` WHERE (`game_id` IN (43))
+I, [2016-06-14T00:39:43.513890 #49124]  INFO -- : (0.000061s) DELETE FROM `iterations` WHERE (`game_id` IN (41, 42, 43))
+I, [2016-06-14T00:39:43.514010 #49124]  INFO -- : (0.000052s) DELETE FROM `games` WHERE (`id` IN (41, 42, 43))
+I, [2016-06-14T00:39:43.514350 #49124]  INFO -- : (0.000031s) INSERT INTO `games` DEFAULT VALUES
+I, [2016-06-14T00:39:43.514507 #49124]  INFO -- : (0.000044s) SELECT * FROM `games` WHERE (`id` IN (45)) LIMIT 1
+I, [2016-06-14T00:39:43.514720 #49124]  INFO -- : (0.000031s) INSERT INTO `iterations` (`value`, `debt`, `status`, `game_id`) VALUES (0, 0, 'started', 45)
+I, [2016-06-14T00:39:43.514875 #49124]  INFO -- : (0.000053s) SELECT * FROM `iterations` WHERE (`id` IN (422)) LIMIT 1
+I, [2016-06-14T00:39:43.515135 #49124]  INFO -- : (0.000041s) SELECT `id`, `game_id` FROM `iterations` LIMIT 1
+I, [2016-06-14T00:39:43.515406 #49124]  INFO -- : (0.000041s) SELECT `id`, `game_id` FROM `iterations` WHERE (`id` = 422)
