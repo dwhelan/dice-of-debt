@@ -7,10 +7,6 @@ module DiceOfDebt
     def by_id(id)
       where(id: id).select(:id, :game_id)
     end
-
-    def by_game_id(game_id)
-      where(game_id: game_id).select(:id, :game_id)
-    end
   end
 
   class CreateIteration < ROM::Commands::Create[:sql]
@@ -44,12 +40,6 @@ module DiceOfDebt
 
     def by_id(id)
       iterations.by_id(id).as(Iteration).one
-    end
-
-    def by_game(game)
-      iterations.by_game_id(game.id).as(Iteration).to_a.tap do |game_iterations|
-        game_iterations.each { |iteration| iteration.game = game }
-      end
     end
   end
 end
