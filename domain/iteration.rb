@@ -15,13 +15,14 @@ module DiceOfDebt
     attribute :value,  Integer, default: 0
     attribute :debt,   Integer, default: 0
     attribute :status, Symbol,  default: :started
+    attribute :roll,   Roll
 
-    def roll(fixed_rolls = {})
+    def roll_dice(fixed_rolls = {})
       rolls = dice.roll(fixed_rolls).tap do
         self.value = dice[:value].value
         self.debt  = dice[:debt].value
       end
-      Roll.new(id, rolls)
+      @roll ||= Roll.new(iteration: self, rolls: rolls)
     end
 
     def score

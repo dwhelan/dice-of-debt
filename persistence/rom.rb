@@ -30,6 +30,10 @@ module DiceOfDebt
         def iteration_repository
           @iteration_repository ||= IterationRepository.new(rom)
         end
+
+        def roll_repository
+          @roll_repository ||= RollRepository.new(rom)
+        end
       end
     end
   end

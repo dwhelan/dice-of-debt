@@ -6,8 +6,8 @@ module DiceOfDebt
       self.game = game
     end
 
-    def roll(fixed_rolls = {})
-      game.roll(fixed_rolls).tap do
+    def roll_dice(fixed_rolls = {})
+      game.roll_dice(fixed_rolls).tap do
         Persistence::ROM.game_repository.save(game)
       end
     end

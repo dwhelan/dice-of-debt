@@ -19,15 +19,15 @@ module DiceOfDebt
       end
 
       describe 'relationships' do
-        subject { data[:included] }
+        subject { data[:relationships] }
 
-        its(:count) { should > 0 }
+        its(:count) { should eq 1 }
       end
 
       describe 'included' do
         subject { data[:included] }
 
-        its(:count) { should > 0 }
+        its(:count) { should eq 0 }
       end
     end
 

@@ -27,8 +27,8 @@ module DiceOfDebt
       @dice ||= SetOfDice.new(configuration[:dice])
     end
 
-    def roll(fixed_rolls = {})
-      iteration.roll(fixed_rolls).tap do
+    def roll_dice(fixed_rolls = {})
+      iteration.roll_dice(fixed_rolls).tap do
         self.score += iteration.score
       end
     end

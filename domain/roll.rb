@@ -3,15 +3,17 @@ require 'pad'
 module DiceOfDebt
   class Roll
     include Pad.entity
-    attr_reader :rolls
 
-    def initialize(id, rolls)
-      self.id    = id || 1
-      self.rolls = rolls
-    end
+    attribute :rolls
+    attribute :iteration
 
-    private
+    # def initialize(id, rolls)
+    #   self.id    = id || 1
+    #   self.rolls = rolls
+    # end
 
-    attr_writer :id, :rolls
+    # private
+    #
+    # attr_writer :id, :rolls
   end
 end

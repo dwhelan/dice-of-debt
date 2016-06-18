@@ -13,7 +13,6 @@ module DiceOfDebt
 
       relationships do
         collection :iterations, extend: IterationRepresenter
-        collection :rolls, extend: RollRepresenter
       end
     end
 

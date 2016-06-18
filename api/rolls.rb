@@ -16,7 +16,7 @@ module DiceOfDebt
         game = find_game(params[:game_id])
         if game
           fixed_rolls = params['data']['attributes'] || {}
-          roll = Player.new(game).roll(fixed_rolls)
+          roll = Player.new(game).roll_dice(fixed_rolls)
 
           header 'Location', "/rolls/#{roll.id}"
           RollRepresenter.as_document(roll)

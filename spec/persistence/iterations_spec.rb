@@ -10,10 +10,22 @@ module DiceOfDebt
       game = Persistence::ROM.game_repository.create
       iteration = Iteration.new(game: game)
 
+      expect(Persistence::ROM.roll_repository).to_not receive :save
       repository.create(iteration)
 
       created_iteration = repository.by_id iteration.id
       expect(created_iteration.id).to eq iteration.id
+    end
+
+    specify 'update' do
+      game = Persistence::ROM.game_repository.create
+      iteration = Iteration.new(game: game)
+      repository.create(iteration)
+      roll = iteration.roll_dice
+      expect(Persistence::ROM.roll_repository).to receive(:save).with(roll)
+
+      repository.update(iteration)
+
     end
   end
 end

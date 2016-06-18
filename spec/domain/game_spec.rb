@@ -9,9 +9,9 @@ module DiceOfDebt
       its(:iterations) { should have(0).iterations }
     end
 
-    describe 'roll' do
-      it { expect(subject.roll).to be_a Roll }
-      it { expect(subject.roll.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
+    describe 'roll_dice' do
+      it { expect(subject.roll_dice).to be_a Roll }
+      it { expect(subject.roll_dice.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
     end
 
     describe 'iteration' do
@@ -33,7 +33,7 @@ module DiceOfDebt
     end
 
     describe 'rolling' do
-      before { subject.roll }
+      before { subject.roll_dice }
 
       its(:'iteration.value') { should be 8 }
       its(:'iteration.debt')  { should be 4 }
@@ -49,7 +49,7 @@ module DiceOfDebt
     end
 
     def play_one_iteration
-      subject.roll
+      subject.roll_dice
       subject.end_iteration
     end
 

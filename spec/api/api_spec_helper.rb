@@ -12,6 +12,7 @@ module DiceOfDebt
     end
 
     after do
+      delete_all_data :rolls
       delete_data :iterations, game_id: 1
       delete_data :games, id: 1
     end

@@ -18,12 +18,12 @@ module DiceOfDebt
     end
 
     describe 'roll' do
-      it { expect(subject.roll).to be_a Roll }
-      it { expect(subject.roll.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
+      it { expect(subject.roll_dice).to be_a Roll }
+      it { expect(subject.roll_dice.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
     end
 
     describe 'rolling' do
-      before { subject.roll }
+      before { subject.roll_dice }
 
       its(:value) { should be 8 }
       its(:debt)  { should be 4 }

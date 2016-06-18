@@ -56,8 +56,8 @@ module DiceOfDebt
 
     def game_from_attributes(attributes)
       Game.new(attributes).tap do |game|
-        game.iterations = game.iterations.map do |iteration_attributes|
-          Iteration.new(iteration_attributes.to_h.merge(game: game))
+        game.iterations.each do |iteration|
+          iteration.game = game
         end
       end
     end

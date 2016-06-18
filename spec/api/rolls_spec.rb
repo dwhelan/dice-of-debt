@@ -14,11 +14,11 @@ module DiceOfDebt
       before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
-      it { expect(headers['Location']).to eq '/rolls/1' }
+      it { expect(headers['Location']).to match %r{/rolls/\d+} }
 
       subject { data }
 
-      its([:id])   { should eq '1' }
+      its([:id])   { should match '\d+' }
       its([:type]) { should eq 'roll' }
 
       describe 'attributes' do
@@ -28,15 +28,9 @@ module DiceOfDebt
         its([:debt])  { should eq [6, 6, 6, 6] }
       end
 
-      describe 'resulting game' do
-        before { get '/games/1' }
-
-        xdescribe 'included' do
-          subject { data[:included] }
-
-          its([:value]) { should eq [6, 6, 6, 6, 6, 6, 6, 6] }
-          its([:debt])  { should eq [6, 6, 6, 6] }
-        end
+      xit 'should be saved' do
+        roll_id = data[:id]
+        expect(Persistence::ROM.roll_repository.by_id roll_id).to_not be_nil
       end
     end
   end

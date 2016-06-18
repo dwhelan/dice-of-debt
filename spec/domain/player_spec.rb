@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'persistent_spec_helper'
 
 module DiceOfDebt
   describe Player do
@@ -7,30 +7,30 @@ module DiceOfDebt
     describe 'roll' do
       let(:game)   { Game.new }
       let(:player) { Player.new game }
-      let(:roll)   { Roll.new(1, {}) }
+      let(:roll)   { Roll.new }
       let(:rolls)  { {} }
 
       before do
-        allow(game).to receive(:roll) { roll }
+        allow(game).to receive(:roll_dice) { roll }
         allow(Persistence::ROM.game_repository).to receive(:save)
       end
 
       it 'should default roll to be an empty hash' do
-        player.roll
-        expect(game).to have_received(:roll).with({})
+        player.roll_dice
+        expect(game).to have_received(:roll_dice).with({})
       end
 
       it 'should send roll to the game' do
-        player.roll(rolls)
-        expect(game).to have_received(:roll).with(rolls)
+        player.roll_dice(rolls)
+        expect(game).to have_received(:roll_dice).with(rolls)
       end
 
       it 'should return the roll from the game' do
-        expect(player.roll).to be roll
+        expect(player.roll_dice).to be roll
       end
 
       it 'should save the game' do
-        player.roll
+        player.roll_dice
         expect(Persistence::ROM.game_repository).to have_received(:save).with(game)
       end
     end
