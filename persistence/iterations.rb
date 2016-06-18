@@ -43,7 +43,7 @@ module DiceOfDebt
       attributes = {
         value:   iteration.value,
         debt:    iteration.debt,
-        status:  iteration.status.to_s,
+        status:  iteration.status.to_s
       }
       iterations.where(id: iteration.id).update(attributes).tap do
         Persistence::ROM.roll_repository.save(iteration.roll) if iteration.roll

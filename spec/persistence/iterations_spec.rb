@@ -25,7 +25,6 @@ module DiceOfDebt
       expect(Persistence::ROM.roll_repository).to receive(:save).with(roll)
 
       repository.update(iteration)
-
     end
   end
 end
