@@ -18,16 +18,12 @@ module DiceOfDebt
         its([:score])      { should eq 0 }
       end
 
-      describe 'relationships' do
-        subject { data[:relationships] }
-
-        its(:count) { should eq 1 }
+      specify 'no relationships provided' do
+        expect(data[:relationships]).to be_nil
       end
 
-      describe 'included' do
-        subject { data[:included] }
-
-        its(:count) { should eq 0 }
+      specify 'no included resources' do
+        expect(data[:included]).to be_nil
       end
     end
 
@@ -40,6 +36,10 @@ module DiceOfDebt
 
       its([:id])   { should eq '1' }
       its([:type]) { should eq 'game' }
+
+      specify 'should not have iterations attribute' do
+        expect(data[0][:attributes][:iterations]).to be_nil
+      end
     end
 
     describe 'GET /games/1' do
@@ -48,6 +48,10 @@ module DiceOfDebt
       it { expect_data 200 }
 
       include_examples :initial_game
+
+      specify 'should have iterations attribute' do
+        expect(data[:attributes][:iterations]).not_to be_nil
+      end
     end
 
     describe 'GET /games/9999' do

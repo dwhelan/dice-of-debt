@@ -1,17 +1,29 @@
 module DiceOfDebt
   class API
-    module GameRepresenter
-      include ResourceRepresenter
+    module BaseGameRepresenter
+      def self.included(base)
+        base.instance_eval do
+          include ResourceRepresenter
 
-      type 'game'
+          type 'game'
+
+          attributes do
+            property :value_dice, getter: ->(_) { dice[:value].count }
+            property :debt_dice,  getter: ->(_) { dice[:debt].count  }
+            property :score
+          end
+        end
+      end
+    end
+
+    module GameSummaryRepresenter
+      include BaseGameRepresenter
+    end
+
+    module GameRepresenter
+      include BaseGameRepresenter
 
       attributes do
-        property :value_dice, getter: ->(_) { dice[:value].count }
-        property :debt_dice,  getter: ->(_) { dice[:debt].count  }
-        property :score
-      end
-
-      relationships do
         collection :iterations, extend: IterationRepresenter
       end
     end
@@ -56,7 +68,7 @@ module DiceOfDebt
       end
 
       get do
-        GameRepresenter.as_document(repository.all)
+        GameSummaryRepresenter.as_document(repository.all)
       end
 
       post do
