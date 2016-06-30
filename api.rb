@@ -15,7 +15,7 @@ module DiceOfDebt
     require_relative 'api/iterations'
     require_relative 'api/rolls'
     require_relative 'api/games'
-    require_relative 'api/swagger_docs'
+    require_relative 'api/swagger_doc'
 
     # This should follow all resource routes to enable CORS
     require_relative 'api/cors'

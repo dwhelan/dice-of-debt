@@ -12,7 +12,7 @@ module DiceOfDebt
       it { should_not be_complete }
     end
 
-    specify 'end() should complete the iteration' do
+    specify 'should be able to end the iteration' do
       subject.end
       expect(subject).to be_complete
     end
