@@ -27,7 +27,7 @@ module DiceOfDebt
       end
     end
 
-    describe 'GET /games' do
+    describe 'get all games' do
       before { get '/games' }
 
       it { expect_data 200 }
@@ -41,20 +41,47 @@ module DiceOfDebt
         expect(data[0][:links][:self]).to eq 'http://example.org/games/1'
       end
 
-      specify 'should not have iterations attribute' do
+      specify 'should have no iterations' do
         expect(data[0][:attributes][:iterations]).to be_nil
       end
     end
 
-    describe 'GET /games/1' do
+    describe 'get a newly created game' do
       before { get '/games/1' }
 
       it { expect_data 200 }
 
       include_examples :initial_game
 
-      specify 'should have iterations attribute' do
-        expect(data[:attributes][:iterations]).not_to be_nil
+      specify 'should have an empty iterations attribute' do
+        expect(data[:attributes][:iterations]).to be_empty
+      end
+    end
+
+    describe 'get a partially completed game' do
+      before do
+        insert_data :iterations, id: 420, game_id: 1
+        get '/games/1'
+      end
+
+      after :all do
+        delete_data :iterations, game_id: 1
+      end
+
+      it { expect_data 200 }
+
+      include_examples :initial_game
+
+      specify 'it should have an iteration' do
+        expect(data[:attributes][:iterations].size).to eq 1
+      end
+
+      describe 'iteration' do
+        subject { data[:attributes][:iterations][0] }
+
+        its([:value])  { should eq 0 }
+        its([:debt])   { should eq 0 }
+        its([:score])  { should eq 0 }
       end
     end
 
