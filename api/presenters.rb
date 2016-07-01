@@ -18,12 +18,12 @@ module DiceOfDebt
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     module ClassMethods
-      def type(type)
-        property :type, getter: ->(_) { type }
-      end
-
       def attributes(&block)
         nested(:attributes, inherit: true, &block)
+      end
+
+      def links(&block)
+        nested(:links, inherit: true, &block)
       end
 
       def relationships(&block)
@@ -54,12 +54,25 @@ module DiceOfDebt
         end
       end
 
-      def as_document(resources)
+      def as_document(resources, request)
         if resources.is_a? Array
-          { 'data' => resources.map { |resource| resource.extend(self).to_hash } }
+          { 'data' => resources.map { |resource| present(resource, request) } }
         else
-          { 'data' => resources.extend(self).to_hash } if resources
+          { 'data' => present(resources, request) }
         end
+      end
+
+      def base_url
+        'foo'
+      end
+
+      private
+
+      def present(resource, request)
+        resource.define_singleton_method(:base_url) do
+          request.base_url
+        end
+        resource.extend(self).to_hash
       end
     end
   end

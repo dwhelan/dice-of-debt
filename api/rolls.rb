@@ -3,7 +3,8 @@ module DiceOfDebt
     module RollRepresenter
       include ResourceRepresenter
 
-      type :roll
+      property :type, getter: ->(_) { 'roll' }
+      property :id,   getter: ->(_) { id.to_s }
 
       attributes do
         property :value, getter: ->(_) { rolls[:value] }
@@ -19,7 +20,7 @@ module DiceOfDebt
           roll = Player.new(game).roll_dice(fixed_rolls)
 
           header 'Location', "/rolls/#{roll.id}"
-          RollRepresenter.as_document(roll)
+          RollRepresenter.as_document(roll, request)
         end
       end
     end

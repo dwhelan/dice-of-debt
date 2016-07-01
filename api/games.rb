@@ -1,16 +1,22 @@
 module DiceOfDebt
   class API
     module BaseGameRepresenter
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       def self.included(base)
         base.instance_eval do
           include ResourceRepresenter
 
-          type 'game'
+          property :type, getter: ->(_) { 'game' }
+          property :id,   getter: ->(_) { id.to_s }
 
           attributes do
             property :value_dice, getter: ->(_) { dice[:value].count }
             property :debt_dice,  getter: ->(_) { dice[:debt].count  }
             property :score
+          end
+
+          links do
+            property :self, getter: ->(_) { "#{base_url}/games/#{id}" }
           end
         end
       end
@@ -68,19 +74,19 @@ module DiceOfDebt
       end
 
       get do
-        GameSummaryRepresenter.as_document(repository.all)
+        GameSummaryRepresenter.as_document(repository.all, request)
       end
 
       post do
         game = repository.create
         header 'Location', "/games/#{game.id}"
-        GameRepresenter.as_document(game)
+        GameRepresenter.as_document(game, request)
       end
 
       route_param :id do
         get do
           game = find_game(params[:id])
-          GameRepresenter.as_document(game)
+          GameRepresenter.as_document(game, request) if game
         end
       end
     end
