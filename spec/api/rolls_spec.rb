@@ -14,7 +14,7 @@ module DiceOfDebt
       before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
-      it { expect(headers['Location']).to match %r{/rolls/\d+} }
+      it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
 
       subject { data }
 
@@ -28,7 +28,7 @@ module DiceOfDebt
         its([:debt])  { should eq [6, 6, 6, 6] }
       end
 
-      specify 'should have a link to the game resource' do
+      specify 'should have a link to the roll resource' do
         expect(data[:links][:self]).to eq "http://example.org/rolls/#{data[:id]}"
       end
 

@@ -23,7 +23,7 @@ module DiceOfDebt
           fixed_rolls = params['data']['attributes'] || {}
           roll = Player.new(game).roll_dice(fixed_rolls)
 
-          header 'Location', "/rolls/#{roll.id}"
+          header 'Location', "#{request.base_url}/rolls/#{roll.id}"
           RollRepresenter.as_document(roll, request)
         end
       end
