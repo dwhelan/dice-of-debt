@@ -115,7 +115,7 @@ module DiceOfDebt
       before { post '/games', { data: {} }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
       it { expect_data 201 }
-      it { expect(headers['Location']).to match '/games/\d+' }
+      it { expect(headers['Location']).to match "http://example.org/games/#{data['id']}" }
 
       include_examples :initial_game
     end

@@ -79,7 +79,7 @@ module DiceOfDebt
 
       post do
         game = repository.create
-        header 'Location', "/games/#{game.id}"
+        header 'Location', "#{request.base_url}/games/#{game.id}"
         GameRepresenter.as_document(game, request)
       end
 
