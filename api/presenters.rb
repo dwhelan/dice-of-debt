@@ -62,10 +62,6 @@ module DiceOfDebt
         end
       end
 
-      def base_url
-        'foo'
-      end
-
       private
 
       def present(resource, request)
