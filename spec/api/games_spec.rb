@@ -18,6 +18,10 @@ module DiceOfDebt
         its([:score])      { should eq 0 }
       end
 
+      specify 'should have a link to the game resource' do
+        expect(data[:links][:self]).to eq "http://example.org/games/#{data[:id]}"
+      end
+
       specify 'no relationships provided' do
         expect(data[:relationships]).to be_nil
       end
@@ -36,10 +40,6 @@ module DiceOfDebt
 
       its([:id])   { should eq '1' }
       its([:type]) { should eq 'game' }
-
-      specify 'should have a link to the game resource' do
-        expect(data[0][:links][:self]).to eq 'http://example.org/games/1'
-      end
 
       specify 'should have no iterations' do
         expect(data[0][:attributes][:iterations]).to be_nil
