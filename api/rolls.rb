@@ -10,6 +10,10 @@ module DiceOfDebt
         property :value, getter: ->(_) { rolls[:value] }
         property :debt,  getter: ->(_) { rolls[:debt] }
       end
+
+      links do
+        property :self, getter: ->(_) { "#{base_url}/rolls/#{id}" }
+      end
     end
 
     resource :rolls do
