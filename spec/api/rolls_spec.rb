@@ -32,6 +32,10 @@ module DiceOfDebt
         expect(data[:links][:self]).to eq "http://example.org/rolls/#{data[:id]}"
       end
 
+      specify 'should have a link to the game resource' do
+        expect(data[:links][:game]).to eq 'http://example.org/games/1'
+      end
+
       xit 'should be saved' do
         roll_id = data[:id]
         expect(Persistence::ROM.roll_repository.by_id roll_id).to_not be_nil
