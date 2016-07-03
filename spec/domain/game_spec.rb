@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module DiceOfDebt
   describe Game do
+    let(:iteration) { subject.iteration }
+
     before { allow(RandomRoller).to receive(:roll) { 1 } }
 
     describe 'initially' do
@@ -10,8 +12,22 @@ module DiceOfDebt
     end
 
     describe 'roll_dice' do
-      it { expect(subject.roll_dice).to be_a Roll }
-      it { expect(subject.roll_dice.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
+      let(:roll)  { Roll.new }
+      let(:rolls) { {} }
+
+      before do
+        allow(iteration).to receive(:roll_dice) { roll }
+        allow(iteration).to receive(:score)     { 42 }
+      end
+
+      it 'should send roll to the iteration' do
+        subject.roll_dice(rolls)
+        expect(subject.roll_dice).to be roll
+      end
+
+      it 'should increase the score' do
+        expect { subject.roll_dice rolls }.to change { subject.score }.by 42
+      end
     end
 
     describe 'iteration' do
@@ -30,15 +46,6 @@ module DiceOfDebt
         subject.iteration
         expect(subject).to have(2).iterations
       end
-    end
-
-    describe 'rolling' do
-      before { subject.roll_dice }
-
-      its(:'iteration.value') { should be 8 }
-      its(:'iteration.debt')  { should be 4 }
-      its(:'iteration.score') { should be 4 }
-      its(:score)             { should be 4 }
     end
 
     describe 'after 10 iterations' do

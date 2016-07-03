@@ -17,7 +17,30 @@ module DiceOfDebt
       expect(subject).to be_complete
     end
 
-    describe 'roll' do
+    describe 'roll_dice' do
+      it 'should send fixed_roll to the dice' do
+        fixed_rolls = {}
+        roll = {}
+        expect(subject.dice).to receive(:roll).with(fixed_rolls) { roll }
+        rolled_dice = subject.roll_dice(fixed_rolls)
+        expect(rolled_dice).to be_a Roll
+        expect(rolled_dice.rolls).to be roll
+      end
+
+      it 'should send an empty hash to the dice' do
+        roll = {}
+        expect(subject.dice).to receive(:roll).with({}) { roll }
+        rolled_dice = subject.roll_dice
+        expect(rolled_dice).to be_a Roll
+        expect(rolled_dice.rolls).to be roll
+      end
+
+      it { expect { subject.roll_dice }.to change { subject.value }.by 8 }
+      it { expect { subject.roll_dice }.to change { subject.debt  }.by 4 }
+      it { expect { subject.roll_dice }.to change { subject.score }.by 4 }
+    end
+
+    describe 'roll_dice' do
       it { expect(subject.roll_dice).to be_a Roll }
       it { expect(subject.roll_dice.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
     end

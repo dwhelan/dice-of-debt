@@ -7,8 +7,7 @@ module DiceOfDebt
     subject { last_response }
 
     let(:game1) { { games: { id: '1' } } }
-    let(:roll) { { type: 'roll' } }
-    let(:roll) { { type: 'roll' } }
+    let(:roll)  { { type: 'roll' } }
 
     before { allow(RandomRoller).to receive(:roll) { 6 } }
     before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
