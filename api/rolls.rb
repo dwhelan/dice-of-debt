@@ -18,7 +18,6 @@ module DiceOfDebt
     end
 
     resource :rolls do
-
       helpers do
         def find_roll(id)
           find_resource('roll', id)

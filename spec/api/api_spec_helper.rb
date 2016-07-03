@@ -34,9 +34,7 @@ module DiceOfDebt
 
     def expect_data(status_code)
       expect_response(:data)
-      if (status != status_code && status_code != 500 )
-        pp json
-      end
+      pp json if status != status_code && status_code != 500
       expect(status).to eq status_code
     end
 
@@ -69,12 +67,10 @@ module DiceOfDebt
     end
 
     def json
-      begin
-        symbolize_keys(JSON.parse(last_response.body))
-      rescue
-        puts body
-        raise
-      end
+      symbolize_keys(JSON.parse(last_response.body))
+    rescue
+      puts body
+      raise
     end
 
     subject { last_response }
