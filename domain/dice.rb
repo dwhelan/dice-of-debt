@@ -18,7 +18,7 @@ module DiceOfDebt
       dice.count
     end
 
-    def value
+    def score
       dice.map(&:score).reduce(0, :+)
     end
 

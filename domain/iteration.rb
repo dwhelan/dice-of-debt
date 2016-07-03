@@ -19,8 +19,8 @@ module DiceOfDebt
 
     def roll_dice(fixed_rolls = {})
       rolls = dice.roll(fixed_rolls).tap do
-        self.value = dice[:value].value
-        self.debt  = dice[:debt].value
+        self.value = dice[:value].score
+        self.debt  = dice[:debt].score
       end
       @roll ||= Roll.new(iteration: self, rolls: rolls)
     end
