@@ -34,9 +34,9 @@ module DiceOfDebt
     end
 
     def expect_data(expected_status)
-      expect_response(:data)
       ap json if status != expected_status && expected_status != 500
       expect(status).to eq expected_status
+      expect_response(:data)
     end
 
     def expect_error(status_code)

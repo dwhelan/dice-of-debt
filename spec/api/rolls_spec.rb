@@ -24,8 +24,8 @@ module DiceOfDebt
       describe 'attributes' do
         subject { data[:attributes] }
 
-        its([:value]) { should eq [6, 6, 6, 6, 6, 6, 6, 6] }
-        its([:debt])  { should eq [6, 6, 6, 6] }
+        its([:value]) { should eq %w(6 6 6 6 6 6 6 6) }
+        its([:debt])  { should eq %w(6 6 6 6) }
       end
 
       specify 'should have a link to the roll resource' do

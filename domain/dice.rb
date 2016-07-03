@@ -19,7 +19,7 @@ module DiceOfDebt
     end
 
     def value
-      dice.map(&:value).reduce(0, :+)
+      dice.map(&:score).reduce(0, :+)
     end
 
     private

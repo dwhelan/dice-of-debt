@@ -42,7 +42,7 @@ module DiceOfDebt
 
     describe 'roll_dice' do
       it { expect(subject.roll_dice).to be_a Roll }
-      it { expect(subject.roll_dice.rolls).to eq value: [1, 1, 1, 1, 1, 1, 1, 1], debt: [1, 1, 1, 1] }
+      it { expect(subject.roll_dice.rolls).to eq value: %w(1 1 1 1 1 1 1 1), debt: %w(1 1 1 1) }
     end
 
     describe 'rolling' do
