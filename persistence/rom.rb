@@ -23,6 +23,19 @@ module DiceOfDebt
           rom.commands[relation][operation]
         end
 
+        def repository_for(type)
+          case type
+          when 'game'
+            game_repository
+          when 'iteration'
+            iteration_repository
+          when 'roll'
+            roll_repository
+          else
+            fail "Could not find repository for #{type} resource"
+          end
+        end
+
         def game_repository
           @game_repository ||= GameRepository.new(rom)
         end

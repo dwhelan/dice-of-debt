@@ -7,12 +7,13 @@ module DiceOfDebt
     subject { last_response }
 
     let(:game1) { { games: { id: '1' } } }
+    let(:roll) { { type: 'roll' } }
+    let(:roll) { { type: 'roll' } }
+
+    before { allow(RandomRoller).to receive(:roll) { 6 } }
+    before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
     describe 'POST /rolls with no specified rolls' do
-      let(:roll) { { type: 'roll' } }
-      before { allow(RandomRoller).to receive(:roll) { 6 } }
-      before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
-
       it { expect_data 201 }
       it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
 
@@ -40,6 +41,12 @@ module DiceOfDebt
         roll_id = data[:id]
         expect(Persistence::ROM.roll_repository.by_id roll_id).to_not be_nil
       end
+    end
+
+    describe 'get a newly created roll' do
+      before { get "rolls/#{data[:id]}" }
+
+      xit { expect_data 200 }
     end
   end
 end

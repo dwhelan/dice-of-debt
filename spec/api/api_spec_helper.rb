@@ -33,8 +33,11 @@ module DiceOfDebt
     end
 
     def expect_data(status_code)
-      expect(status).to eq status_code
       expect_response(:data)
+      if (status != status_code && status_code != 500 )
+        pp json
+      end
+      expect(status).to eq status_code
     end
 
     def expect_error(status_code)
@@ -47,16 +50,27 @@ module DiceOfDebt
       expect(json).to eq types if json.keys != types # Output full json to help diagnose failure
     end
 
-    let(:headers) { last_response.headers }
-    let(:status)  { last_response.status  }
-    let(:body)    { last_response.body    }
     let(:data)    { json[:data] }
     let(:errors)  { json[:errors] }
     let(:error)   { errors.first }
 
-    let(:json)    do
+    # Don't use let() in case the spec invokes multiple requests
+    # in which case we don't want the last response memoized.
+    def headers
+      last_response.headers
+    end
+
+    def status
+      last_response.status
+    end
+
+    def body
+      last_response.body
+    end
+
+    def json
       begin
-        symbolize_keys(JSON.parse(body))
+        symbolize_keys(JSON.parse(last_response.body))
       rescue
         puts body
         raise

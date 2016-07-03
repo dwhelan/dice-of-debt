@@ -36,31 +36,35 @@ module DiceOfDebt
 
     helpers do
       def find_game(id)
-        if valid_game_id?(id)
-          error_for_invalid_game_id(id)
+        find_resource('game', id)
+      end
+
+      def find_resource(type, id)
+        if valid_resource_id?(id)
+          error_for_invalid_resource_id(type, id)
         else
-          Persistence::ROM.game_repository.by_id(id) || error_for_game_not_found(id)
+          Persistence::ROM.game_repository.by_id(id) || error_for_resource_not_found(type, id)
         end
       end
 
-      def valid_game_id?(id)
+      def valid_resource_id?(id)
         id !~ /\d+/
       end
 
-      def error_for_invalid_game_id(id)
+      def error_for_invalid_resource_id(type, id)
         error(
           status: 422,
-          title: 'Invalid game id',
-          detail: "The provided game id '#{id}' should be numeric",
+          title: "Invalid #{type} id",
+          detail: "The provided #{type} id '#{id}' should be numeric",
           source: { parameter: :id }
         )
       end
 
-      def error_for_game_not_found(id)
+      def error_for_resource_not_found(type, id)
         error(
           status: 404,
-          title: 'Could not find game',
-          detail: "Could not find a game with id #{id}",
+          title: "Could not find #{type}",
+          detail: "Could not find a #{type} with id #{id}",
           source: { parameter: :id }
         )
       end
@@ -85,7 +89,7 @@ module DiceOfDebt
 
       route_param :id do
         get do
-          game = find_game(params[:id])
+          game = find_resource('game', params[:id])
           GameRepresenter.as_document(game, request) if game
         end
       end

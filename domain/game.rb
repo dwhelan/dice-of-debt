@@ -35,7 +35,7 @@ module DiceOfDebt
 
     def rolls
       start_iteration
-      @rolls ||= [Roll.new(2, {}), Roll.new(3, {})]
+      @rolls ||= [Roll.new({id: 2}), Roll.new({id: 3})]
     end
 
     def config

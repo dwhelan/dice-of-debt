@@ -18,6 +18,13 @@ module DiceOfDebt
     end
 
     resource :rolls do
+
+      helpers do
+        def find_roll(id)
+          find_resource('roll', id)
+        end
+      end
+
       post do
         game = find_game(params[:game_id])
         if game
@@ -25,6 +32,13 @@ module DiceOfDebt
           roll = Player.new(game).roll_dice(fixed_rolls)
 
           header 'Location', "#{request.base_url}/rolls/#{roll.id}"
+          RollRepresenter.as_document(roll, request)
+        end
+      end
+
+      route_param :id do
+        get do
+          roll = find_roll(params[:id])
           RollRepresenter.as_document(roll, request)
         end
       end
