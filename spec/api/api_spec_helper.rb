@@ -1,3 +1,4 @@
+require 'ap'
 require 'persistent_spec_helper'
 require 'rack/test'
 
@@ -32,10 +33,10 @@ module DiceOfDebt
       API
     end
 
-    def expect_data(status_code)
+    def expect_data(expected_status)
       expect_response(:data)
-      pp json if status != status_code && status_code != 500
-      expect(status).to eq status_code
+      ap json if status != expected_status && expected_status != 500
+      expect(status).to eq expected_status
     end
 
     def expect_error(status_code)
@@ -45,7 +46,7 @@ module DiceOfDebt
 
     def expect_response(*types)
       expect(headers['Content-Type']).to eq 'application/vnd.api+json'
-      expect(json).to eq types if json.keys != types # Output full json to help diagnose failure
+      expect(json.keys).to eq types # if json.keys != types # Output full json to help diagnose failure
     end
 
     let(:data)    { json[:data] }
