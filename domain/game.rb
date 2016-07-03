@@ -24,7 +24,7 @@ module DiceOfDebt
     end
 
     def dice
-      @dice ||= SetOfDice.new(configuration[:dice])
+      @dice ||= DiceSet.new(configuration[:dice])
     end
 
     def roll_dice(fixed_rolls = {})

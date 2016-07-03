@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 module DiceOfDebt
-  describe SetOfDice do
+  describe DiceSet do
     before { allow(RandomRoller).to receive(:roll) { 6 } }
 
     context 'empty set' do
-      subject { SetOfDice.new }
+      subject { DiceSet.new }
 
       describe 'empty set rolls should always return an empty hash' do
         it { expect(subject.roll).to eq({}) }
@@ -17,7 +17,7 @@ module DiceOfDebt
     end
 
     context 'set of one' do
-      subject { SetOfDice.new dice: { count: 2 } }
+      subject { DiceSet.new dice: { count: 2 } }
 
       describe 'should generate missing values' do
         it { expect(subject.roll).to eq dice: [6, 6] }
@@ -33,7 +33,7 @@ module DiceOfDebt
     end
 
     context 'set of two' do
-      subject { SetOfDice.new first: { count: 2 }, second: { count: 2 } }
+      subject { DiceSet.new first: { count: 2 }, second: { count: 2 } }
 
       describe 'should generate missing values' do
         it { expect(subject.roll). to eq first: [6, 6], second: [6, 6] }

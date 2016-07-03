@@ -1,6 +1,6 @@
 module DiceOfDebt
   # The SetOfDice class creates a set of dice and allows them to be rolled together.
-  class SetOfDice
+  class DiceSet
     def initialize(options = {})
       self.dice = Hash[options.map { |name, dice_options| [name, Dice.new(dice_options)] }]
     end
