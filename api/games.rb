@@ -43,7 +43,7 @@ module DiceOfDebt
         if valid_resource_id?(id)
           error_for_invalid_resource_id(type, id)
         else
-          Persistence::ROM.game_repository.by_id(id) || error_for_resource_not_found(type, id)
+          Persistence::ROM.repository_for(type).by_id(id) || error_for_resource_not_found(type, id)
         end
       end
 

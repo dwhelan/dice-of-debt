@@ -51,7 +51,9 @@ module DiceOfDebt
     end
 
     def by_id(id)
-      iterations.by_id(id).as(Iteration).one
+      iteration = iterations.by_id(id).combine_children(one: rolls).one
+      game = Persistence::ROM.game_repository.by_id(iteration.game_id)
+      game.iterations.find { |i| i.id = id }
     end
   end
 end

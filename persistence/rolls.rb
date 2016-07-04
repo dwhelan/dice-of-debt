@@ -5,7 +5,7 @@ module DiceOfDebt
     dataset :rolls
 
     def by_id(id)
-      where(id: id).select(:id, :iteration_id)
+      where(id: id).select(:id, :iteration_id, :rolls)
     end
   end
 
@@ -25,11 +25,12 @@ module DiceOfDebt
   end
 
   class RollRepository < Repository
-    relations :rolls
+    relations :rolls, :iterations, :games
 
     def create(roll)
       attributes = {
-        iteration_id: roll.iteration.id
+        iteration_id: roll.iteration.id,
+        rolls: roll.rolls.to_json
       }
       roll.id = Persistence::ROM.command(:create, :rolls).call(attributes)[:id]
       roll
@@ -37,13 +38,17 @@ module DiceOfDebt
 
     def update(roll)
       attributes = {
-        iteration_id: roll.iteration.id
+        iteration_id: roll.iteration.id,
+        rolls: roll.rolls.to_json
       }
       rolls.where(id: roll.id).update(attributes)
     end
 
     def by_id(id)
-      rolls.by_id(id).as(Roll).one
+      roll = rolls.by_id(id).combine_parents(one: iterations).one
+      game = Persistence::ROM.game_repository.by_id(roll.iteration.game_id)
+      iteration = game.iterations.find { |i| i.id == roll.iteration.id }
+      Roll.new(roll.to_h.merge(iteration: iteration))
     end
   end
 end

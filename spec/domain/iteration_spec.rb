@@ -24,7 +24,7 @@ module DiceOfDebt
         expect(subject.dice).to receive(:roll).with(fixed_rolls) { roll }
         rolled_dice = subject.roll_dice(fixed_rolls)
         expect(rolled_dice).to be_a Roll
-        expect(rolled_dice.rolls).to be roll
+        expect(rolled_dice.rolls).to eq roll
       end
 
       it 'should send an empty hash to the dice' do
@@ -32,7 +32,7 @@ module DiceOfDebt
         expect(subject.dice).to receive(:roll).with({}) { roll }
         rolled_dice = subject.roll_dice
         expect(rolled_dice).to be_a Roll
-        expect(rolled_dice.rolls).to be roll
+        expect(rolled_dice.rolls).to eq roll
       end
 
       it { expect { subject.roll_dice }.to change { subject.value }.by 8 }

@@ -12,10 +12,7 @@ module DiceOfDebt
     before { allow(RandomRoller).to receive(:roll) { 6 } }
     before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
 
-    describe 'POST /rolls with no specified rolls' do
-      it { expect_data 201 }
-      it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
-
+    shared_examples 'initial roll' do
       subject { data }
 
       its([:id])   { should match '\d+' }
@@ -35,17 +32,21 @@ module DiceOfDebt
       specify 'should have a link to the game resource' do
         expect(data[:links][:game]).to eq 'http://example.org/games/1'
       end
+    end
 
-      xit 'should be saved' do
-        roll_id = data[:id]
-        expect(Persistence::ROM.roll_repository.by_id roll_id).to_not be_nil
-      end
+    describe 'POST /rolls with no specified rolls' do
+      it { expect_data 201 }
+      it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
+
+      include_examples 'initial roll'
     end
 
     describe 'get a newly created roll' do
       before { get "rolls/#{data[:id]}" }
 
-      xit { expect_data 200 }
+      it { expect_data 200 }
+
+      include_examples 'initial roll'
     end
   end
 end
