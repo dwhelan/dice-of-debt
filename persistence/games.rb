@@ -20,13 +20,6 @@ module DiceOfDebt
       result :one
     end
 
-    class UpdateGame < ::ROM::Commands::Update[:sql]
-      include AutoRegister
-
-      register_as :update
-      relation :games
-    end
-
     class GameRepository < Repository
       relations :games, :iterations, :rolls
 

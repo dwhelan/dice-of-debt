@@ -18,13 +18,6 @@ module DiceOfDebt
       result :one
     end
 
-    class UpdateIteration < ::ROM::Commands::Update[:sql]
-      include AutoRegister
-
-      register_as :update
-      relation :iterations
-    end
-
     class IterationRepository < Repository
       relations :iterations, :games, :rolls
 
