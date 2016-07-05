@@ -48,9 +48,7 @@ module DiceOfDebt
       specify 'with iterations' do
         game = subject.all.find { |g| g.id == 42 }
         expect(game.attributes).to include(id: 42)
-        expect(game.iterations.count).to eq 2
-        expect(game.iterations[0].attributes).to include(id: 420, game: game)
-        expect(game.iterations[1].attributes).to include(id: 421, game: game)
+        expect(game.iterations).to be_empty
       end
     end
 

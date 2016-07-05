@@ -35,9 +35,7 @@ module DiceOfDebt
     end
 
     def all
-      games.combine_children(many: iterations).to_a.map do |attributes|
-        game_from_attributes(attributes)
-      end
+      games.as(Game).to_a
     end
 
     def create
@@ -58,6 +56,7 @@ module DiceOfDebt
       Game.new(attributes).tap do |game|
         game.iterations.each do |iteration|
           iteration.game = game
+          iteration.roll.iteration = iteration if iteration.roll
         end
       end
     end
