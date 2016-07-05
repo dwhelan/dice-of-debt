@@ -14,20 +14,11 @@ module DiceOfDebt
       relations :rolls, :iterations, :games
 
       def create(roll)
-        attributes = {
-          iteration_id: roll.iteration.id,
-          rolls: roll.rolls.to_json
-        }
-        roll.id = rolls.insert(attributes)
-        roll
+        roll.id = rolls.insert(iteration_id: roll.iteration.id, rolls: roll.rolls.to_json)
       end
 
       def update(roll)
-        attributes = {
-          iteration_id: roll.iteration.id,
-          rolls: roll.rolls.to_json
-        }
-        rolls.where(id: roll.id).update(attributes)
+        rolls.where(id: roll.id).update(rolls: roll.rolls.to_json)
       end
 
       def by_id(id)
