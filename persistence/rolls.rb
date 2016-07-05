@@ -1,7 +1,7 @@
 module DiceOfDebt
   module Persistence
     class Rolls < ::ROM::Relation[:sql]
-      include AutoRegister
+      ROM.configuration.register_relation(self)
 
       dataset :rolls
 

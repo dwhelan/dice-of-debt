@@ -3,7 +3,7 @@
 module DiceOfDebt
   module Persistence
     class Games < ::ROM::Relation[:sql]
-      include AutoRegister
+      ROM.configuration.register_relation(self)
 
       dataset :games
 

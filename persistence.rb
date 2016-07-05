@@ -1,5 +1,4 @@
 require_relative 'persistence/configuration'
-require_relative 'persistence/auto_register'
 require_relative 'persistence/rom'
 require_relative 'persistence/repository'
 require_relative 'persistence/iterations'

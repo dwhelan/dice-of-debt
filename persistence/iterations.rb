@@ -1,7 +1,7 @@
 module DiceOfDebt
   module Persistence
     class Iterations < ::ROM::Relation[:sql]
-      include AutoRegister
+      ROM.configuration.register_relation(self)
 
       dataset :iterations
 
