@@ -27,11 +27,18 @@ module DiceOfDebt
   end
 
   class GameRepository < Repository
-    relations :games, :iterations
+    relations :games, :iterations, :rolls
 
     def by_id(id)
-      attributes = games.by_id(id).combine_children(many: iterations).one
-      game_from_attributes(attributes) if attributes
+      game = games.by_id(id).as(Game).one
+      return unless game
+
+      game.iterations = iterations.by_game_id(id).combine_children(one: rolls).as(Iteration).to_a
+      game.iterations.each do |iteration|
+        iteration.game = game
+        iteration.roll.iteration = iteration if iteration.roll
+      end
+      game
     end
 
     def all
@@ -47,17 +54,6 @@ module DiceOfDebt
     def update(game)
       games.where(id: game.id).update(score: game.score).tap do
         Persistence::ROM.iteration_repository.save(game.iterations.last)
-      end
-    end
-
-    private
-
-    def game_from_attributes(attributes)
-      Game.new(attributes).tap do |game|
-        game.iterations.each do |iteration|
-          iteration.game = game
-          iteration.roll.iteration = iteration if iteration.roll
-        end
       end
     end
   end

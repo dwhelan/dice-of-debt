@@ -13,7 +13,7 @@ module DiceOfDebt
       expect(Persistence::ROM.roll_repository).to_not receive :save
       repository.create(iteration)
 
-      created_iteration = repository.by_id iteration.id
+      created_iteration = Persistence::ROM.game_repository.by_id(game.id).iterations.first
       expect(created_iteration.id).to eq iteration.id
     end
 

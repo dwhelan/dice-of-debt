@@ -4,10 +4,6 @@ module DiceOfDebt
 
     dataset :iterations
 
-    def by_id(id)
-      where(id: id).select(:id, :game_id, :value, :debt)
-    end
-
     def by_game_id(game_id)
       where(game_id: game_id).select(:id, :game_id, :value, :debt)
     end
@@ -52,26 +48,6 @@ module DiceOfDebt
       iterations.where(id: iteration.id).update(attributes).tap do
         Persistence::ROM.roll_repository.save(iteration.roll) if iteration.roll
       end
-    end
-
-    def by_id(id)
-      iteration = iterations.by_id(id).one
-      return unless iteration
-
-      game = by_game_id(iteration.game_id)
-      game.iterations.find { |i| i.id = id }
-    end
-
-    def by_game_id(game_id)
-      game = games.by_id(game_id).as(Game).one
-      return unless game
-
-      game.iterations = iterations.by_game_id(game.id).combine_children(one: rolls).as(Iteration).to_a
-      game.iterations.each do |iteration|
-        iteration.game = game
-        iteration.roll.iteration = iteration if iteration.roll
-      end
-      game
     end
   end
 end
