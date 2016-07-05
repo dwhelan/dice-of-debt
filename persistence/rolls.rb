@@ -10,14 +10,6 @@ module DiceOfDebt
       end
     end
 
-    class CreateRoll < ::ROM::Commands::Create[:sql]
-      include AutoRegister
-
-      register_as :create
-      relation :rolls
-      result :one
-    end
-
     class RollRepository < Repository
       relations :rolls, :iterations, :games
 
@@ -26,7 +18,7 @@ module DiceOfDebt
           iteration_id: roll.iteration.id,
           rolls: roll.rolls.to_json
         }
-        roll.id = Persistence::ROM.command(:create, :rolls).call(attributes)[:id]
+        roll.id = rolls.insert(attributes)
         roll
       end
 

@@ -19,10 +19,6 @@ module DiceOfDebt
           rom.gateways[:default].connection
         end
 
-        def command(operation, relation)
-          rom.commands[relation][operation]
-        end
-
         def repository_for(type)
           case type
           when 'game'

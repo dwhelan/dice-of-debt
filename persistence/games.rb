@@ -12,14 +12,6 @@ module DiceOfDebt
       end
     end
 
-    class CreateGame < ::ROM::Commands::Create[:sql]
-      include AutoRegister
-
-      register_as :create
-      relation :games
-      result :one
-    end
-
     class GameRepository < Repository
       relations :games, :iterations, :rolls
 
@@ -41,7 +33,7 @@ module DiceOfDebt
 
       def create
         Game.new.tap do |game|
-          game.id = Persistence::ROM.command(:create, :games).call({})[:id]
+          game.id = games.insert(score: game.score)
         end
       end
 

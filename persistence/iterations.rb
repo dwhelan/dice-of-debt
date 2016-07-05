@@ -10,14 +10,6 @@ module DiceOfDebt
       end
     end
 
-    class CreateIteration < ::ROM::Commands::Create[:sql]
-      include AutoRegister
-
-      register_as :create
-      relation :iterations
-      result :one
-    end
-
     class IterationRepository < Repository
       relations :iterations, :games, :rolls
 
@@ -28,7 +20,7 @@ module DiceOfDebt
           status:  iteration.status.to_s,
           game_id: iteration.game.id
         }
-        iteration.id = Persistence::ROM.command(:create, :iterations).call(attributes)[:id]
+        iteration.id = iterations.insert(attributes)
         Persistence::ROM.roll_repository.save(iteration.roll) if iteration.roll
         iteration
       end
