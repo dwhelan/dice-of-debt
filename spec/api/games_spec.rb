@@ -1,6 +1,5 @@
 require_relative 'api_spec_helper'
 
-# rubocop:disable Metrics/ModuleLength
 module DiceOfDebt
   describe API do
     include_context 'api test'
@@ -42,9 +41,7 @@ module DiceOfDebt
       its([:id])   { should eq '1' }
       its([:type]) { should eq 'game' }
 
-      specify 'should have no iterations' do
-        expect(data[0][:attributes][:iterations]).to be_nil
-      end
+      it { expect(data[0][:attributes][:iterations]).to be_nil }
     end
 
     describe 'get a newly created game' do
@@ -54,9 +51,7 @@ module DiceOfDebt
 
       include_examples :initial_game
 
-      specify 'should have an empty iterations attribute' do
-        expect(data[:attributes][:iterations]).to be_empty
-      end
+      it { expect(data[:attributes][:iterations]).to be_empty }
     end
 
     describe 'get a partially completed game' do
@@ -73,10 +68,7 @@ module DiceOfDebt
 
       include_examples :initial_game
 
-      specify 'it should have an iteration' do
-        expect(data[:attributes][:iterations].size).to eq 1
-      end
-
+      it { expect(data[:attributes][:iterations].size).to eq 1 }
       it { expect(data[:attributes][:status]).to eq 'started' }
 
       describe 'iteration' do
