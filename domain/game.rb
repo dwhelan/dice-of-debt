@@ -54,6 +54,14 @@ module DiceOfDebt
         }
     end
 
+    def status
+      if iterations.size == configuration[:iterations] && iterations.last.complete?
+        :complete
+      else
+        :started
+      end
+    end
+
     private
 
     def new_iteration
