@@ -12,8 +12,6 @@ module DiceOfDebt
     def self.included(base)
       base.include Representer
       base.extend ClassMethods
-
-      base.property :id, getter: ->(_) { id.to_s }
     end
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

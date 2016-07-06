@@ -30,9 +30,8 @@ module DiceOfDebt
           debt:    iteration.debt,
           status:  iteration.status.to_s
         }
-        iterations.where(id: iteration.id).update(attributes).tap do
-          save_roll(iteration.roll)
-        end
+        iterations.where(id: iteration.id).update(attributes)
+        save_roll(iteration.roll)
       end
 
       def save_roll(roll)

@@ -60,7 +60,7 @@ module DiceOfDebt
 
     describe 'get a partially completed game' do
       before do
-        insert_data :iterations, id: 420, game_id: 1
+        insert_data :iterations, id: 420, game_id: 1, value: 12, debt: 9, status: 'complete'
         get '/games/1'
       end
 
@@ -79,9 +79,12 @@ module DiceOfDebt
       describe 'iteration' do
         subject { data[:attributes][:iterations][0] }
 
-        its([:value])  { should eq 0 }
-        its([:debt])   { should eq 0 }
-        its([:score])  { should eq 0 }
+        it { expect(subject).to_not have_key :id }
+
+        its([:value])  { should eq 12 }
+        its([:debt])   { should eq 9 }
+        its([:score])  { should eq 3 }
+        its([:status]) { should eq 'complete' }
       end
     end
 
