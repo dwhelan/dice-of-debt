@@ -6,7 +6,7 @@ module DiceOfDebt
       dataset :iterations
 
       def by_game_id(game_id)
-        where(game_id: game_id).select(:id, :game_id, :value, :debt)
+        where(game_id: game_id).select(:id, :game_id, :value, :debt, :status)
       end
     end
 
@@ -21,7 +21,7 @@ module DiceOfDebt
           game_id: iteration.game.id
         }
         iteration.id = iterations.insert(attributes)
-        Persistence::ROM.roll_repository.save(iteration.roll)
+        save_roll(iteration.roll)
       end
 
       def update(iteration)
@@ -31,8 +31,12 @@ module DiceOfDebt
           status:  iteration.status.to_s
         }
         iterations.where(id: iteration.id).update(attributes).tap do
-          Persistence::ROM.roll_repository.save(iteration.roll)
+          save_roll(iteration.roll)
         end
+      end
+
+      def save_roll(roll)
+        Persistence::ROM.roll_repository.save(roll)
       end
     end
   end

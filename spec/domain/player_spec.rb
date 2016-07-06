@@ -29,6 +29,11 @@ module DiceOfDebt
         expect(player.roll_dice).to be roll
       end
 
+      it 'should end the iteration' do
+        iteration = game.iteration
+        expect { player.roll_dice }.to change { iteration.complete? }.from(false).to(true)
+      end
+
       it 'should save the game' do
         player.roll_dice
         expect(Persistence::ROM.game_repository).to have_received(:save).with(game)

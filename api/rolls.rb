@@ -27,6 +27,7 @@ module DiceOfDebt
       post do
         game = find_game(params[:game_id])
         if game
+          # binding.pry
           fixed_rolls = params['data']['attributes'] || {}
           roll = Player.new(game).roll_dice(fixed_rolls)
 
@@ -37,6 +38,7 @@ module DiceOfDebt
 
       route_param :id do
         get do
+          # binding.pry
           roll = find_roll(params[:id])
           RollRepresenter.as_document(roll, request)
         end
