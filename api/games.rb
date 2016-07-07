@@ -6,18 +6,18 @@ module DiceOfDebt
         base.instance_eval do
           include ResourceRepresenter
 
-          property :type, getter: ->(_) { 'game' }
-          property :id,   getter: ->(_) { id.to_s }
+          property :type, getter: -> _ { 'game' }
+          property :id,   getter: -> _ { id.to_s }
 
           attributes do
-            property :value_dice, getter: ->(_) { dice[:value].count }
-            property :debt_dice,  getter: ->(_) { dice[:debt].count  }
+            property :value_dice, getter: -> _ { dice[:value].count }
+            property :debt_dice,  getter: -> _ { dice[:debt].count  }
             property :score
             property :status
           end
 
           links do
-            property :self, getter: ->(_) { "#{base_url}/games/#{id}" }
+            property :self, getter: -> _ { "#{base_url}/games/#{id}" }
           end
         end
       end

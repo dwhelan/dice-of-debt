@@ -23,7 +23,7 @@ module DiceOfDebt
     module ErrorPresenter
       include Representer
 
-      property :status, getter: ->(_) { status.to_s }
+      property :status, getter: -> _ { status.to_s }
       property :title
       property :detail
       property :source

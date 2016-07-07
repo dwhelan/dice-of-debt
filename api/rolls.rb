@@ -3,17 +3,17 @@ module DiceOfDebt
     module RollRepresenter
       include ResourceRepresenter
 
-      property :type, getter: ->(_) { 'roll' }
-      property :id,   getter: ->(_) { id.to_s }
+      property :type, getter: -> _ { 'roll' }
+      property :id,   getter: -> _ { id.to_s }
 
       attributes do
-        property :value, getter: ->(_) { rolls[:value] }
-        property :debt,  getter: ->(_) { rolls[:debt] }
+        property :value, getter: -> _ { rolls[:value] }
+        property :debt,  getter: -> _ { rolls[:debt] }
       end
 
       links do
-        property :self, getter: ->(_) { "#{base_url}/rolls/#{id}" }
-        property :game, getter: ->(_) { "#{base_url}/games/#{iteration.game.id}" }
+        property :self, getter: -> _ { "#{base_url}/rolls/#{id}" }
+        property :game, getter: -> _ { "#{base_url}/games/#{iteration.game.id}" }
       end
     end
 
