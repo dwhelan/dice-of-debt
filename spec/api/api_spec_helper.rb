@@ -3,6 +3,7 @@ require 'persistent_spec_helper'
 require 'rack/test'
 
 require_relative '../../api'
+require_relative 'shared'
 
 module DiceOfDebt
   shared_context 'api test' do

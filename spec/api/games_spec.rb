@@ -104,30 +104,16 @@ module DiceOfDebt
       it { expect(data[:attributes][:status]).to eq 'complete' }
     end
 
-    describe 'GET /games/9999' do
+    describe 'GET a game using a non-existent id' do
       before { get '/games/9999' }
 
-      it { expect_error 404 }
-
-      subject { error }
-
-      its([:status]) { should eq '404' }
-      its([:title])  { should eq 'Could not find game' }
-      its([:detail]) { should eq 'Could not find a game with id 9999' }
-      its([:source]) { should eq parameter: 'id' }
+      include_examples 'GET using a non-existent resource id', 'game'
     end
 
-    describe 'GET /games/foo' do
+    describe 'GET a game using an invalid id' do
       before { get '/games/foo' }
 
-      it { expect_error 422 }
-
-      subject { error }
-
-      its([:status]) { should eq '422' }
-      its([:title])  { should eq 'Invalid game id' }
-      its([:detail]) { should eq "The provided game id 'foo' should be numeric" }
-      its([:source]) { should eq parameter: 'id' }
+      include_examples 'GET using an invalid resource id', 'game'
     end
 
     describe 'POST /games' do

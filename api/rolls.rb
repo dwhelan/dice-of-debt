@@ -18,16 +18,9 @@ module DiceOfDebt
     end
 
     resource :rolls do
-      helpers do
-        def find_roll(id)
-          find_resource('roll', id)
-        end
-      end
-
       post do
-        game = find_game(params[:game_id])
+        game = find_resource('game', params[:game_id])
         if game
-          # binding.pry
           fixed_rolls = params['data']['attributes'] || {}
           roll = Player.new(game).roll_dice(fixed_rolls)
 
@@ -36,12 +29,9 @@ module DiceOfDebt
         end
       end
 
-      route_param :id do
-        get do
-          # binding.pry
-          roll = find_roll(params[:id])
-          RollRepresenter.as_document(roll, request)
-        end
+      get '/:id' do
+        roll = find_resource('roll', params[:id])
+        RollRepresenter.as_document(roll, request) if roll
       end
     end
   end

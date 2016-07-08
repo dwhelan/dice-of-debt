@@ -48,5 +48,17 @@ module DiceOfDebt
 
       include_examples 'initial roll'
     end
+
+    describe 'GET a roll using a non-existent id' do
+      before { get '/rolls/9999' }
+
+      include_examples 'GET using a non-existent resource id', 'roll'
+    end
+
+    describe 'GET a roll using an invalid id' do
+      before { get '/rolls/foo' }
+
+      include_examples 'GET using an invalid resource id', 'roll'
+    end
   end
 end
