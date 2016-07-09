@@ -1,6 +1,3 @@
-require 'grape'
-require 'grape-roar'
-
 # rubocop:disable Metrics/ClassLength
 module DiceOfDebt
   class API
