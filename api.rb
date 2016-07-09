@@ -1,4 +1,4 @@
-require_relative 'api/api'
+require_relative 'api/base'
 require_relative 'api/presenters'
 require_relative 'api/root'
 require_relative 'api/errors'
