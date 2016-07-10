@@ -11,8 +11,8 @@ module DiceOfDebt
 
     before { allow(RandomRoller).to receive(:roll) { 6 } }
 
-    def post_roll
-      post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json'
+    def post_roll(data = nil, game_id = 1)
+      post "/rolls?game_id=#{game_id}", data.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json'
     end
 
     shared_examples 'initial roll' do
@@ -37,13 +37,56 @@ module DiceOfDebt
       end
     end
 
-    describe 'POST /rolls with no specified rolls' do
-      before { post_roll }
+    describe 'POST /rolls' do
+      shared_examples 'newly created roll' do
+        include_examples 'initial roll'
 
-      it { expect_data 201 }
-      it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
+        it { expect_data 201 }
+        it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
+      end
 
-      include_examples 'initial roll'
+      describe 'with no data' do
+        before { post_roll '' }
+
+        include_examples 'newly created roll'
+      end
+
+      describe 'with no data attributes' do
+        before { post_roll data: {} }
+
+        include_examples 'newly created roll'
+      end
+
+      describe 'with no specified rolls' do
+        before { post_roll data: roll }
+
+        include_examples 'newly created roll'
+      end
+
+      xdescribe 'with a non-existent game id' do
+        before { post_roll data: roll }
+
+        include_examples 'GET using a non-existent resource id', 'game', 'game_id'
+      end
+
+      describe 'for a complete game should fail' do
+        before do
+          10.times do
+            post_roll
+          end
+
+          post_roll
+        end
+
+        it { expect_error 422 }
+
+        subject { error }
+
+        its([:status]) { should eq '422' }
+        its([:title])  { should eq 'Cannot roll dice when the game is complete' }
+        its([:detail]) { should eq 'Cannot roll dice when the game is complete' }
+        its([:source]) { should be_nil }
+      end
     end
 
     describe 'get a newly created roll' do
@@ -67,25 +110,6 @@ module DiceOfDebt
       before { get '/rolls/foo' }
 
       include_examples 'GET using an invalid resource id', 'roll'
-    end
-
-    describe 'POST /rolls for a complete game should fail' do
-      before do
-        10.times do
-          post_roll
-        end
-
-        post_roll
-      end
-
-      it { expect_error 422 }
-
-      subject { error }
-
-      its([:status]) { should eq '422' }
-      its([:title])  { should eq 'Cannot roll dice when the game is complete' }
-      its([:detail]) { should eq 'Cannot roll dice when the game is complete' }
-      its([:source]) { should be_nil }
     end
   end
 end

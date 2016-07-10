@@ -21,7 +21,7 @@ module DiceOfDebt
       end
     end
 
-    STATUS_CODES = { GameError => 422 }
+    STATUS_CODES = { GameCompleteError => 422 }
 
     rescue_from :all do |e|
       status_code = STATUS_CODES.fetch(e.class, 500)

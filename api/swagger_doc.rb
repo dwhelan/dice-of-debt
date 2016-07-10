@@ -24,9 +24,10 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
 tags:
-  -
-    name: games
+  - name: games
     description: Everything about games.
+  - name: rolls
+    description: Everything about rolls.
 definitions:
   resource:
     properties:
@@ -45,6 +46,43 @@ definitions:
       attributes:
         $ref: '#/definitions/game_attributes'
         readOnly: true
+  roll:
+    properties:
+      id:
+        type: string
+        readOnly: true
+        example: '1'
+      type:
+        type: string
+        readOnly: true
+        example: 'roll'
+      attributes:
+        $ref: '#/definitions/roll_attributes'
+        readOnly: true
+  roll_attributes:
+    properties:
+      value:
+        type: array
+        items:
+            type: string
+        example:
+          - '1'
+          - '6'
+          - '4'
+          - '1'
+          - '3'
+          - '3'
+          - '2'
+          - '5'
+      debt:
+        type: array
+        items:
+            type: string
+        example:
+          - '6'
+          - '1'
+          - '3'
+          - '2'
   game_attributes:
     properties:
       score:
@@ -98,6 +136,57 @@ definitions:
       source:
         parameter: id
 paths:
+  /rolls:
+    post:
+      tags:
+        - rolls
+      summary: Roll the dice.
+      description: Roll the dice with the given values. If any values are missing\
+                   then random numbers will be generated.
+      parameters:
+        - name: game_id
+          in: query
+          description: The id of the game to roll against.
+          required: true
+          type: string
+        - name: data
+          in: formData
+          description: The dice rolls.
+          required: false
+          schema:
+            $ref: '#/definitions/roll_attributes'
+      responses:
+        '201':
+          summary: The roll just created.
+          description: The roll just created.
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/roll'
+          headers:
+            Location:
+              type: string
+              description: The URI to the newly created roll.
+        '404':
+          description: The requested game could not be found.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/not_found_error'
+        '422':
+          description: The game id provided must be numeric.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/validation_error'
   /games:
     get:
       tags:

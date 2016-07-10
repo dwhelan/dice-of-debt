@@ -4,7 +4,7 @@ module DiceOfDebt
       post do
         game = find_resource('game', params[:game_id])
         if game
-          fixed_rolls = params['data']['attributes'] || {}
+          fixed_rolls = params['data'] && params['data']['attributes'] || {}
           roll = Player.new(game).roll_dice(fixed_rolls)
 
           header 'Location', "#{request.base_url}/rolls/#{roll.id}"
