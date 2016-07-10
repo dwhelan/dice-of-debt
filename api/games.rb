@@ -18,7 +18,7 @@ module DiceOfDebt
       end
 
       get '/:id' do
-        game = find_resource('game', params[:id])
+        game = find_resource('game')
         GameRepresenter.as_document(game, request) if game
       end
     end

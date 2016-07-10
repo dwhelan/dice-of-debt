@@ -63,10 +63,16 @@ module DiceOfDebt
         include_examples 'newly created roll'
       end
 
-      xdescribe 'with a non-existent game id' do
-        before { post_roll data: roll }
+      describe 'with a non-existent game id' do
+        before { post_roll({ data: roll }, 9999) }
 
         include_examples 'GET using a non-existent resource id', 'game', 'game_id'
+      end
+
+      describe 'with an invalid game id' do
+        before { post_roll({ data: roll }, 'foo') }
+
+        include_examples 'GET using an invalid resource id', 'game', 'game_id'
       end
 
       describe 'for a complete game should fail' do
