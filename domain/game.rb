@@ -28,6 +28,7 @@ module DiceOfDebt
     end
 
     def roll_dice(fixed_rolls = {})
+      fail GameError, 'Cannot roll dice when the game is complete' if complete?
       iteration.roll_dice(fixed_rolls).tap do
         self.score += iteration.score
       end
@@ -52,6 +53,10 @@ module DiceOfDebt
           },
           iterations: 10
         }
+    end
+
+    def complete?
+      status == :complete
     end
 
     def status

@@ -53,6 +53,10 @@ module DiceOfDebt
 
       its(:iteration) { should be subject.iterations[9] }
       its(:score)     { should be 40 }
+
+      it 'should fail on a roll attempt' do
+        expect { subject.roll_dice }.to raise_error GameError, 'Cannot roll dice when the game is complete'
+      end
     end
 
     def play_one_iteration

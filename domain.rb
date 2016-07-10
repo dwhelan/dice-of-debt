@@ -6,3 +6,7 @@ require_relative 'domain/roll'
 require_relative 'domain/iteration'
 require_relative 'domain/game'
 require_relative 'domain/player.rb'
+
+module DiceOfDebt
+  class GameError < StandardError; end
+end

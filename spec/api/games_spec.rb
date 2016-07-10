@@ -83,7 +83,7 @@ module DiceOfDebt
       end
     end
 
-    describe 'get a complete game' do
+    describe 'with a complete game' do
       before do
         (420..429).each do |id|
           insert_data :iterations, id: id, game_id: 1, value: 12, debt: 9, status: 'complete'
