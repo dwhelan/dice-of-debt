@@ -21,8 +21,11 @@ module DiceOfDebt
       end
     end
 
+    STATUS_CODES = { GameError => 422 }
+
     rescue_from :all do |e|
-      error = API::Error.new(status: 500, title: e.message, backtrace: e.backtrace)
+      status_code = STATUS_CODES.fetch(e.class, 500)
+      error = API::Error.new(status: status_code, title: e.message, backtrace: e.backtrace)
       ErrorResponse.build error.status, [error]
     end
 

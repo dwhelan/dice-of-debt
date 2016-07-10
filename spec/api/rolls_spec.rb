@@ -10,7 +10,10 @@ module DiceOfDebt
     let(:roll)  { { type: 'roll' } }
 
     before { allow(RandomRoller).to receive(:roll) { 6 } }
-    before { post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json' }
+
+    def post_roll
+      post '/rolls?game_id=1', { data: roll }.to_json, 'CONTENT_TYPE' => 'application/vnd.api+json'
+    end
 
     shared_examples 'initial roll' do
       subject { data }
@@ -35,6 +38,8 @@ module DiceOfDebt
     end
 
     describe 'POST /rolls with no specified rolls' do
+      before { post_roll }
+
       it { expect_data 201 }
       it { expect(headers['Location']).to eq "http://example.org/rolls/#{data[:id]}" }
 
@@ -42,7 +47,10 @@ module DiceOfDebt
     end
 
     describe 'get a newly created roll' do
-      before { get "rolls/#{data[:id]}" }
+      before do
+        post_roll
+        get "rolls/#{data[:id]}"
+      end
 
       it { expect_data 200 }
 
@@ -59,6 +67,25 @@ module DiceOfDebt
       before { get '/rolls/foo' }
 
       include_examples 'GET using an invalid resource id', 'roll'
+    end
+
+    describe 'POST /rolls for a complete game should fail' do
+      before do
+        10.times do
+          post_roll
+        end
+
+        post_roll
+      end
+
+      it { expect_error 422 }
+
+      subject { error }
+
+      its([:status]) { should eq '422' }
+      its([:title])  { should eq 'Cannot roll dice when the game is complete' }
+      its([:detail]) { should eq 'Cannot roll dice when the game is complete' }
+      its([:source]) { should be_nil }
     end
   end
 end
