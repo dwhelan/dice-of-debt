@@ -181,6 +181,57 @@ paths:
                   detail: Could not find a game with id 123.
                   source:
                     parameter: game_id
+  /rolls/{id}:
+    get:
+      tags:
+        - rolls
+      summary: Get a roll by id.
+      description: Get a roll by id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the roll to get.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The requested roll.
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/roll'
+        '404':
+          description: The requested roll could not be found.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/error'
+                example:
+                  status: '404'
+                  title: Not Found
+                  detail: Could not find a roll with id 123.
+                  source:
+                    parameter: id
+        '422':
+          description: The roll id provided must be numeric.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/error'
+                example:
+                  status: '422'
+                  title: Invalid roll id
+                  detail: The provided roll id 'foo' should be numeric
+                  source:
+                    parameter: id
   /games:
     get:
       tags:
