@@ -169,7 +169,7 @@ paths:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/validation_error'
+                  $ref: '#/definitions/error'
                 example:
                   status: '422'
                   title: Invalid game id
@@ -184,7 +184,7 @@ paths:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/validation_error'
+                  $ref: '#/definitions/error'
                 example:
                   status: '404'
                   title: Not Found
@@ -256,7 +256,7 @@ paths:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/not_found_error'
+                  $ref: '#/definitions/error'
                 example:
                   status: '404'
                   title: Not Found
@@ -271,7 +271,7 @@ paths:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/validation_error'
+                  $ref: '#/definitions/error'
                 example:
                   status: '422'
                   title: Invalid game id
