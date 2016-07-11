@@ -117,6 +117,10 @@ definitions:
       source:
         $ref: '#/definitions/error_source'
         readOnly: true
+  errors:
+    type: array
+    items:
+      $ref: '#/definitions/error'
   not_found_error:
     allOf:
       - $ref: '#/definitions/error'
@@ -170,14 +174,20 @@ paths:
               type: string
               description: The URI to the newly created roll.
         '404':
-          description: The requested game could not be found.
+          description: The game id provided must be numeric.
           schema:
             type: object
             properties:
               errors:
                 type: array
                 items:
-                  $ref: '#/definitions/not_found_error'
+                  $ref: '#/definitions/validation_error'
+                example:
+                  status: '422'
+                  title: Invalid game id
+                  detail: The provided game id 'foo' should be numeric
+                  source:
+                    parameter: game_id
         '422':
           description: The game id provided must be numeric.
           schema:
@@ -187,6 +197,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/validation_error'
+                example:
+                  status: '404'
+                  title: Not Found
+                  detail: Could not find a game with id 123.
+                  source:
+                    parameter: game_id
   /games:
     get:
       tags:
