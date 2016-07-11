@@ -117,16 +117,6 @@ definitions:
       source:
         $ref: '#/definitions/error_source'
         readOnly: true
-  errors:
-    type: array
-    items:
-      $ref: '#/definitions/error'
-  not_found_error:
-    allOf:
-      - $ref: '#/definitions/error'
-  validation_error:
-    allOf:
-      - $ref: '#/definitions/error'
 paths:
   /rolls:
     post:
