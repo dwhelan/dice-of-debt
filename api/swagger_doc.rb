@@ -124,21 +124,9 @@ definitions:
   not_found_error:
     allOf:
       - $ref: '#/definitions/error'
-    example:
-      status: '404'
-      title: Not Found
-      detail: Could not find a game with id 123.
-      source:
-        parameter: id
   validation_error:
     allOf:
       - $ref: '#/definitions/error'
-    example:
-      status: '422'
-      title: Invalid game id
-      detail: The provided game id 'foo' should be numeric
-      source:
-        parameter: id
 paths:
   /rolls:
     post:
@@ -269,6 +257,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/not_found_error'
+                example:
+                  status: '404'
+                  title: Not Found
+                  detail: Could not find a game with id 123.
+                  source:
+                    parameter: id
         '422':
           description: The game id provided must be numeric.
           schema:
@@ -278,6 +272,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/validation_error'
+                example:
+                  status: '422'
+                  title: Invalid game id
+                  detail: The provided game id 'foo' should be numeric
+                  source:
+                    parameter: id
         eos
       end
     end
