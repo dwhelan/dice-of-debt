@@ -12,14 +12,6 @@ module DiceOfDebt
 
     attribute :rolls, Json, default: {}
     attribute :iteration
-
-    # def initialize(id, rolls)
-    #   self.id    = id || 1
-    #   self.rolls = rolls
-    # end
-
-    # private
-    #
-    # attr_writer :id, :rolls
+    attribute :game
   end
 end

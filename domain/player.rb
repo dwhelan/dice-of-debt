@@ -6,10 +6,15 @@ module DiceOfDebt
       self.game = game
     end
 
+    # rubocop:disable Metrics/AbcSize
     def roll_dice(fixed_rolls = {})
-      game.roll_dice(fixed_rolls).tap do
+      game.roll_dice(fixed_rolls).tap do |roll|
         game.iteration.end
+        roll.game = game
+        roll.iteration = game.iterations.last
+
         Persistence::ROM.game_repository.save(game)
+        Persistence::ROM.roll_repository.save(roll)
       end
     end
 

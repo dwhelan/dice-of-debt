@@ -31,7 +31,7 @@ module DiceOfDebt
 
       links do
         property :self, getter: -> _ { "#{base_url}/rolls/#{id}" }
-        property :game, getter: -> _ { "#{base_url}/games/#{iteration.game.id}" }
+        property :game, getter: -> _ { "#{base_url}/games/#{game.id}" }
       end
     end
   end
