@@ -19,10 +19,9 @@ module DiceOfDebt
         game = games.by_id(id).as(Game).one
         return unless game
 
-        game.iterations = iterations.by_game_id(id).combine_children(one: rolls).as(Iteration).to_a
+        game.iterations = iterations.by_game_id(id).as(Iteration).to_a
         game.iterations.each do |iteration|
           iteration.game = game
-          iteration.roll.iteration = iteration if iteration.roll
         end
         game
       end

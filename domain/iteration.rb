@@ -15,7 +15,6 @@ module DiceOfDebt
     attribute :value,  Integer, default: 0
     attribute :debt,   Integer, default: 0
     attribute :status, Symbol,  default: :started
-    attribute :roll,   Roll
 
     def roll_dice(fixed_rolls = {})
       dice.roll(fixed_rolls).tap do

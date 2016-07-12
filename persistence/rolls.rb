@@ -6,7 +6,7 @@ module DiceOfDebt
       dataset :rolls
 
       def by_id(id)
-        where(id: id).select(:id, :iteration_id, :game_id, :rolls)
+        where(id: id).select(:id, :game_id, :rolls)
       end
     end
 
@@ -23,7 +23,7 @@ module DiceOfDebt
       end
 
       def create(roll)
-        roll.id = rolls.insert(iteration_id: roll.iteration.id, game_id: roll.game.id, rolls: roll.rolls.to_json)
+        roll.id = rolls.insert(game_id: roll.game.id, rolls: roll.rolls.to_json)
       end
 
       def update(roll)
