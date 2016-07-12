@@ -29,9 +29,10 @@ module DiceOfDebt
 
     def roll_dice(fixed_rolls = {})
       fail GameCompleteError, 'Cannot roll dice when the game is complete' if complete?
-      iteration.roll_dice(fixed_rolls).tap do
+      rolls = iteration.roll_dice(fixed_rolls).tap do
         self.score += iteration.score
       end
+      Roll.new(rolls: rolls)
     end
 
     def config

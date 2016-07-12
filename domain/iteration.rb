@@ -18,11 +18,10 @@ module DiceOfDebt
     attribute :roll,   Roll
 
     def roll_dice(fixed_rolls = {})
-      rolls = dice.roll(fixed_rolls).tap do
+      dice.roll(fixed_rolls).tap do
         self.value = dice[:value].score
         self.debt  = dice[:debt].score
       end
-      @roll ||= Roll.new(iteration: self, rolls: rolls)
     end
 
     def score

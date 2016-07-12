@@ -11,23 +11,8 @@ module DiceOfDebt
       its(:iterations) { should have(0).iterations }
     end
 
-    describe 'roll_dice' do
-      let(:roll)  { Roll.new }
-      let(:rolls) { {} }
-
-      before do
-        allow(iteration).to receive(:roll_dice) { roll }
-        allow(iteration).to receive(:score)     { 42 }
-      end
-
-      it 'should send roll to the iteration' do
-        subject.roll_dice(rolls)
-        expect(subject.roll_dice).to be roll
-      end
-
-      it 'should increase the score' do
-        expect { subject.roll_dice rolls }.to change { subject.score }.by 42
-      end
+    specify 'roll_dice should update the score' do
+      expect { subject.roll_dice }.to change { subject.score }.by 4
     end
 
     describe 'iteration' do
@@ -48,9 +33,10 @@ module DiceOfDebt
       end
     end
 
-    describe 'after 10 iterations' do
+    describe 'a complete game' do
       before { 10.times { play_one_iteration } }
 
+      it { expect(subject).to have(10).iterations }
       its(:iteration) { should be subject.iterations[9] }
       its(:score)     { should be 40 }
 

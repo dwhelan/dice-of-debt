@@ -21,7 +21,6 @@ module DiceOfDebt
           game_id: iteration.game.id
         }
         iteration.id = iterations.insert(attributes)
-        save_roll(iteration.roll)
       end
 
       def update(iteration)
@@ -31,11 +30,6 @@ module DiceOfDebt
           status:  iteration.status.to_s
         }
         iterations.where(id: iteration.id).update(attributes)
-        save_roll(iteration.roll)
-      end
-
-      def save_roll(roll)
-        Persistence::ROM.roll_repository.save(roll)
       end
     end
   end
