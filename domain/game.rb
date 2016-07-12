@@ -34,11 +34,6 @@ module DiceOfDebt
       end
     end
 
-    def rolls
-      start_iteration
-      @rolls ||= [Roll.new(id: 2), Roll.new(id: 3)]
-    end
-
     def config
       yield configuration if block_given?
       configuration
