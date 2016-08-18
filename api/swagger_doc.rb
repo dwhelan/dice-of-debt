@@ -97,6 +97,10 @@ definitions:
         type: integer
         readOnly: true
         example: 4
+      status:
+        type: string
+        readOnly: true
+        example: 'started'
   error_source:
     properties:
       parameter:
