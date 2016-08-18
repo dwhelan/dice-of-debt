@@ -43,10 +43,10 @@ definitions:
       score:
         type: integer
         example: 0
-      value_dice:
+      value_dice_count:
         type: integer
         example: 8
-      debt_dice:
+      debt_dice_count:
         type: integer
         example: 4
   error_source:

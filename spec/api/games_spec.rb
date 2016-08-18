@@ -27,12 +27,12 @@ module DiceOfDebt
 
       subject { data }
 
-      its([:id])         { should eq '1' }
-      its([:type])       { should eq 'game' }
-      its([:value_dice]) { should eq 8 }
-      its([:debt_dice])  { should eq 4 }
-      its([:score])      { should eq 0 }
-      its([:iterations]) { should have(0).iterations }
+      its([:id])               { should eq '1' }
+      its([:type])             { should eq 'game' }
+      its([:value_dice_count]) { should eq 8 }
+      its([:debt_dice_count])  { should eq 4 }
+      its([:score])            { should eq 0 }
+      its([:iterations])       { should have(0).iterations }
     end
 
     describe 'GET /games/9999' do
@@ -69,11 +69,11 @@ module DiceOfDebt
 
       subject { data }
 
-      its([:id])         { should match '\d+' }
-      its([:type])       { should eq 'game' }
-      its([:value_dice]) { should eq 8 }
-      its([:debt_dice])  { should eq 4 }
-      its([:score])      { should eq 0 }
+      its([:id])               { should match '\d+' }
+      its([:type])             { should eq 'game' }
+      its([:value_dice_count]) { should eq 8 }
+      its([:debt_dice_count])  { should eq 4 }
+      its([:score])            { should eq 0 }
     end
   end
 end

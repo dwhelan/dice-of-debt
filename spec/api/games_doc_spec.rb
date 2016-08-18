@@ -45,14 +45,14 @@ module DiceOfDebt
         end
 
         describe 'value_dice' do
-          subject { properties[:value_dice] }
+          subject { properties[:value_dice_count] }
 
           its([:type])    { should eq 'integer' }
           its([:example]) { should eq 8 }
         end
 
         describe 'debt_dice' do
-          subject { properties[:debt_dice] }
+          subject { properties[:debt_dice_count] }
 
           its([:type])    { should eq 'integer' }
           its([:example]) { should eq 4 }
