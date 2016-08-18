@@ -1,15 +1,26 @@
 require 'pad'
 
 module DiceOfDebt
+  # Define empty Game to allow Virtus attribute to reference it
+  # TODO: try using Virtus finalization
+  class Game
+  end
+
   # The Iteration class is responsible for keeping track of the value, debt and overall score for each iteration.
   class Iteration
-    attr_accessor :id, :value, :debt
+    include Pad.entity
+    attr_reader :value, :debt
 
-    def initialize
-      self.id     = 1
-      self.debt   = 0
-      self.value  = 0
-      self.status = :started
+    attribute :game,   Game
+    attribute :value,  Integer, default: 0
+    attribute :debt,   Integer, default: 0
+    attribute :status, Symbol,  default: :started
+
+    def roll_dice(fixed_rolls = {})
+      dice.roll(fixed_rolls).tap do
+        self.value = dice[:value].score
+        self.debt  = dice[:debt].score
+      end
     end
 
     def score
@@ -24,8 +35,8 @@ module DiceOfDebt
       status == :complete
     end
 
-    private
-
-    attr_accessor :status
+    def dice
+      game.dice
+    end
   end
 end

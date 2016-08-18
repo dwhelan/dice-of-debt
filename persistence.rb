@@ -1,0 +1,6 @@
+require_relative 'persistence/configuration'
+require_relative 'persistence/rom'
+require_relative 'persistence/repository'
+require_relative 'persistence/iterations'
+require_relative 'persistence/rolls'
+require_relative 'persistence/games'

@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module DiceOfDebt
   describe Game do
+    let(:iteration) { subject.iteration }
+
     before { allow(RandomRoller).to receive(:roll) { 1 } }
 
     describe 'initially' do
@@ -9,41 +11,43 @@ module DiceOfDebt
       its(:iterations) { should have(0).iterations }
     end
 
-    specify 'roll' do
-      expect(subject.roll).to eq(
-        value: [1, 1, 1, 1, 1, 1, 1, 1],
-        debt:  [1, 1, 1, 1]
-      )
+    specify 'roll_dice should update the score' do
+      expect { subject.roll_dice }.to change { subject.score }.by 4
     end
 
-    describe 'first iteration' do
-      describe 'rolling' do
-        before { subject.roll }
-
-        its(:'iteration.value') { should be 8 }
-        its(:'iteration.debt')  { should be 4 }
-        its(:'iteration.score') { should be 4 }
-        its(:score)             { should be 4 }
+    describe 'iteration' do
+      it 'initially should not be complete' do
+        expect(subject.iteration).to_not be_complete
       end
 
-      describe 'after 10 iterations' do
-        before { 10.times { play_one_iteration } }
-
-        its(:iteration) { should be subject.iterations[9] }
-        its(:score)     { should be 40 }
+      it 'should use iteration when last one not complete' do
+        allow(subject.iteration).to receive(:complete?) { false }
+        subject.iteration
+        expect(subject).to have(1).iterations
       end
 
-      describe 'after 11 iterations' do
-        before { 11.times { play_one_iteration } }
-
-        its(:iteration) { should be subject.iterations[9] }
-        its(:score)     { should be 40 }
+      it 'should create a new iteration when last one complete' do
+        allow(subject.iteration).to receive(:complete?) { true }
+        subject.iteration
+        expect(subject).to have(2).iterations
       end
+    end
 
-      def play_one_iteration
-        subject.roll
-        subject.end_iteration
+    describe 'a complete game' do
+      before { 10.times { play_one_iteration } }
+
+      it { expect(subject).to have(10).iterations }
+      its(:iteration) { should be subject.iterations[9] }
+      its(:score)     { should be 40 }
+
+      it 'should fail on a roll attempt' do
+        expect { subject.roll_dice }.to raise_error GameCompleteError, 'Cannot roll dice when the game is complete'
       end
+    end
+
+    def play_one_iteration
+      subject.roll_dice
+      subject.end_iteration
     end
 
     specify 'config' do

@@ -1,43 +1,13 @@
 module DiceOfDebt
   class API
-    class Error
-      attr_reader :status, :title, :detail, :source
-
-      def initialize(opts = {})
-        @status = opts[:status] || 500
-        @title  = opts[:title] || Rack::Utils::HTTP_STATUS_CODES[status]
-        @detail = opts[:detail] || title
-        @source = opts[:source]
+    resource :errors do
+      desc 'Raise an error.'
+      post do
+        fail 'Internal Server Error'
       end
 
-      def self.exposures
-        []
-      end
-
-      def self.documentation
-        {}
-      end
-    end
-
-    module ErrorPresenter
-      include Presenter
-
-      property :status, getter: ->(_) { status.to_s }
-      property :title
-      property :detail
-      property :source
-    end
-
-    module ErrorArrayPresenter
-      include Presenter
-
-      collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
-    end
-
-    module ErrorResponse
-      def self.build(status, errors)
-        headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
-        [status, headers, [ErrorArrayPresenter.represent(errors).to_json]]
+      get do
+        fail 'Internal Server Error'
       end
     end
 
@@ -51,8 +21,11 @@ module DiceOfDebt
       end
     end
 
+    STATUS_CODES = { GameCompleteError => 422 }
+
     rescue_from :all do |e|
-      error = API::Error.new(status: 500, title: e.message)
+      status_code = STATUS_CODES.fetch(e.class, 500)
+      error = API::Error.new(status: status_code, title: e.message, backtrace: e.backtrace)
       ErrorResponse.build error.status, [error]
     end
 
@@ -65,14 +38,38 @@ module DiceOfDebt
       ErrorResponse.build 422, errors
     end
 
-    resource :errors do
-      desc 'Raise an error.'
-      post do
-        fail 'Internal Server Error'
-      end
+    class Error
+      attr_reader :status, :title, :detail, :source, :backtrace
 
-      get do
-        fail 'Internal Server Error'
+      def initialize(opts = {})
+        @status = opts[:status] || 500
+        @title  = opts[:title] || Rack::Utils::HTTP_STATUS_CODES[status]
+        @detail = opts[:detail] || title
+        @source = opts[:source]
+        @backtrace = opts[:backtrace]
+      end
+    end
+
+    module ErrorPresenter
+      include Representer
+
+      property :status, getter: -> _ { status.to_s }
+      property :title
+      property :detail
+      property :source
+      property :backtrace if ENV['RACK_ENV'] != 'production'
+    end
+
+    module ErrorArrayPresenter
+      include Representer
+
+      collection :entries, as: 'errors', extend: ErrorPresenter, embedded: true
+    end
+
+    module ErrorResponse
+      def self.build(status, errors)
+        headers = { 'Content-Type' => JSON_API_CONTENT_TYPE }
+        [status, headers, [ErrorArrayPresenter.represent(errors).to_json]]
       end
     end
   end

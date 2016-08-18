@@ -13,8 +13,10 @@ gem 'rom-sql',        '~> 0.7'
 gem 'sinatra',        '~> 1.4'
 gem 'sqlite3',        '~> 1.3'
 
+gem 'pry-byebug', '~>  3.3'
+
 group 'development' do
-  gem 'pry-byebug', '~>  3.3'
+  gem 'awesome_print'
   gem 'rake',       '~> 10.0'
   gem 'rubocop',    '~>  0.30'
 end

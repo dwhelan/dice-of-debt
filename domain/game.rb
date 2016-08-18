@@ -7,23 +7,15 @@ module DiceOfDebt
   class Game
     include Pad.entity
 
-    def roll
-      dice.roll.tap do
-        iteration.value = dice[:value].total
-        iteration.debt  = dice[:debt].total
-      end
-    end
+    attribute :score,      Integer,          default: 0
+    attribute :iterations, Array[Iteration], default: []
 
     def start_iteration
-      iterations << Iteration.new if iterations.size < configuration[:iterations]
+      iterations << new_iteration if iterations.size < configuration[:iterations]
     end
 
     def end_iteration
       iteration.end
-    end
-
-    def score
-      iterations.map(&:score).reduce(0, :+)
     end
 
     def iteration
@@ -31,17 +23,21 @@ module DiceOfDebt
       iterations.last
     end
 
-    def iterations
-      @iterations ||= []
+    def dice
+      @dice ||= DiceSet.new(configuration[:dice])
+    end
+
+    def roll_dice(fixed_rolls = {})
+      fail GameCompleteError, 'Cannot roll dice when the game is complete' if complete?
+      rolls = iteration.roll_dice(fixed_rolls).tap do
+        self.score += iteration.score
+      end
+      Roll.new(rolls: rolls)
     end
 
     def config
       yield configuration if block_given?
       configuration
-    end
-
-    def dice
-      @dice ||= SetOfDice.new(configuration[:dice])
     end
 
     def configuration
@@ -53,6 +49,24 @@ module DiceOfDebt
           },
           iterations: 10
         }
+    end
+
+    def complete?
+      status == :complete
+    end
+
+    def status
+      if iterations.size == configuration[:iterations] && iterations.last.complete?
+        :complete
+      else
+        :started
+      end
+    end
+
+    private
+
+    def new_iteration
+      Iteration.new(game: self)
     end
   end
 end

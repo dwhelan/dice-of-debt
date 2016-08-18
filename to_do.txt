@@ -1,6 +1,9 @@
-TODO: Assign ids via persister
 TODO: Validate JSON - consider use of JSON:schema
 TODO: Figure out how to handle re-roll (1) patch iteration (2) roll resource
+TODO: Use strings rather than integers for rolls
+TODO: Database transactions for rolls
+TODO: Ensure correct accept header in request as per JSONAPI specs
+TODO: Support deep to_h when creating domain objects from repositories
 
 get /games/1
   score:
@@ -24,15 +27,19 @@ get /games/1
     }
   ]
 
-post /games/1/roll
-  {
-  }
+post /rolls
 
-  RESPONSE
-
-  {
-    value_dice: [3, 4, 6]
-    debt_dice: [2, 5]
+  data: {
+    type: roll
+    attributes: {
+      value_dice: [3, 4, 6]
+      debt_dice: [2, 5]
+    },
+    relationships: {
+      game: {
+        data: { type: game, id: 1 }
+      }
+    }
   }
 
 get /games/1/rolls

@@ -1,78 +1,37 @@
 module DiceOfDebt
-  class Roll
-    attr_accessor :id
-
-    def initialize(game)
-      self.game = game
-      self.id   = game.iterations.count
-    end
-
-    def roll
-      game.roll_value_dice
-      game.roll_debt_dice
-    end
-
-    private
-
-    attr_accessor :game
-  end
-
   class API
-    module RollRepresenter
-      include ResourcePresenter
+    resource :rolls do
+      post do
+        game = find_resource('game', :game_id)
+        if game
+          fixed_rolls = params['data'] && params['data']['attributes'] || {}
+          roll = Player.new(game).roll_dice(fixed_rolls)
 
-      type 'roll'
-    end
-
-    module RollArrayRepresenter
-      include ResourceArrayPresenter
-
-      resource_presenter RollRepresenter
-    end
-
-    module RollDocumentRepresenter
-      include ResourcePresenter
-
-      resource_presenter RollRepresenter
-    end
-
-    module RollArrayDocumentRepresenter
-      include ResourceArrayPresenter
-
-      resource_presenter RollRepresenter
-    end
-
-    resource :games do
-      route_param :game_id do
-        resource :rolls do
-          post do
-            game = find_game(params[:game_id])
-            if game
-              roll = game.roll(params[:data])
-              header 'Location', "/games/#{game.id}/rolls/1"
-              present roll, with: RollDocumentRepresenter
-              #   game.roll_value_dice
-              #   game.roll_debt_dice
-              #   iteration = game.iteration
-              #   game.end_iteration
-              #   Persistence.game_repository.update(game)
-              #   present iteration, with: RollDocumentRepresenter
-            end
-          end
-
-          # params do
-          #   requires :id
-          # end
-          #
-          # route_param :id do
-          #   get do
-          #     game = find_game(params[:game_id])
-          #     if game
-          #       present game.iterations, with: RollArrayDocumentRepresenter
-          #     end
-          #   end
-          # end
+          header 'Location', "#{request.base_url}/rolls/#{roll.id}"
+          RollRepresenter.as_document(roll, request)
         end
+      end
+
+      get '/:id' do
+        roll = find_resource('roll')
+        RollRepresenter.as_document(roll, request) if roll
+      end
+    end
+
+    module RollRepresenter
+      include ResourceRepresenter
+
+      property :type, getter: -> _ { 'roll' }
+      property :id,   getter: -> _ { id.to_s }
+
+      attributes do
+        property :value, getter: -> _ { rolls[:value] }
+        property :debt,  getter: -> _ { rolls[:debt] }
+      end
+
+      links do
+        property :self, getter: -> _ { "#{base_url}/rolls/#{id}" }
+        property :game, getter: -> _ { "#{base_url}/games/#{game.id}" }
       end
     end
   end
