@@ -33,8 +33,8 @@ module DiceOfDebt
           property :id,   getter: -> _ { id.to_s }
 
           attributes do
-            property :value_dice, getter: -> _ { dice[:value].count }
-            property :debt_dice,  getter: -> _ { dice[:debt].count  }
+            property :value_dice_count, getter: -> _ { dice[:value].count }
+            property :debt_dice_count,  getter: -> _ { dice[:debt].count  }
             property :score
             property :status
           end

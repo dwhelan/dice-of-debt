@@ -89,11 +89,11 @@ definitions:
         type: integer
         readOnly: true
         example: 0
-      value_dice:
+      value_dice_count:
         type: integer
         readOnly: true
         example: 8
-      debt_dice:
+      debt_dice_count:
         type: integer
         readOnly: true
         example: 4

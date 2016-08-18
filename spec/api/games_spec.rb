@@ -13,9 +13,9 @@ module DiceOfDebt
       describe 'attributes' do
         subject { data[:attributes] }
 
-        its([:value_dice]) { should eq 8 }
-        its([:debt_dice])  { should eq 4 }
-        its([:score])      { should eq 0 }
+        its([:value_dice_count]) { should eq 8 }
+        its([:debt_dice_count])  { should eq 4 }
+        its([:score])            { should eq 0 }
       end
 
       specify 'should have a link to the game resource' do
