@@ -43,6 +43,9 @@ definitions:
       attributes:
         $ref: '#/definitions/game_summary_attributes'
         readOnly: true
+      links:
+        $ref: '#/definitions/game_links'
+        readOnly: true
   game_summary_attributes:
     required:
       - score
@@ -74,9 +77,6 @@ definitions:
     properties:
       attributes:
         $ref: '#/definitions/game_attributes'
-        readOnly: true
-      links:
-        $ref: '#/definitions/game_links'
         readOnly: true
   game_attributes:
     allOf:
@@ -304,6 +304,8 @@ paths:
           description: A list of games.
           schema:
             type: object
+            required:
+              - data
             properties:
               data:
                 type: array
@@ -320,10 +322,13 @@ paths:
           description: The game just created.
           schema:
             type: object
+            required:
+              - data
             properties:
               data:
                 type: object
                 $ref: '#/definitions/game'
+                readOnly: true
           headers:
             Location:
               type: string
