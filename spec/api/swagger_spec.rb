@@ -24,7 +24,7 @@ module DiceOfDebt
 
         its([:version])     { should eq 0.1 }
         its([:title])       { should eq 'Dice of Debt' }
-        its([:description]) { should eq 'An API for the Dice of Debt game.' }
+        its([:description]) { should match /An API for the Dice of Debt game\./ }
 
         describe 'contact' do
           subject { info[:contact] }
