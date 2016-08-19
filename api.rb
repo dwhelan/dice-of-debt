@@ -5,7 +5,7 @@ require_relative 'api/errors'
 require_relative 'api/iterations'
 require_relative 'api/rolls'
 require_relative 'api/games'
-require_relative 'api/swagger_doc'
+require_relative 'api/swagger'
 
 # This should be the last route as it will match any path
 require_relative 'api/not_found'

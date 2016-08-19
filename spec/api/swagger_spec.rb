@@ -1,10 +1,10 @@
 require_relative 'api_spec_helper'
 
 module DiceOfDebt
-  describe 'Swagger docs' do
+  describe 'Swagger' do
     include_context 'api test'
 
-    before { get '/swagger_doc.json' }
+    before { get '/swagger.json' }
 
     describe '/' do
       subject { json }
