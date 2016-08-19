@@ -215,6 +215,8 @@ paths:
           description: The game id provided must be numeric.
           schema:
             type: object
+            required:
+              - errors
             properties:
               errors:
                 type: array
@@ -230,6 +232,8 @@ paths:
           description: The game id provided must be numeric.
           schema:
             type: object
+            required:
+              - errors
             properties:
               errors:
                 type: array
@@ -266,6 +270,8 @@ paths:
           description: The requested roll could not be found.
           schema:
             type: object
+            required:
+              - errors
             properties:
               errors:
                 type: array
@@ -281,6 +287,8 @@ paths:
           description: The roll id provided must be numeric.
           schema:
             type: object
+            required:
+              - errors
             properties:
               errors:
                 type: array
@@ -361,6 +369,8 @@ paths:
           description: The requested game could not be found.
           schema:
             type: object
+            required:
+              - errors
             properties:
               errors:
                 type: array
@@ -376,6 +386,8 @@ paths:
           description: The game id provided must be numeric.
           schema:
             type: object
+            required:
+              - errors
             properties:
               errors:
                 type: array
