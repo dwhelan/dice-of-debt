@@ -68,10 +68,28 @@ definitions:
     allOf:
       - $ref: "#/definitions/game_summary_attributes"
     properties:
-      foo:
+      iterations:
+        type: array
+        items:
+          $ref: '#/definitions/iteration'
+  iteration:
+    properties:
+      value:
         type: integer
         readOnly: true
-        example: 0
+        example: 8
+      debt:
+        type: integer
+        readOnly: true
+        example: 4
+      score:
+        type: integer
+        readOnly: true
+        example: 4
+      status:
+        type: string
+        readOnly: true
+        example: 'started'
   roll:
     properties:
       id:
