@@ -8,7 +8,7 @@ produces:
 info:
   version: 0.1
   title: Dice of Debt
-  description: An API for the Dice of Debt game.
+  description: An API for the Dice of Debt game. The API conforms to the JSON API v1.0 specification http://jsonapi.org/.
   contact:
     name: Declan Whelan
     email: declan@leanintuit.com
