@@ -64,6 +64,9 @@ definitions:
       attributes:
         $ref: '#/definitions/game_attributes'
         readOnly: true
+      links:
+        $ref: '#/definitions/game_links'
+        readOnly: true
   game_attributes:
     allOf:
       - $ref: "#/definitions/game_summary_attributes"
@@ -72,6 +75,12 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/iteration'
+  game_links:
+    properties:
+      self:
+        type: string
+        readOnly: true
+        example: 'http://example.com/games/1'
   iteration:
     properties:
       value:
