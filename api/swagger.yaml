@@ -158,12 +158,19 @@ definitions:
           - '3'
           - '2'
   error_source:
+    required:
+      - parameter
     properties:
       parameter:
         type: string
         readOnly: true
         example: 'id'
   error:
+    required:
+      - status
+      - title
+      - detail
+      - source
     properties:
       status:
         type: string
