@@ -239,11 +239,12 @@ paths:
                 items:
                   $ref: '#/definitions/error'
                 example:
-                  status: '422'
-                  title: Invalid game id
-                  detail: The provided game id 'foo' should be numeric
-                  source:
-                    parameter: game_id
+                  -
+                    status: '422'
+                    title: Invalid game id
+                    detail: The provided game id 'foo' should be numeric
+                    source:
+                      parameter: game_id
         '422':
           description: The game id provided must be numeric.
           schema:
@@ -256,11 +257,12 @@ paths:
                 items:
                   $ref: '#/definitions/error'
                 example:
-                  status: '404'
-                  title: Not Found
-                  detail: Could not find a game with id 123.
-                  source:
-                    parameter: game_id
+                  -
+                    status: '404'
+                    title: Not Found
+                    detail: Could not find a game with id foo.
+                    source:
+                      parameter: game_id
   /rolls/{id}:
     get:
       tags:
@@ -296,11 +298,12 @@ paths:
                 items:
                   $ref: '#/definitions/error'
                 example:
-                  status: '404'
-                  title: Not Found
-                  detail: Could not find a roll with id 123.
-                  source:
-                    parameter: id
+                  -
+                    status: '404'
+                    title: Not Found
+                    detail: Could not find a roll with id 123.
+                    source:
+                      parameter: id
         '422':
           description: The roll id provided must be numeric.
           schema:
@@ -313,11 +316,12 @@ paths:
                 items:
                   $ref: '#/definitions/error'
                 example:
-                  status: '422'
-                  title: Invalid roll id
-                  detail: The provided roll id 'foo' should be numeric
-                  source:
-                    parameter: id
+                  -
+                    status: '422'
+                    title: Invalid roll id
+                    detail: The provided roll id 'foo' should be numeric
+                    source:
+                      parameter: id
   /games:
     get:
       tags:
@@ -395,11 +399,24 @@ paths:
                 items:
                   $ref: '#/definitions/error'
                 example:
-                  status: '404'
-                  title: Not Found
-                  detail: Could not find a game with id 123.
-                  source:
-                    parameter: id
+                  -
+                    status: '404'
+                    title: Not Found
+                    detail: Could not find a game with id 123.
+                    source:
+                      parameter: id
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/definitions/error'
+                example:
+                  -
+                    status: '404'
+                    title: Not Found
+                    detail: Could not find a game with id 123.
+                    source:
+                      parameter: game_id
         '422':
           description: The game id provided must be numeric.
           schema:
@@ -412,8 +429,9 @@ paths:
                 items:
                   $ref: '#/definitions/error'
                 example:
-                  status: '422'
-                  title: Invalid game id
-                  detail: The provided game id 'foo' should be numeric
-                  source:
-                    parameter: id
+                  -
+                    status: '422'
+                    title: Invalid game id
+                    detail: The provided game id 'foo' should be numeric
+                    source:
+                      parameter: id
