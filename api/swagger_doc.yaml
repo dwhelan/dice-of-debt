@@ -23,6 +23,10 @@ tags:
     description: Everything about rolls.
 definitions:
   resource:
+    required:
+      - id
+      - type
+      - attributes
     properties:
       id:
         type: string
@@ -40,6 +44,11 @@ definitions:
         $ref: '#/definitions/game_summary_attributes'
         readOnly: true
   game_summary_attributes:
+    required:
+      - score
+      - value_dice_count
+      - debt_dice_count
+      - status
     properties:
       score:
         type: integer
@@ -60,6 +69,8 @@ definitions:
   game:
     allOf:
       - $ref: "#/definitions/resource"
+    required:
+      - links
     properties:
       attributes:
         $ref: '#/definitions/game_attributes'
@@ -70,18 +81,28 @@ definitions:
   game_attributes:
     allOf:
       - $ref: "#/definitions/game_summary_attributes"
+    required:
+      - iterations
     properties:
       iterations:
         type: array
         items:
           $ref: '#/definitions/iteration'
+        readOnly: true
   game_links:
+    required:
+      - self
     properties:
       self:
         type: string
         readOnly: true
         example: 'http://example.com/games/1'
   iteration:
+    required:
+      - score
+      - value
+      - debt
+      - status
     properties:
       value:
         type: integer
@@ -324,10 +345,13 @@ paths:
           description: The requested game.
           schema:
             type: object
+            required:
+              - data
             properties:
               data:
                 type: object
                 $ref: '#/definitions/game'
+                readOnly: true
         '404':
           description: The requested game could not be found.
           schema:
